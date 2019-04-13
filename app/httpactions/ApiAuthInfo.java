@@ -29,7 +29,7 @@ public class ApiAuthInfo {
 
         final String cleaned = authorization.substring(firstSpacePos + 1);
         final Map<String, String> map = Stream.of(cleaned.split(","))
-                .map(x -> x.split("="))
+                .map(x -> x.split("\\="))
                 .collect(toMap(
                         x -> x[0].trim(),
                         x -> x[1].trim().substring(1, x[1].trim().length() - 1)
