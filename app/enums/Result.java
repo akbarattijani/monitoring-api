@@ -46,6 +46,7 @@ public enum Result {
                 504 |
                 505),
     RESPONSE_OK("OK"),
+    RESPONSE_NOTHING("402"),
     RESPONSE_BAD("ERROR"),
     RESULT_DATABASE_NOT_CONNECTED("Database not connected");
 

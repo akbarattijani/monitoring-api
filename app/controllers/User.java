@@ -1,6 +1,5 @@
 package controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import database.Connection.CheckDatabase;
 import database.Connection.Connection;
@@ -63,29 +62,29 @@ public class User {
             password = "dadde9e960e7acc54bf9b09a35ef98f4ec01a149e1560b4a8c4f6909271cc76c",
             port = "5432"
     )
-    @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
-    public static Result login() {
+    public static Result login(String nip, String password) {
         try {
             JSONObject object = new JSONObject();
-            final JsonNode body = request().body().asJson();
-
             String select = "SELECT * FROM m_user WHERE nip = ? and password = ? limit 1";
-            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
-            preparedStatement.setString(1, body.path("nip").asText());
-            preparedStatement.setString(2, body.path("password").asText());
 
-            ResultSet rs = preparedStatement.executeQuery(select);
+            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
+            preparedStatement.setString(1, nip);
+            preparedStatement.setString(2, password);
+
+            ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 int id = rs.getInt("id");
-                String nip = rs.getString("nip");
+                String nipResult = rs.getString("nip");
                 String name = rs.getString("name");
 
                 object.put("id", id);
-                object.put("nip", nip);
+                object.put("nip", nipResult);
                 object.put("name", name);
+
+                return Body.echo(enums.Result.REQUEST_OK, object.toString());
             }
 
-            return Body.echo(enums.Result.REQUEST_OK, object.toString());
+            return Body.echo(enums.Result.RESPONSE_NOTHING, "User Not Found");
         } catch (Exception e) {
             e.printStackTrace();
             return status(401, e.getMessage());
