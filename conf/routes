@@ -1,0 +1,17 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index
+
+# API Monitoring
+POST    /api/v1/sample/insert       controllers.Sample.insert()
+POST    /api/v1/sample/insertAll    controllers.Sample.insertAll()
+POST    /api/v1/user/register       controllers.User.register()
+GET     /api/v1/user/login          controllers.User.login()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+    
