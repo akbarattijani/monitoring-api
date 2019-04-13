@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
         "id",
         "nip",
-        "nama",
+        "name",
         "password"
 })
 public class UserModel {
