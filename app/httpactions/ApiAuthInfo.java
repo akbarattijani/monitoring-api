@@ -32,7 +32,7 @@ public class ApiAuthInfo {
                 .map(x -> x.split("\\="))
                 .collect(toMap(
                         x -> x[0].trim(),
-                        x -> x[1].trim().substring(1, x[1].trim().length() - 1)
+                        x -> x[1].trim().substring(0, x[1].trim().length())
                 ));
 
         ApiAuthInfo result = new ApiAuthInfo();

@@ -18,13 +18,15 @@ public class DatabaseAction extends Action<CheckDatabase> {
     @Override
     public F.Promise<Result> call(Http.Context context) {
         try {
-            CheckDatabase check = null;
+            CheckDatabase check = configuration;
             String host = check.host();
             String port = check.port();
             String databaseName = check.databaseName();
+            String schema = check.schema();
             String username = check.userName();
             String password = check.password();
 
+            Class.forName(check.database().toString());
             switch (check.database()) {
                 case ACCESS:
                     Connection.setConnection(DriverManager.getConnection(SyncConstants.access(host, port, databaseName, username, password)));
@@ -36,7 +38,7 @@ public class DatabaseAction extends Action<CheckDatabase> {
                     Connection.setConnection(DriverManager.getConnection(SyncConstants.oracle(host, port, databaseName, username, password)));
                     break;
                 case POSTGRESQL:
-                    Connection.setConnection(DriverManager.getConnection(SyncConstants.postgresql(host, port, databaseName, username, password)));
+                    Connection.setConnection(DriverManager.getConnection(SyncConstants.postgresql(host, port, databaseName, username, password, schema)));
                     break;
                 case SQLSERVER:
                     Connection.setConnection(DriverManager.getConnection(SyncConstants.sqlserver(host, port, databaseName, username, password)));

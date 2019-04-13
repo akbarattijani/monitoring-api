@@ -2,7 +2,9 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import database.Connection.CheckDatabase;
 import database.Connection.Connection;
+import enums.Database;
 import httpactions.ApiAuth;
 import model.UserModel;
 import org.json.simple.JSONObject;
@@ -23,13 +25,21 @@ import static play.mvc.Results.status;
 @ApiAuth
 public class User {
 
+    @CheckDatabase(
+            database = Database.POSTGRESQL,
+            host = "ec2-23-23-173-30.compute-1.amazonaws.com",
+            databaseName = "d87s2lf0vv7l32",
+            userName = "ppxiknjbrpshfp",
+            password = "dadde9e960e7acc54bf9b09a35ef98f4ec01a149e1560b4a8c4f6909271cc76c",
+            port = "5432"
+    )
     @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
     public static Result register() {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            final UserModel body = mapper.readValue(request().body().asText(), UserModel.class);
+            final UserModel body = mapper.treeToValue(request().body().asJson(), UserModel.class);
 
-            String sql = "INSERT INTO m_user (nip, nama, password) values (?,?,?)";
+            String sql = "INSERT INTO m_user (nip, name, password) values (?,?,?)";
             PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(sql);
 
             preparedStatement.setString(1, body.getNip());
@@ -45,6 +55,14 @@ public class User {
         }
     }
 
+    @CheckDatabase(
+            database = Database.POSTGRESQL,
+            host = "ec2-23-23-173-30.compute-1.amazonaws.com",
+            databaseName = "d87s2lf0vv7l32",
+            userName = "ppxiknjbrpshfp",
+            password = "dadde9e960e7acc54bf9b09a35ef98f4ec01a149e1560b4a8c4f6909271cc76c",
+            port = "5432"
+    )
     @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
     public static Result login() {
         try {

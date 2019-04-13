@@ -1,9 +1,10 @@
 package controllers;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import database.Connection.CheckDatabase;
 import database.Connection.Connection;
+import enums.Database;
 import httpactions.ApiAuth;
 import model.SampleModel;
 import play.mvc.BodyParser;
@@ -24,6 +25,14 @@ import static play.mvc.Results.status;
 @ApiAuth
 public class Sample {
 
+    @CheckDatabase(
+            database = Database.POSTGRESQL,
+            host = "ec2-23-23-173-30.compute-1.amazonaws.com",
+            databaseName = "d87s2lf0vv7l32",
+            userName = "ppxiknjbrpshfp",
+            password = "dadde9e960e7acc54bf9b09a35ef98f4ec01a149e1560b4a8c4f6909271cc76c",
+            port = "5432"
+    )
     @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
     public static Result insert() {
         try {
@@ -46,11 +55,19 @@ public class Sample {
         }
     }
 
+    @CheckDatabase(
+            database = Database.POSTGRESQL,
+            host = "ec2-23-23-173-30.compute-1.amazonaws.com",
+            databaseName = "d87s2lf0vv7l32",
+            userName = "ppxiknjbrpshfp",
+            password = "dadde9e960e7acc54bf9b09a35ef98f4ec01a149e1560b4a8c4f6909271cc76c",
+            port = "5432"
+    )
     @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
     public static Result insertAll() {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            final List<SampleModel> body = mapper.readValue(request().body().asText(), new TypeReference<List<SampleModel>>(){});
+            final List<SampleModel> body = mapper.treeToValue(request().body().asJson(), List.class);
 
             int count = 0;
             int numberParam = 1;

@@ -15,13 +15,15 @@ public class SyncConstants {
                 + password;
     }
 
-    public static String postgresql(String host, String port, String databaseName, String username, String password) {
+    public static String postgresql(String host, String port, String databaseName, String username, String password, String schema) {
         return "jdbc:postgresql://"
                 + host + ":"
                 + port +"/"
-                + databaseName + ", \""
-                + username + "\""
-                + ",\"" + password;
+                + databaseName + "?"
+                + "currentSchema=" + schema
+                + "&user=" + username
+                + "&password=" + password
+                + "&ssl=true&sslmode=require";
     }
 
     public static String sqlserver(String host, String port, String databaseName, String username, String password) {

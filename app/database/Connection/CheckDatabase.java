@@ -20,6 +20,7 @@ public @interface CheckDatabase {
     String host() default "localhost";
     String port() default "3306";
     String databaseName() default "akbarapi";
+    String schema() default "public";
     String userName() default "root";
     String password() default "";
 }
