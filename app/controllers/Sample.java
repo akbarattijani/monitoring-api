@@ -1,19 +1,16 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import database.Connection.CheckDatabase;
 import database.Connection.Connection;
 import enums.Database;
 import httpactions.ApiAuth;
-import model.SampleModel;
 import play.mvc.BodyParser;
 import play.mvc.Result;
 import utils.Body;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
 import static play.mvc.Controller.request;
 import static play.mvc.Results.status;
@@ -66,8 +63,9 @@ public class Sample {
     @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
     public static Result insertAll() {
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            final List<SampleModel> body = mapper.treeToValue(request().body().asJson(), List.class);
+//            ObjectMapper mapper = new ObjectMapper();
+            final JsonNode body = request().body().asJson();
+//            final List<SampleModel> body = mapper.treeToValue(request().body().asJson(), List.class);
 
             int count = 0;
             int numberParam = 1;
@@ -82,9 +80,10 @@ public class Sample {
             }
 
             PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(sql);
-            for (SampleModel sampleModel : body) {
-                preparedStatement.setInt(numberParam, sampleModel.getId());
-                preparedStatement.setString(numberParam + 1, sampleModel.getBiner());
+            for (int i = 0; i < body.size(); i++) {
+                JsonNode detail = body.get(i);
+                preparedStatement.setInt(numberParam, detail.path("id").asInt());
+                preparedStatement.setString(numberParam + 1, detail.path("biner").asText());
 
                 numberParam++;
             }
