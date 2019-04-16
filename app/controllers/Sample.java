@@ -63,9 +63,7 @@ public class Sample {
     @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
     public static Result insertAll() {
         try {
-//            ObjectMapper mapper = new ObjectMapper();
             final JsonNode body = request().body().asJson();
-//            final List<SampleModel> body = mapper.treeToValue(request().body().asJson(), List.class);
 
             int count = 0;
             int numberParam = 1;
