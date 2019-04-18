@@ -7,6 +7,8 @@ import database.Connection.Connection;
 import enums.Database;
 import httpactions.ApiAuth;
 import javafx.util.Pair;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import play.mvc.BodyParser;
 import play.mvc.Result;
 import utils.Body;
@@ -48,14 +50,33 @@ public class Classification {
                 samples.add(new Pair<>(rs.getInt("id_user"), rs.getString("biner")));
             }
 
-            int id = body.path("id").asInt();
+            int nip = body.path("nip").asInt();
             String biner = body.path("biner").asText();
 
             List<Pair<Integer, String[]>> knn = new KNearestNeighbor().classification(samples, biner, 10);
+            JSONArray array = new JSONArray();
+            for (Pair<Integer, String[]> data : knn) {
+                String sample = "";
+                for (String value : data.getValue()) {
+                    sample += value;
+                }
 
-            return Body.echo(enums.Result.REQUEST_OK, String.valueOf(samples.size()));
+                JSONObject object = new JSONObject();
+                object.put("id", data.getKey());
+                object.put("biner", sample);
+
+                array.add(object);
+            }
+
+            // Closing database connection
+            rs.close();
+            statement.close();
+            Connection.disconnect();
+
+            return Body.echo(enums.Result.REQUEST_OK, array.toString());
         } catch (Exception e) {
             e.printStackTrace();
+            Connection.disconnect();
             return status(401, e.getMessage());
         }
     }

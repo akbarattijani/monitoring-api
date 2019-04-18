@@ -45,9 +45,14 @@ public class Sample {
 
             int count = preparedStatement.executeUpdate();
 
+            // Closing database connection
+            preparedStatement.close();
+            Connection.disconnect();
+
             return Body.echo(enums.Result.REQUEST_OK, "Inserting Success : " + count);
         } catch (SQLException e) {
             e.printStackTrace();
+            Connection.disconnect();
             return status(401, e.getMessage());
         }
     }
@@ -88,9 +93,14 @@ public class Sample {
 
             count = preparedStatement.executeUpdate();
 
+            // Closing database connection
+            preparedStatement.close();
+            Connection.disconnect();
+
             return Body.echo(enums.Result.REQUEST_OK, "Inserting Success : " + count);
         } catch (Exception e) {
             e.printStackTrace();
+            Connection.disconnect();
             return status(401, e.getMessage());
         }
     }

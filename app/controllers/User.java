@@ -72,12 +72,18 @@ public class User {
                     object.put("status", 0);
                 }
 
+                rs.close();
                 return Body.echo(enums.Result.REQUEST_OK, object.toString());
             }
+
+            // Closing database connection
+            preparedStatement.close();
+            Connection.disconnect();
 
             return Body.echo(enums.Result.RESPONSE_NOTHING, "Inserting Failed...");
         } catch (Exception e) {
             e.printStackTrace();
+            Connection.disconnect();
             return status(401, e.getMessage());
         }
     }
@@ -114,9 +120,15 @@ public class User {
                 return Body.echo(enums.Result.REQUEST_OK, object.toString());
             }
 
+            // Closing database connection
+            rs.close();
+            preparedStatement.close();
+            Connection.disconnect();
+
             return Body.echo(enums.Result.RESPONSE_NOTHING, "User Not Found");
         } catch (Exception e) {
             e.printStackTrace();
+            Connection.disconnect();
             return status(401, e.getMessage());
         }
     }
@@ -153,9 +165,15 @@ public class User {
                 object.put("status", 0);
             }
 
+            // Closing database connection
+            rs.close();
+            preparedStatement.close();
+            Connection.disconnect();
+
             return Body.echo(enums.Result.REQUEST_OK, object.toString());
         } catch (Exception e) {
             e.printStackTrace();
+            Connection.disconnect();
             return status(401, e.getMessage());
         }
     }
@@ -179,9 +197,15 @@ public class User {
             preparedStatement.setInt(2, body.path("id").asInt());
 
             int count = preparedStatement.executeUpdate();
+
+            // Closing database connection
+            preparedStatement.close();
+            Connection.disconnect();
+
             return Body.echo(enums.Result.REQUEST_OK, "Inserting Success : " + count);
         } catch (Exception e) {
             e.printStackTrace();
+            Connection.disconnect();
             return status(401, e.getMessage());
         }
     }
