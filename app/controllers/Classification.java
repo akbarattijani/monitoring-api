@@ -7,6 +7,7 @@ import database.Connection.Connection;
 import enums.Database;
 import httpactions.ApiAuth;
 import javafx.util.Pair;
+import model.ClassificationModel;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import play.mvc.BodyParser;
@@ -53,16 +54,16 @@ public class Classification {
             int nip = body.path("nip").asInt();
             String biner = body.path("biner").asText();
 
-            List<Pair<Integer, String[]>> knn = new KNearestNeighbor().classification(samples, biner, 10);
+            List<ClassificationModel> knn = new KNearestNeighbor().classification(samples, biner, 10);
             JSONArray array = new JSONArray();
-            for (Pair<Integer, String[]> data : knn) {
+            for (ClassificationModel data : knn) {
                 String sample = "";
-                for (String value : data.getValue()) {
+                for (String value : data.getBiner()) {
                     sample += value;
                 }
 
                 JSONObject object = new JSONObject();
-                object.put("id", data.getKey());
+                object.put("id", data.getId());
                 object.put("biner", sample);
 
                 array.add(object);

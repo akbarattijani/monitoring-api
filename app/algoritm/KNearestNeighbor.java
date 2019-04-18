@@ -1,6 +1,7 @@
 package algoritm;
 
 import javafx.util.Pair;
+import model.ClassificationModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  * @author AKBAR <akbar.attijani@gmail.com>
  */
 public class KNearestNeighbor {
-    public List<Pair<Integer, String[]>> classification(List<Pair<Integer, String>> samples, String data, int K) {
+    public List<ClassificationModel> classification(List<Pair<Integer, String>> samples, String data, int K) {
         try {
             /*  index 0 : nilai euclidean distance
                 index 1 : index dari samples
@@ -68,13 +69,13 @@ public class KNearestNeighbor {
         }
     }
 
-    private List<Pair<Integer, String[]>> splitSample(double[][] ED, List<Pair<Integer, String>> samples, int K) {
-        List<Pair<Integer, String[]>> result = new ArrayList<>();
+    private List<ClassificationModel> splitSample(double[][] ED, List<Pair<Integer, String>> samples, int K) {
+        List<ClassificationModel> result = new ArrayList<>();
 
         for (int i = 0; i < K; i++) {
             int id = (int) ED[i][2];
             String[] biner = samples.get((int) ED[i][1]).getValue().split(" ");
-            result.add(new Pair<>(id, biner));
+            result.add(new ClassificationModel().setId(id).setBiner(biner));
         }
 
         return result;
