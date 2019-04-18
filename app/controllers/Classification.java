@@ -6,7 +6,6 @@ import database.Connection.CheckDatabase;
 import database.Connection.Connection;
 import enums.Database;
 import httpactions.ApiAuth;
-import javafx.util.Pair;
 import model.ClassificationModel;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -40,7 +39,7 @@ public class Classification {
     @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
     public static Result search() {
         try {
-            List<Pair<Integer, String>> samples = new ArrayList<>();
+            List<ClassificationModel> samples = new ArrayList<>();
             String select = "SELECT * FROM m_sample";
             JsonNode body = request().body().asJson();
 
@@ -48,7 +47,7 @@ public class Classification {
             ResultSet rs = statement.executeQuery(select);
 
             while (rs.next()) {
-                samples.add(new Pair<>(rs.getInt("id_user"), rs.getString("biner")));
+                samples.add(new ClassificationModel().setId(rs.getInt("id_user")).setBiner(rs.getString("biner").split(" ")));
             }
 
             int nip = body.path("nip").asInt();
