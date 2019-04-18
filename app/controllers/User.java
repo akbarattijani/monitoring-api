@@ -72,7 +72,11 @@ public class User {
                     object.put("status", 0);
                 }
 
+                // Closing database connection
                 rs.close();
+                preparedStatement.close();
+                Connection.disconnect();
+
                 return Body.echo(enums.Result.REQUEST_OK, object.toString());
             }
 
@@ -116,6 +120,11 @@ public class User {
                 object.put("nip", nipResult);
                 object.put("name", name);
                 object.put("step", step);
+
+                // Closing database connection
+                rs.close();
+                preparedStatement.close();
+                Connection.disconnect();
 
                 return Body.echo(enums.Result.REQUEST_OK, object.toString());
             }
