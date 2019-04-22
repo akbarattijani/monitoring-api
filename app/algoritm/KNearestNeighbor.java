@@ -34,7 +34,7 @@ public class KNearestNeighbor {
             }
 
             sortingED(ED);
-            return splitSample(ED, samples, K);
+            return splitSample(ED, samples, K, true);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -61,7 +61,7 @@ public class KNearestNeighbor {
             }
 
             sortingED(ED);
-            return majority(splitSample(ED, samples, K));
+            return majority(splitSample(ED, samples, K, true));
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
@@ -96,13 +96,21 @@ public class KNearestNeighbor {
         }
     }
 
-    private List<ClassificationModel> splitSample(double[][] ED, List<ClassificationModel> samples, int K) {
+    private List<ClassificationModel> splitSample(double[][] ED, List<ClassificationModel> samples, int K, boolean print) {
         List<ClassificationModel> result = new ArrayList<>();
 
         for (int i = 0; i < K; i++) {
             int id = (int) ED[i][2];
             String[] biner = samples.get((int) ED[i][1]).getBiner();
             result.add(new ClassificationModel().setId(id).setBiner(biner));
+        }
+
+        if (print) {
+            System.out.println("------------------- CLASSIFICATION ---------------------------");
+            for (ClassificationModel model : result) {
+                System.out.println("ID : " + model.getId());
+            }
+            System.out.println("--------------------------------------------------------------\n");
         }
 
         return result;
