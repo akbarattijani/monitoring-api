@@ -7,12 +7,11 @@ import database.Connection.Connection;
 import enums.Database;
 import httpactions.ApiAuth;
 import model.ClassificationModel;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import play.mvc.BodyParser;
 import play.mvc.Result;
 import utils.Body;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -50,30 +49,54 @@ public class Classification {
                 samples.add(new ClassificationModel().setId(rs.getInt("id_user")).setBiner(rs.getString("biner").split(" ")));
             }
 
-            int nip = body.path("nip").asInt();
-            String biner = body.path("biner").asText();
+            String nip = body.path("nip").asText();
+            String[] biner = body.path("biner").asText().split(" ");
+            int resultId = new KNearestNeighbor().classification(samples, biner, 7);
 
-            List<ClassificationModel> knn = new KNearestNeighbor().classification(samples, biner, 10);
-            JSONArray array = new JSONArray();
-            for (ClassificationModel data : knn) {
-                String sample = "";
-                for (String value : data.getBiner()) {
-                    sample += value;
+            select = "SELECT * FROM m_user where id = ? LIMIT 1";
+            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
+            preparedStatement.setInt(1, resultId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String nipCompare = resultSet.getString("nip");
+                if (nipCompare.equals(nip)) {
+                    // Closing database connection
+                    rs.close();
+                    resultSet.close();
+                    statement.close();
+                    preparedStatement.close();
+                    Connection.disconnect();
+
+                    return Body.echo(enums.Result.REQUEST_OK, Boolean.TRUE.toString());
                 }
-
-                JSONObject object = new JSONObject();
-                object.put("id", data.getId());
-                object.put("biner", sample);
-
-                array.add(object);
             }
+
+//            String biner = body.path("biner").asText();
+//            List<ClassificationModel> knn = new KNearestNeighbor().classification(samples, biner, 10);
+
+//            JSONArray array = new JSONArray();
+//            for (ClassificationModel data : knn) {
+//                String sample = "";
+//                for (String value : data.getBiner()) {
+//                    sample += value;
+//                }
+//
+//                JSONObject object = new JSONObject();
+//                object.put("id", data.getId());
+//                object.put("biner", sample);
+//
+//                array.add(object);
+//            }
 
             // Closing database connection
             rs.close();
+            resultSet.close();
             statement.close();
+            preparedStatement.close();
             Connection.disconnect();
 
-            return Body.echo(enums.Result.REQUEST_OK, array.toString());
+            return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
         } catch (Exception e) {
             e.printStackTrace();
             Connection.disconnect();
