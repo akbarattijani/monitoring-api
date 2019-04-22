@@ -78,23 +78,11 @@ public class KNearestNeighbor {
                     tempData = ED[p];
                     ED[p] = ED[q];
                     ED[q] = tempData;
-
-//                    temp = ED[p][0];
-//                    ED[p][0] = ED[q][0];
-//                    ED[q][0] = temp;
-//
-//                    temp1 = ED[p][1];
-//                    ED[p][1] = ED[q][1];
-//                    ED[q][1] = temp1;
-//
-//                    temp2 = ED[p][2];
-//                    ED[p][2] = ED[q][2];
-//                    ED[q][2] = temp2;
                 }
             }
         }
 
-        System.out.println("------------------------ SORTING ED ---------------------------------");
+        System.out.println("------------------------ KNN (SORTING ED) ---------------------------");
         for (double[] aED : ED) {
             System.out.println("Id : " + aED[2] + "\tDistance : " + aED[0]);
         }
@@ -111,7 +99,7 @@ public class KNearestNeighbor {
         }
 
         if (print) {
-            System.out.println("------------------- CLASSIFICATION ---------------------------");
+            System.out.println("------------------- KNN (SPLIT WITH K) -----------------------");
             for (ClassificationModel model : result) {
                 System.out.println("ID : " + model.getId());
             }
@@ -134,13 +122,11 @@ public class KNearestNeighbor {
             }
         }
 
-        System.out.println("----------------------------- MAJORITY ------------------------------");
+        System.out.println("-----------------------------KNN (MAJORITY) --------------------------");
         for (Map.Entry<Integer, Integer> entry : counting.entrySet()) {
-            if (result < entry.getValue()) {
-                if (count < entry.getValue()) {
-                    count = entry.getValue();
-                    result = entry.getKey();
-                }
+            if (count < entry.getValue()) {
+                count = entry.getValue();
+                result = entry.getKey();
             }
 
             System.out.println("ID : " + entry.getKey() + "\tVal : " + entry.getValue() + "\tCount : " + count + "\tResult : " + result);

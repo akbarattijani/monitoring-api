@@ -51,7 +51,7 @@ public class Classification {
 
             String nip = body.path("nip").asText();
             String[] biner = body.path("biner").asText().split(" ");
-            int resultId = new KNearestNeighbor().classification(samples, biner, 11);
+            int resultId = new KNearestNeighbor().classification(samples, biner, 13);
 
             System.out.println("Result ID : " + resultId);
 
