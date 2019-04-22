@@ -95,8 +95,8 @@ public class KNearestNeighbor {
         }
 
         System.out.println("------------------------ SORTING ED ---------------------------------");
-        for (int i = 0; i < ED.length; i++) {
-            System.out.println("Id : " + ED[i][2] + "\tDistance : " + ED[i][0]);
+        for (double[] aED : ED) {
+            System.out.println("Id : " + aED[2] + "\tDistance : " + aED[0]);
         }
         System.out.println("---------------------------------------------------------------------\n");
     }
@@ -134,6 +134,7 @@ public class KNearestNeighbor {
             }
         }
 
+        System.out.println("----------------------------- MAJORITY ------------------------------");
         for (Map.Entry<Integer, Integer> entry : counting.entrySet()) {
             if (result < entry.getValue()) {
                 if (count < entry.getValue()) {
@@ -141,7 +142,10 @@ public class KNearestNeighbor {
                     result = entry.getKey();
                 }
             }
+
+            System.out.println("ID : " + entry.getKey() + "\tVal : " + entry.getValue() + "\tCount : " + count + "\tResult : " + result);
         }
+        System.out.println("----------------------------------------------------------------------\n");
 
         return result;
     }
