@@ -51,7 +51,7 @@ public class Classification {
 
             String nip = body.path("nip").asText();
             String[] biner = body.path("biner").asText().split(" ");
-            int resultId = new KNearestNeighbor().classification(samples, biner, 7);
+            int resultId = new KNearestNeighbor().classification(samples, biner, 11);
 
             select = "SELECT * FROM m_user where id = ? LIMIT 1";
             PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
