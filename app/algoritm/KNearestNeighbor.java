@@ -70,7 +70,6 @@ public class KNearestNeighbor {
 
     private void sortingED(double[][] ED) {
         int sample = ED.length - 2;
-//        double temp, temp1, temp2;
         double[] tempData;
 
         for (int p = 0; p <= sample; p++) {
@@ -94,6 +93,12 @@ public class KNearestNeighbor {
                 }
             }
         }
+
+        System.out.println("------------------------ SORTING ED ---------------------------------");
+        for (int i = 0; i < ED.length; i++) {
+            System.out.println("Id : " + ED[i][2] + "\tDistance : " + ED[i][0]);
+        }
+        System.out.println("---------------------------------------------------------------------\n");
     }
 
     private List<ClassificationModel> splitSample(double[][] ED, List<ClassificationModel> samples, int K, boolean print) {
