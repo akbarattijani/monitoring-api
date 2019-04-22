@@ -54,7 +54,7 @@ public class Classification {
             int resultId = new KNearestNeighbor().classification(samples, biner, 11);
 
             System.out.println("Result ID : " + resultId);
-            
+
             select = "SELECT * FROM m_user where id = ? LIMIT 1";
             PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
             preparedStatement.setInt(1, resultId);
