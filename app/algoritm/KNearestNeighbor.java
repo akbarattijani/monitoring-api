@@ -54,7 +54,7 @@ public class KNearestNeighbor {
                 ED[i][2] = sample.getId();
 
                 for (int count = 0; count < data.length; count++) {
-                    ED[i][0] += (Integer.parseInt(sample.getBiner()[count]) - Integer.parseInt(data[count])) * (Integer.parseInt(sample.getBiner()[count]) - Integer.parseInt(data[count]));
+                    ED[i][0] += Math.pow(Integer.parseInt(sample.getBiner()[count]) - Integer.parseInt(data[count]), 2);
                 }
 
                 ED[i][0] = Math.sqrt(ED[i][0]);
