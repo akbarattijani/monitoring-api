@@ -25,15 +25,15 @@ public class NaiveBayes {
         }
         System.out.println("------------------------------------------------------------------\n");
 
-//        System.out.println("--------------- Naive Bayes (STORE ATTRIBUTE) --------------------");
-//        for (Map.Entry<Integer, ArrayList<Double>> entry : attributeStore.entrySet()) {
-//            System.out.print("ID : " + entry.getKey() + "\tData : ");
-//            for (Double val : entry.getValue()) {
-//                System.out.print(val + "\t");
-//            }
-//
-//            System.out.println();
-//        }
+        System.out.println("--------------- Naive Bayes (STORE ATTRIBUTE) --------------------");
+        for (Map.Entry<Integer, ArrayList<Double>> entry : attributeStore.entrySet()) {
+            System.out.print("ID : " + entry.getKey() + "\tData : ");
+            for (Double val : entry.getValue()) {
+                System.out.print(val + "\t");
+            }
+
+            System.out.println();
+        }
 
         System.out.println("---------------- Naive Bayes (PROB ATTRIBUTE) --------------------");
         for (Map.Entry<Integer, Double> entry : attributeProb.entrySet()) {
