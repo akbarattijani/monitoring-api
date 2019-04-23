@@ -97,9 +97,9 @@ public class NaiveBayes {
                 double count = 0.0;
 
                 for(ClassificationModel model : samples) {
-                    System.out.println("Val : " + value + "\tModel : " + model.getBiner()[index] + "\tKey : " + entry.getKey() + "\tModel ID : " + model.getId());
                     if (value.equals(model.getBiner()[index]) && entry.getKey() == model.getId()) {
                         count++;
+                        System.out.println("Status count : " + count + "\tID : " + entry.getKey());
                     }
                 }
 
