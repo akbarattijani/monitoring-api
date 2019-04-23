@@ -99,7 +99,7 @@ public class NaiveBayes {
                 for(ClassificationModel model : samples) {
                     if (value.equals(model.getBiner()[index]) && entry.getKey() == model.getId()) {
                         count++;
-                        System.out.println("Status count : " + count + "\tID : " + entry.getKey());
+                        System.out.println("count : " + count + "\tID : " + entry.getKey() + "\tVal : " + value + "\tModel : " + model.getBiner()[index] + "\tModel Key : " + model.getId());
                     }
                 }
 
