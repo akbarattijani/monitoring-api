@@ -90,10 +90,6 @@ public class NaiveBayes {
             }
         }
 
-        for (Map.Entry<Integer, Integer> entry : probClass.entrySet()) {
-            System.out.println("ID : " + entry + "\tJumalah : " + entry.getValue());
-        }
-
         for (String value : data) {
             int index = 0;
 
@@ -101,8 +97,8 @@ public class NaiveBayes {
                 double count = 0.0;
 
                 for(ClassificationModel model : samples) {
-                    String[] biner = model.getBiner();
-                    if (value.equals(biner[index]) && entry.getKey() == model.getId()) {
+                    System.out.println("Val : " + value + "\tModel : " + model.getBiner()[index] + "\tKey : " + entry.getKey() + "\tModel ID : " + model.getId());
+                    if (value.equals(model.getBiner()[index]) && entry.getKey() == model.getId()) {
                         count++;
                     }
                 }
