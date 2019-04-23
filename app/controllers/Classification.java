@@ -1,6 +1,6 @@
 package controllers;
 
-import algoritm.KNearestNeighbor;
+import algoritm.NaiveBayes;
 import com.fasterxml.jackson.databind.JsonNode;
 import database.Connection.CheckDatabase;
 import database.Connection.Connection;
@@ -11,7 +11,6 @@ import play.mvc.BodyParser;
 import play.mvc.Result;
 import utils.Body;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -51,28 +50,31 @@ public class Classification {
 
             String nip = body.path("nip").asText();
             String[] biner = body.path("biner").asText().split(" ");
-            int resultId = new KNearestNeighbor().classification(samples, biner, 13);
 
-            System.out.println("Result ID : " + resultId);
+            new NaiveBayes().classification(samples, biner);
 
-            select = "SELECT * FROM m_user where id = ? LIMIT 1";
-            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
-            preparedStatement.setInt(1, resultId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                String nipCompare = resultSet.getString("nip");
-                if (nipCompare.equals(nip)) {
-                    // Closing database connection
-                    rs.close();
-                    resultSet.close();
-                    statement.close();
-                    preparedStatement.close();
-                    Connection.disconnect();
-
-                    return Body.echo(enums.Result.REQUEST_OK, Boolean.TRUE.toString());
-                }
-            }
+//            int resultId = new KNearestNeighbor().classification(samples, biner, 13);
+//
+//            System.out.println("Result ID : " + resultId);
+//
+//            select = "SELECT * FROM m_user where id = ? LIMIT 1";
+//            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
+//            preparedStatement.setInt(1, resultId);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//
+//            if (resultSet.next()) {
+//                String nipCompare = resultSet.getString("nip");
+//                if (nipCompare.equals(nip)) {
+//                    // Closing database connection
+//                    rs.close();
+//                    resultSet.close();
+//                    statement.close();
+//                    preparedStatement.close();
+//                    Connection.disconnect();
+//
+//                    return Body.echo(enums.Result.REQUEST_OK, Boolean.TRUE.toString());
+//                }
+//            }
 
 //            String biner = body.path("biner").asText();
 //            List<ClassificationModel> knn = new KNearestNeighbor().classification(samples, biner, 10);
@@ -93,9 +95,9 @@ public class Classification {
 
             // Closing database connection
             rs.close();
-            resultSet.close();
+//            resultSet.close();
             statement.close();
-            preparedStatement.close();
+//            preparedStatement.close();
             Connection.disconnect();
 
             return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
