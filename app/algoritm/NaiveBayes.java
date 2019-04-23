@@ -90,6 +90,10 @@ public class NaiveBayes {
             }
         }
 
+        for (Map.Entry<Integer, Integer> entry : probClass.entrySet()) {
+            System.out.println("ID : " + entry + "\tJumalah : " + entry.getValue());
+        }
+
         for (String value : data) {
             int index = 0;
 
@@ -105,7 +109,6 @@ public class NaiveBayes {
 
                 ArrayList<Double> newData = result.get(entry.getKey());
 
-                System.out.println("ID : " + entry.getKey() + "\tCount : " + count + "\tValue : " + entry.getValue());
                 if (count == 0.0) {
                     newData.add(1.0);
                 } else {
