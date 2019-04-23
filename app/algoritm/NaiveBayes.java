@@ -99,17 +99,16 @@ public class NaiveBayes {
                 for(ClassificationModel model : samples) {
                     if (value.equals(model.getBiner()[index]) && entry.getKey() == model.getId()) {
                         count++;
-                        System.out.println("count : " + count + "\tID : " + entry.getKey() + "\tVal : " + value + "\tModel : " + model.getBiner()[index] + "\tModel Key : " + model.getId());
                     }
                 }
 
                 ArrayList<Double> newData = result.get(entry.getKey());
 
-                if (count == 0.0) {
-                    newData.add(1.0);
-                } else {
+//                if (count == 0.0) {
+//                    newData.add(1.0);
+//                } else {
                     newData.add(count / entry.getValue());
-                }
+//                }
 
                 result.put(entry.getKey(), newData);
                 index++;
