@@ -105,7 +105,7 @@ public class NaiveBayes {
 
                 ArrayList<Double> newData = result.get(entry.getKey());
 
-                if (count == 0) {
+                if (count == 0.0) {
                     newData.add(1.0);
                 } else {
                     newData.add(count / entry.getValue());
