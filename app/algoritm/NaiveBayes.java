@@ -24,7 +24,7 @@ public class NaiveBayes {
         BigDecimal compare = new BigDecimal(-1);
         int result = - 1;
         for (Map.Entry<Integer, BigDecimal> entry : probability.entrySet()) {
-            System.out.println("Prob : " + entry.getValue().toString().substring(0, 10));
+            System.out.println("Prob : " + entry.getValue().toString().substring(0, 10) + "\tID : " + entry.getKey());
             if (compare.compareTo(entry.getValue()) < 0) {
                 compare = entry.getValue();
                 result = entry.getKey();
@@ -125,31 +125,6 @@ public class NaiveBayes {
 
             result.put(entry.getKey(), arrProbAttribute);
         }
-
-//        for (String value : data) {
-//            int index = 0;
-//
-//            for (Map.Entry<Integer, Integer> entry : probClass.entrySet()) {
-//                BigDecimal count = new BigDecimal(0.0);
-//
-//                for(ClassificationModel model : samples) {
-//                    if (value.equals(model.getBiner()[index]) && entry.getKey() == model.getId()) {
-//                        count = count.add(new BigDecimal(1));
-//                    }
-//                }
-//
-//                ArrayList<BigDecimal> newData = result.get(entry.getKey());
-//
-//                if (count.compareTo(new BigDecimal(0.0)) == 0) {
-//                    newData.add(new BigDecimal(1.0));
-//                } else {
-//                    newData.add(count.divide(new BigDecimal(entry.getValue())));
-//                }
-//
-//                result.put(entry.getKey(), newData);
-//                index++;
-//            }
-//        }
 
         return result;
     }
