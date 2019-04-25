@@ -27,16 +27,16 @@ public class NaiveBayes {
         }
         System.out.println("------------------------------------------------------------------\n");
 
-//        System.out.println("--------------- Naive Bayes (STORE ATTRIBUTE) --------------------");
-//        for (Map.Entry<Integer, ArrayList<BigDecimal>> entry : attributeStore.entrySet()) {
-//            System.out.print("ID : " + entry.getKey() + "\tData : ");
-//            for (BigDecimal val : entry.getValue()) {
-//                System.out.print(val + "\t");
-//            }
-//
-//            System.out.println();
-//        }
-//        System.out.println("------------------------------------------------------------------\n");
+        System.out.println("--------------- Naive Bayes (STORE ATTRIBUTE) --------------------");
+        for (Map.Entry<Integer, ArrayList<BigDecimal>> entry : attributeStore.entrySet()) {
+            System.out.print("ID : " + entry.getKey() + "\tData : ");
+            for (BigDecimal val : entry.getValue()) {
+                System.out.print(val + "\t");
+            }
+
+            System.out.println();
+        }
+        System.out.println("------------------------------------------------------------------\n");
 
         System.out.println("---------------- Naive Bayes (PROB ATTRIBUTE) --------------------");
         for (Map.Entry<Integer, BigDecimal> entry : attributeProb.entrySet()) {
@@ -94,7 +94,8 @@ public class NaiveBayes {
         }
 
         for (Map.Entry<Integer, Integer> entry : probClass.entrySet()) {
-            System.out.println("Data " + entry.getKey() + " : ");
+            ArrayList<BigDecimal> arrProbAttribute = new ArrayList<>();
+
             for (int i = 0; i < data.length; i++) {
                 int count = 0;
 
@@ -106,36 +107,36 @@ public class NaiveBayes {
 
                 BigDecimal prob = new BigDecimal(count);
                 prob = prob.divide(new BigDecimal(entry.getValue()), 5, RoundingMode.HALF_UP);
-
-                System.out.println(prob);
+                arrProbAttribute.add(prob);
             }
-            System.out.println("------------------------------------");
+
+            result.put(entry.getKey(), arrProbAttribute);
         }
 
-        for (String value : data) {
-            int index = 0;
-
-            for (Map.Entry<Integer, Integer> entry : probClass.entrySet()) {
-                BigDecimal count = new BigDecimal(0.0);
-
-                for(ClassificationModel model : samples) {
-                    if (value.equals(model.getBiner()[index]) && entry.getKey() == model.getId()) {
-                        count = count.add(new BigDecimal(1));
-                    }
-                }
-
-                ArrayList<BigDecimal> newData = result.get(entry.getKey());
-
-                if (count.compareTo(new BigDecimal(0.0)) == 0) {
-                    newData.add(new BigDecimal(1.0));
-                } else {
-                    newData.add(count.divide(new BigDecimal(entry.getValue())));
-                }
-
-                result.put(entry.getKey(), newData);
-                index++;
-            }
-        }
+//        for (String value : data) {
+//            int index = 0;
+//
+//            for (Map.Entry<Integer, Integer> entry : probClass.entrySet()) {
+//                BigDecimal count = new BigDecimal(0.0);
+//
+//                for(ClassificationModel model : samples) {
+//                    if (value.equals(model.getBiner()[index]) && entry.getKey() == model.getId()) {
+//                        count = count.add(new BigDecimal(1));
+//                    }
+//                }
+//
+//                ArrayList<BigDecimal> newData = result.get(entry.getKey());
+//
+//                if (count.compareTo(new BigDecimal(0.0)) == 0) {
+//                    newData.add(new BigDecimal(1.0));
+//                } else {
+//                    newData.add(count.divide(new BigDecimal(entry.getValue())));
+//                }
+//
+//                result.put(entry.getKey(), newData);
+//                index++;
+//            }
+//        }
 
         return result;
     }
