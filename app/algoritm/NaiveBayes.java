@@ -92,6 +92,12 @@ public class NaiveBayes {
             }
         }
 
+        System.out.println("------------------ Naive Bayes (PROB CLASS 2) ----------------------");
+        for (Map.Entry<Integer, Integer> entry : probClass.entrySet()) {
+            System.out.println("ID : " + entry.getKey() + "\tProb : " + entry.getValue());
+        }
+        System.out.println("------------------------------------------------------------------\n");
+
         for (String value : data) {
             int index = 0;
 
