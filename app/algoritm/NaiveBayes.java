@@ -57,7 +57,7 @@ public class NaiveBayes {
         Map<Integer, BigDecimal> result = new LinkedHashMap<>();
 
         for (Map.Entry<Integer, BigDecimal> entry : probClass.entrySet()) {
-            BigDecimal count = probAttribute.get(entry.getKey()).divide(entry.getValue(), 5, RoundingMode.HALF_UP);
+            BigDecimal count = probAttribute.get(entry.getKey()).multiply(entry.getValue());
             result.put(entry.getKey(), count);
         }
 
