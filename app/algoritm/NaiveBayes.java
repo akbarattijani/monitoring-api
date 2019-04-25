@@ -15,7 +15,6 @@ import java.util.Map;
  */
 public class NaiveBayes {
     public int classification(List<ClassificationModel> samples, String[] data, boolean printTrace) {
-//        List<ClassificationModel> result = new ArrayList<>();
         Map<Integer, BigDecimal> classStore = probCi(samples);
         Map<Integer, ArrayList<BigDecimal>> attributeStore = probXCi(samples, data);
         Map<Integer, BigDecimal> attributeProb = multiplyProb(attributeStore);
@@ -24,7 +23,6 @@ public class NaiveBayes {
         BigDecimal compare = new BigDecimal(-1);
         int result = -1;
         for (Map.Entry<Integer, BigDecimal> entry : probability.entrySet()) {
-            System.out.println("Prob : " + entry.getValue() + "\tID : " + entry.getKey() + "\tLength : " + entry.getValue().toString().length());
             if (compare.compareTo(entry.getValue()) < 0) {
                 compare = entry.getValue();
                 result = entry.getKey();
@@ -129,7 +127,6 @@ public class NaiveBayes {
 
                 BigDecimal prob = new BigDecimal(count);
                 prob = prob.divide(new BigDecimal(entry.getValue()), 5, RoundingMode.HALF_UP);
-//                prob = prob.add(new BigDecimal(1));
                 arrProbAttribute.add(prob);
             }
 
