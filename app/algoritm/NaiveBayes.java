@@ -24,7 +24,7 @@ public class NaiveBayes {
         BigDecimal compare = new BigDecimal(-1);
         int result = -1;
         for (Map.Entry<Integer, BigDecimal> entry : probability.entrySet()) {
-            System.out.println("Prob : " + entry.getValue().toString().substring(0, 10) + "\tID : " + entry.getKey() + "\tLength : " + entry.getValue().toString().length());
+            System.out.println("Prob : " + entry.getValue() + "\tID : " + entry.getKey() + "\tLength : " + entry.getValue().toString().length());
             if (compare.compareTo(entry.getValue()) < 0) {
                 compare = entry.getValue();
                 result = entry.getKey();
