@@ -132,7 +132,7 @@ public class Naive {
         for (double[] row : prob_vek) {
             System.out.print("Data : ");
             for (double val : row) {
-                System.out.print(val + "\t");
+                System.out.println(val);
             }
             System.out.println();
         }
