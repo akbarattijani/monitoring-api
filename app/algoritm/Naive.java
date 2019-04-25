@@ -27,6 +27,12 @@ public class Naive {
                 result.put(model.getId(), result.get(model.getId()) + 1);
             }
         }
+
+        System.out.println("------------------ Naive Bayes (PROB CLASS) ----------------------");
+        for (Map.Entry<Integer, Double> entry : result.entrySet()) {
+            System.out.println("ID : " + entry.getKey() + "\tProb : " + entry.getValue());
+        }
+        System.out.println("------------------------------------------------------------------\n");
     }
 
     public static String Naive_Bayes(int[] data_uji) {
@@ -40,7 +46,7 @@ public class Naive {
             jum_prob = Normalisasi_Probabilitas(jum_prob);
             hasil = getChar(jum_prob);
 
-            System.out.println(hasil);
+            System.out.println("Hasilnya : + " + hasil);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,18 +157,15 @@ public class Naive {
 
         prob_Kelas = probabilitasClass(Kelas, data);
 
-//        for(int kelas=0; kelas<946; kelas++)
-//        {
-//            for(int i=0; i<15; i++)
-//            {
-//                for(int j=0; j<15; j++)
-//                {
-//                    System.out.print(x[kelas][i+15*j]+"\t");
-//                }
-//                System.out.println();
-//            }
-//            System.out.println(Kelas[kelas]+"\n");
-//        }
+        System.out.println("------------------ Naive Bayes (prob_Kelas) ----------------------");
+        for (String[] row : prob_Kelas) {
+            for (String val : row) {
+                System.out.print(val + "\t");
+            }
+
+            System.out.println();
+        }
+        System.out.println("------------------------------------------------------------------\n");
     }
 
     //Tahap 1 - Menghitung Probabilitas setiap Kelas - Naive Bayes
