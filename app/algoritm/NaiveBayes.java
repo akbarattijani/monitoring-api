@@ -28,8 +28,6 @@ public class NaiveBayes {
             if (compare.compareTo(entry.getValue()) < 0) {
                 compare = entry.getValue();
                 result = entry.getKey();
-
-                System.out.println("Compare : " + compare.toString().substring(0, 10) + "\tResult : " + result);
             }
         }
 
@@ -82,10 +80,20 @@ public class NaiveBayes {
         Map<Integer, BigDecimal> result = new LinkedHashMap<>();
 
         for (Map.Entry<Integer, ArrayList<BigDecimal>> entry : attribute.entrySet()) {
-            BigDecimal count = entry.getValue().get(0);
+            BigDecimal count = null;
+            int i = 0;
+            for (;i < entry.getValue().size(); i++) {
+                if (entry.getValue().get(i).compareTo(BigDecimal.ZERO) != 0) {
+                    count = entry.getValue().get(i);
+                    break;
+                }
+            }
 
-            for (int i = 1; i < entry.getValue().size(); i++) {
-                count = count.multiply(entry.getValue().get(i));
+            for (int ii = i; ii < entry.getValue().size(); ii++) {
+                if (entry.getValue().get(ii).compareTo(BigDecimal.ZERO) != 0) {
+                    assert count != null;
+                    count = count.multiply(entry.getValue().get(ii));
+                }
             }
 
             result.put(entry.getKey(), count);
@@ -121,7 +129,7 @@ public class NaiveBayes {
 
                 BigDecimal prob = new BigDecimal(count);
                 prob = prob.divide(new BigDecimal(entry.getValue()), 5, RoundingMode.HALF_UP);
-                prob = prob.add(new BigDecimal(1));
+//                prob = prob.add(new BigDecimal(1));
                 arrProbAttribute.add(prob);
             }
 
