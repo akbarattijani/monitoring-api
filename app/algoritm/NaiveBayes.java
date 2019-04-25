@@ -92,11 +92,24 @@ public class NaiveBayes {
             }
         }
 
-        System.out.println("------------------ Naive Bayes (PROB CLASS 2) ----------------------");
         for (Map.Entry<Integer, Integer> entry : probClass.entrySet()) {
-            System.out.println("ID : " + entry.getKey() + "\tProb : " + entry.getValue());
+            System.out.println("Data " + entry.getKey() + " : ");
+            for (int i = 0; i < data.length; i++) {
+                int count = 0;
+
+                for (ClassificationModel model : samples) {
+                    if (entry.getKey() == model.getId() && data[i].equals(model.getBiner()[i])) {
+                        count++;
+                    }
+                }
+
+                BigDecimal prob = new BigDecimal(count);
+                prob = prob.divide(new BigDecimal(entry.getValue()));
+
+                System.out.println(prob);
+            }
+            System.out.println("------------------------------------");
         }
-        System.out.println("------------------------------------------------------------------\n");
 
         for (String value : data) {
             int index = 0;
