@@ -126,14 +126,14 @@ public class Naive {
             }
         }
 
-//        for(int y=0; y<karakter.length; y++)
-//        {
-//            for(int x2=0; x2<225; x2++)
-//            {
-//                System.out.print(prob_vek[y][x2]+"\t");
-//            }
-//            System.out.println();
-//        }
+        System.out.println("---------------- Naive Bayes (PROB ATTRIBUTE) --------------------");
+        for (double[] row : prob_vek) {
+            for (double val : row) {
+                System.out.print(val + "\t");
+            }
+            System.out.println();
+        }
+        System.out.println("------------------------------------------------------------------\n");
 
         return prob_vek;
     }
