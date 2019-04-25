@@ -1,6 +1,6 @@
 package controllers;
 
-import algoritm.NaiveBayes;
+import algoritm.Naive;
 import com.fasterxml.jackson.databind.JsonNode;
 import database.Connection.CheckDatabase;
 import database.Connection.Connection;
@@ -50,8 +50,15 @@ public class Classification {
 
             String nip = body.path("nip").asText();
             String[] biner = body.path("biner").asText().split(" ");
+            int[] intBiner = new int[biner.length];
+            for (int i = 0; i < intBiner.length; i++) {
+                intBiner[i] = Integer.parseInt(biner[i]);
+            }
 
-            new NaiveBayes().classification(samples, biner);
+            Naive.initObject(biner.length, samples);
+            Naive.inisialisasi(samples);
+            Naive.Naive_Bayes(intBiner);
+//            new NaiveBayes().classification(samples, biner);
 
 //            int resultId = new KNearestNeighbor().classification(samples, biner, 13);
 //

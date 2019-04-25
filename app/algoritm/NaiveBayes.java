@@ -102,7 +102,6 @@ public class NaiveBayes {
                     }
                 }
 
-                System.out.println("Count : " + count + "\tID : " + entry.getKey());
                 ArrayList<Double> newData = result.get(entry.getKey());
 
 //                if (count == 0.0) {
