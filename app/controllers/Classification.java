@@ -58,18 +58,18 @@ public class Classification {
 //            Naive.initObject(biner.length, samples);
 //            Naive.inisialisasi(samples);
 //            Naive.Naive_Bayes(intBiner);
-            samples = new ArrayList<>();
-            samples.add(new ClassificationModel().setId(9).setBiner("1 0 0 0 1 0 1 1 1 0 0 1 0 1 1 0 0 1 0 1 1 1 1 0".split(" ")));
-            samples.add(new ClassificationModel().setId(9).setBiner("1 0 0 0 1 0 1 0 0 0 0 1 0 0 1 0 0 1 0 0 0 1 1 0".split(" ")));
-            samples.add(new ClassificationModel().setId(9).setBiner("1 1 0 0 1 0 1 0 1 0 0 1 0 1 1 0 0 1 0 1 1 0 1 0".split(" ")));
-            samples.add(new ClassificationModel().setId(10).setBiner("0 0 0 0 0 0 1 1 1 0 0 1 0 1 1 0 0 1 1 1 1 1 1 0".split(" ")));
-            samples.add(new ClassificationModel().setId(10).setBiner("0 0 1 1 0 0 0 1 1 0 0 1 0 1 1 0 0 1 1 1 0 0 0 0".split(" ")));
-            samples.add(new ClassificationModel().setId(10).setBiner("0 0 0 0 0 0 0 1 1 0 0 1 0 1 1 0 0 1 1 0 1 1 0 0".split(" ")));
-            samples.add(new ClassificationModel().setId(10).setBiner("0 0 1 1 0 0 1 1 1 0 0 1 0 1 1 0 0 1 0 0 1 1 0 0".split(" ")));
-            samples.add(new ClassificationModel().setId(11).setBiner("1 1 1 1 1 1 1 1 1 0 0 0 0 0 1 0 0 1 1 1 1 1 1 0".split(" ")));
-            samples.add(new ClassificationModel().setId(11).setBiner("1 1 1 1 1 1 1 0 0 0 0 0 0 0 1 0 0 1 1 1 1 0 0 0".split(" ")));
-            samples.add(new ClassificationModel().setId(11).setBiner("0 1 1 1 1 1 1 1 0 0 0 0 0 0 1 0 0 1 1 1 1 1 1 0".split(" ")));
-            new NaiveBayes().classification(samples, "1 1 1 1 1 1 0 0 0 0 1 0 0 0 1 0 0 1 1 1 1 1 0 0".split(" "));
+//            samples = new ArrayList<>();
+//            samples.add(new ClassificationModel().setId(9).setBiner("1 0 0 0 1 0 1 1 1 0 0 1 0 1 1 0 0 1 0 1 1 1 1 0".split(" ")));
+//            samples.add(new ClassificationModel().setId(9).setBiner("1 0 0 0 1 0 1 0 0 0 0 1 0 0 1 0 0 1 0 0 0 1 1 0".split(" ")));
+//            samples.add(new ClassificationModel().setId(9).setBiner("1 1 0 0 1 0 1 0 1 0 0 1 0 1 1 0 0 1 0 1 1 0 1 0".split(" ")));
+//            samples.add(new ClassificationModel().setId(10).setBiner("0 0 0 0 0 0 1 1 1 0 0 1 0 1 1 0 0 1 1 1 1 1 1 0".split(" ")));
+//            samples.add(new ClassificationModel().setId(10).setBiner("0 0 1 1 0 0 0 1 1 0 0 1 0 1 1 0 0 1 1 1 0 0 0 0".split(" ")));
+//            samples.add(new ClassificationModel().setId(10).setBiner("0 0 0 0 0 0 0 1 1 0 0 1 0 1 1 0 0 1 1 0 1 1 0 0".split(" ")));
+//            samples.add(new ClassificationModel().setId(10).setBiner("0 0 1 1 0 0 1 1 1 0 0 1 0 1 1 0 0 1 0 0 1 1 0 0".split(" ")));
+//            samples.add(new ClassificationModel().setId(11).setBiner("1 1 1 1 1 1 1 1 1 0 0 0 0 0 1 0 0 1 1 1 1 1 1 0".split(" ")));
+//            samples.add(new ClassificationModel().setId(11).setBiner("1 1 1 1 1 1 1 0 0 0 0 0 0 0 1 0 0 1 1 1 1 0 0 0".split(" ")));
+//            samples.add(new ClassificationModel().setId(11).setBiner("0 1 1 1 1 1 1 1 0 0 0 0 0 0 1 0 0 1 1 1 1 1 1 0".split(" ")));
+            new NaiveBayes().classification(samples, biner);
 
 //            int resultId = new KNearestNeighbor().classification(samples, biner, 13);
 //
