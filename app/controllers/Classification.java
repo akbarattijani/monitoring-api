@@ -12,6 +12,7 @@ import play.mvc.BodyParser;
 import play.mvc.Result;
 import utils.Body;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -57,69 +58,30 @@ public class Classification {
 
             System.out.println("Result : " + resultId);
 
-//            int[] intBiner = new int[biner.length];
-//            for (int i = 0; i < intBiner.length; i++) {
-//                intBiner[i] = Integer.parseInt(biner[i]);
-//            }
+            select = "SELECT * FROM m_user where id = ? LIMIT 1";
+            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
+            preparedStatement.setInt(1, resultId);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-//            samples = new ArrayList<>();
-//            samples.add(new ClassificationModel().setId(9).setBiner("1 0 0 0 1 0 1 1 1 0 0 1 0 1 1 0 0 1 0 1 1 1 1 0".split(" ")));
-//            samples.add(new ClassificationModel().setId(9).setBiner("1 0 0 0 1 0 1 0 0 0 0 1 0 0 1 0 0 1 0 0 0 1 1 0".split(" ")));
-//            samples.add(new ClassificationModel().setId(9).setBiner("1 1 0 0 1 0 1 0 1 0 0 1 0 1 1 0 0 1 0 1 1 0 1 0".split(" ")));
-//            samples.add(new ClassificationModel().setId(10).setBiner("0 0 0 0 0 0 1 1 1 0 0 1 0 1 1 0 0 1 1 1 1 1 1 0".split(" ")));
-//            samples.add(new ClassificationModel().setId(10).setBiner("0 0 1 1 0 0 0 1 1 0 0 1 0 1 1 0 0 1 1 1 0 0 0 0".split(" ")));
-//            samples.add(new ClassificationModel().setId(10).setBiner("0 0 0 0 0 0 0 1 1 0 0 1 0 1 1 0 0 1 1 0 1 1 0 0".split(" ")));
-//            samples.add(new ClassificationModel().setId(10).setBiner("0 0 1 1 0 0 1 1 1 0 0 1 0 1 1 0 0 1 0 0 1 1 0 0".split(" ")));
-//            samples.add(new ClassificationModel().setId(11).setBiner("1 1 1 1 1 1 1 1 1 0 0 0 0 0 1 0 0 1 1 1 1 1 1 0".split(" ")));
-//            samples.add(new ClassificationModel().setId(11).setBiner("1 1 1 1 1 1 1 0 0 0 0 0 0 0 1 0 0 1 1 1 1 0 0 0".split(" ")));
-//            samples.add(new ClassificationModel().setId(11).setBiner("0 1 1 1 1 1 1 1 0 0 0 0 0 0 1 0 0 1 1 1 1 1 1 0".split(" ")));
-//            new NaiveBayes().classification(samples, "1 1 1 1 1 1 0 0 0 0 1 0 0 0 1 0 0 1 1 1 1 1 0 0".split(" "), false);
+            if (resultSet.next()) {
+                String nipCompare = resultSet.getString("nip");
+                if (nipCompare.equals(nip)) {
+                    // Closing database connection
+                    rs.close();
+                    resultSet.close();
+                    statement.close();
+                    preparedStatement.close();
+                    Connection.disconnect();
 
-//            int resultId = new KNearestNeighbor().classification(samples, biner, 13);
-//
-//            System.out.println("Result ID : " + resultId);
-//
-//            select = "SELECT * FROM m_user where id = ? LIMIT 1";
-//            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
-//            preparedStatement.setInt(1, resultId);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//
-//            if (resultSet.next()) {
-//                String nipCompare = resultSet.getString("nip");
-//                if (nipCompare.equals(nip)) {
-//                    // Closing database connection
-//                    rs.close();
-//                    resultSet.close();
-//                    statement.close();
-//                    preparedStatement.close();
-//                    Connection.disconnect();
-//
-//                    return Body.echo(enums.Result.REQUEST_OK, Boolean.TRUE.toString());
-//                }
-//            }
-
-//            String biner = body.path("biner").asText();
-//            List<ClassificationModel> knn = new KNearestNeighbor().classification(samples, biner, 10);
-
-//            JSONArray array = new JSONArray();
-//            for (ClassificationModel data : knn) {
-//                String sample = "";
-//                for (String value : data.getBiner()) {
-//                    sample += value;
-//                }
-//
-//                JSONObject object = new JSONObject();
-//                object.put("id", data.getId());
-//                object.put("biner", sample);
-//
-//                array.add(object);
-//            }
+                    return Body.echo(enums.Result.REQUEST_OK, Boolean.TRUE.toString());
+                }
+            }
 
             // Closing database connection
             rs.close();
-//            resultSet.close();
+            resultSet.close();
             statement.close();
-//            preparedStatement.close();
+            preparedStatement.close();
             Connection.disconnect();
 
             return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
