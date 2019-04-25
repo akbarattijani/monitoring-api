@@ -95,13 +95,12 @@ public class Naive {
         for (int yi = 0; yi < result.size(); yi++) {
             sum_prob[yi] = probabilitas[yi][0];
 
-            for (int xi = 0; xi < dataUji.length; xi++) {
+            for (int xi = 1; xi < dataUji.length; xi++) {
                 sum_prob[yi] *= probabilitas[yi][xi];
+                System.out.print(sum_prob[yi] + "\t");
             }
 
             sum_prob[yi] *= Double.parseDouble(prob_Kelas[yi][2]);
-
-            System.out.println(sum_prob[yi]);
         }
         System.out.println("-------------------------------------------------------------------------\n");
 
@@ -128,15 +127,15 @@ public class Naive {
             }
         }
 
-        System.out.println("---------------- Naive Bayes (PROB ATTRIBUTE) --------------------");
-        for (double[] row : prob_vek) {
-            System.out.print("Data : ");
-            for (double val : row) {
-                System.out.println(val);
-            }
-            System.out.println();
-        }
-        System.out.println("------------------------------------------------------------------\n");
+//        System.out.println("---------------- Naive Bayes (PROB ATTRIBUTE) --------------------");
+//        for (double[] row : prob_vek) {
+//            System.out.print("Data : ");
+//            for (double val : row) {
+//                System.out.println(val);
+//            }
+//            System.out.println();
+//        }
+//        System.out.println("------------------------------------------------------------------\n");
 
         return prob_vek;
     }
