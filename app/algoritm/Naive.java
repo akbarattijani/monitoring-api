@@ -93,11 +93,12 @@ public class Naive {
 
         System.out.println("------------------ Naive Bayes (count_Probability) ----------------------");
         for (int yi = 0; yi < result.size(); yi++) {
+            System.out.println("Data : ");
             sum_prob[yi] = probabilitas[yi][0];
 
             for (int xi = 1; xi < dataUji.length; xi++) {
                 sum_prob[yi] *= probabilitas[yi][xi];
-                System.out.print(sum_prob[yi] + "\t");
+                System.out.print(sum_prob[yi] + "&&");
             }
 
             sum_prob[yi] *= Double.parseDouble(prob_Kelas[yi][2]);
