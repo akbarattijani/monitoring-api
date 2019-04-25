@@ -3,6 +3,7 @@ package algoritm;
 import model.ClassificationModel;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -104,7 +105,7 @@ public class NaiveBayes {
                 }
 
                 BigDecimal prob = new BigDecimal(count);
-                prob = prob.divide(new BigDecimal(entry.getValue()));
+                prob = prob.divide(new BigDecimal(entry.getValue()), 5, RoundingMode.HALF_UP);
 
                 System.out.println(prob);
             }
@@ -151,7 +152,7 @@ public class NaiveBayes {
         }
 
         for (Map.Entry<Integer, BigDecimal> entry : result.entrySet()) {
-            entry.setValue(entry.getValue().divide(new BigDecimal(samples.size())));
+            entry.setValue(entry.getValue().divide(new BigDecimal(samples.size()), 5, RoundingMode.HALF_UP));
         }
 
         return result;
