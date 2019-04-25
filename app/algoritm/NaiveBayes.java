@@ -107,6 +107,7 @@ public class NaiveBayes {
 
                 BigDecimal prob = new BigDecimal(count);
                 prob = prob.divide(new BigDecimal(entry.getValue()), 5, RoundingMode.HALF_UP);
+                prob = prob.add(new BigDecimal(1));
                 arrProbAttribute.add(prob);
             }
 
