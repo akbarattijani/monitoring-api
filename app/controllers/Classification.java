@@ -69,7 +69,8 @@ public class Classification {
 //            samples.add(new ClassificationModel().setId(11).setBiner("1 1 1 1 1 1 1 1 1 0 0 0 0 0 1 0 0 1 1 1 1 1 1 0".split(" ")));
 //            samples.add(new ClassificationModel().setId(11).setBiner("1 1 1 1 1 1 1 0 0 0 0 0 0 0 1 0 0 1 1 1 1 0 0 0".split(" ")));
 //            samples.add(new ClassificationModel().setId(11).setBiner("0 1 1 1 1 1 1 1 0 0 0 0 0 0 1 0 0 1 1 1 1 1 1 0".split(" ")));
-            new NaiveBayes().classification(samples, biner);
+            int resultId = new NaiveBayes().classification(samples, biner, false);
+            System.out.println("Result : " + resultId);
 
 //            int resultId = new KNearestNeighbor().classification(samples, biner, 13);
 //

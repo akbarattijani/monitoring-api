@@ -14,18 +14,29 @@ import java.util.Map;
  * @author AKBAR <akbar.attijani@gmail.com>
  */
 public class NaiveBayes {
-    public void classification(List<ClassificationModel> samples, String[] data) {
+    public int classification(List<ClassificationModel> samples, String[] data, boolean printTrace) {
 //        List<ClassificationModel> result = new ArrayList<>();
         Map<Integer, BigDecimal> classStore = probCi(samples);
         Map<Integer, ArrayList<BigDecimal>> attributeStore = probXCi(samples, data);
         Map<Integer, BigDecimal> attributeProb = multiplyProb(attributeStore);
         Map<Integer, BigDecimal> probability = probXCiMultiplyCi(classStore, attributeProb);
 
-        System.out.println("------------------ Naive Bayes (PROB CLASS) ----------------------");
-        for (Map.Entry<Integer, BigDecimal> entry : classStore.entrySet()) {
-            System.out.println("ID : " + entry.getKey() + "\tProb : " + entry.getValue());
+        BigDecimal compare = new BigDecimal(-1);
+        int result = - 1;
+        for (Map.Entry<Integer, BigDecimal> entry : probability.entrySet()) {
+            System.out.println("Prob : " + entry.getValue().toString().substring(0, 10));
+            if (compare.compareTo(entry.getValue()) < 0) {
+                compare = entry.getValue();
+                result = entry.getKey();
+            }
         }
-        System.out.println("------------------------------------------------------------------\n");
+
+        if (printTrace) {
+            System.out.println("------------------ Naive Bayes (PROB CLASS) ----------------------");
+            for (Map.Entry<Integer, BigDecimal> entry : classStore.entrySet()) {
+                System.out.println("ID : " + entry.getKey() + "\tProb : " + entry.getValue());
+            }
+            System.out.println("------------------------------------------------------------------\n");
 
 //        System.out.println("--------------- Naive Bayes (STORE ATTRIBUTE) --------------------");
 //        for (Map.Entry<Integer, ArrayList<BigDecimal>> entry : attributeStore.entrySet()) {
@@ -36,21 +47,22 @@ public class NaiveBayes {
 //
 //            System.out.println();
 //        }
-        System.out.println("------------------------------------------------------------------\n");
+            System.out.println("------------------------------------------------------------------\n");
 
-        System.out.println("---------------- Naive Bayes (PROB ATTRIBUTE) --------------------");
-        for (Map.Entry<Integer, BigDecimal> entry : attributeProb.entrySet()) {
-            System.out.println("ID : " + entry.getKey() + "\tProb : " + entry.getValue());
+            System.out.println("---------------- Naive Bayes (PROB ATTRIBUTE) --------------------");
+            for (Map.Entry<Integer, BigDecimal> entry : attributeProb.entrySet()) {
+                System.out.println("ID : " + entry.getKey() + "\tProb : " + entry.getValue());
+            }
+            System.out.println("------------------------------------------------------------------\n");
+
+            System.out.println("----------------- Naive Bayes (PROBABILITY) ----------------------");
+            for (Map.Entry<Integer, BigDecimal> entry : probability.entrySet()) {
+                System.out.println("ID : " + entry.getKey() + "\tProb : " + entry.getValue());
+            }
+            System.out.println("------------------------------------------------------------------\n");
         }
-        System.out.println("------------------------------------------------------------------\n");
 
-        System.out.println("----------------- Naive Bayes (PROBABILITY) ----------------------");
-        for (Map.Entry<Integer, BigDecimal> entry : probability.entrySet()) {
-            System.out.println("ID : " + entry.getKey() + "\tProb : " + entry.getValue());
-        }
-        System.out.println("------------------------------------------------------------------\n");
-
-//        return result;
+        return result;
     }
 
     private Map<Integer, BigDecimal> probXCiMultiplyCi(Map<Integer, BigDecimal> probClass, Map<Integer, BigDecimal> probAttribute) {
