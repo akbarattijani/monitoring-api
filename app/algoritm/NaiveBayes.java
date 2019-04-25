@@ -29,7 +29,7 @@ public class NaiveBayes {
                 compare = entry.getValue();
                 result = entry.getKey();
 
-                System.out.println("Compare : " + compare + "\tResult : " + result);
+                System.out.println("Compare : " + compare.toString().substring(0, 10) + "\tResult : " + result);
             }
         }
 
