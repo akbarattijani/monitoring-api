@@ -22,12 +22,14 @@ public class NaiveBayes {
         Map<Integer, BigDecimal> probability = probXCiMultiplyCi(classStore, attributeProb);
 
         BigDecimal compare = new BigDecimal(-1);
-        int result = - 1;
+        int result = -1;
         for (Map.Entry<Integer, BigDecimal> entry : probability.entrySet()) {
             System.out.println("Prob : " + entry.getValue().toString().substring(0, 10) + "\tID : " + entry.getKey());
             if (compare.compareTo(entry.getValue()) < 0) {
                 compare = entry.getValue();
                 result = entry.getKey();
+
+                System.out.println("Compare : " + compare + "\tResult : " + result);
             }
         }
 
