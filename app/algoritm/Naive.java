@@ -95,7 +95,7 @@ public class Naive {
         for (int yi = 0; yi < result.size(); yi++) {
             sum_prob[yi] = probabilitas[yi][0];
 
-            for (int xi = 1; xi < dataUji.length; xi++) {
+            for (int xi = 0; xi < dataUji.length; xi++) {
                 sum_prob[yi] *= probabilitas[yi][xi];
             }
             System.out.println(sum_prob[yi]);
