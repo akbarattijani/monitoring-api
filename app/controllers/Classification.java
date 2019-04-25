@@ -1,6 +1,6 @@
 package controllers;
 
-import algoritm.Naive;
+import algoritm.NaiveBayes;
 import com.fasterxml.jackson.databind.JsonNode;
 import database.Connection.CheckDatabase;
 import database.Connection.Connection;
@@ -50,15 +50,26 @@ public class Classification {
 
             String nip = body.path("nip").asText();
             String[] biner = body.path("biner").asText().split(" ");
-            int[] intBiner = new int[biner.length];
-            for (int i = 0; i < intBiner.length; i++) {
-                intBiner[i] = Integer.parseInt(biner[i]);
-            }
-
-            Naive.initObject(biner.length, samples);
-            Naive.inisialisasi(samples);
-            Naive.Naive_Bayes(intBiner);
-//            new NaiveBayes().classification(samples, biner);
+//            int[] intBiner = new int[biner.length];
+//            for (int i = 0; i < intBiner.length; i++) {
+//                intBiner[i] = Integer.parseInt(biner[i]);
+//            }
+//
+//            Naive.initObject(biner.length, samples);
+//            Naive.inisialisasi(samples);
+//            Naive.Naive_Bayes(intBiner);
+            samples = new ArrayList<>();
+            samples.add(new ClassificationModel().setId(9).setBiner("1 0 0 0 1 0 1 1 1 0 0 1 0 1 1 0 0 1 0 1 1 1 1 0".split(" ")));
+            samples.add(new ClassificationModel().setId(9).setBiner("1 0 0 0 1 0 1 0 0 0 0 1 0 0 1 0 0 1 0 0 0 1 1 0".split(" ")));
+            samples.add(new ClassificationModel().setId(9).setBiner("1 1 0 0 1 0 1 0 1 0 0 1 0 1 1 0 0 1 0 1 1 0 1 0".split(" ")));
+            samples.add(new ClassificationModel().setId(10).setBiner("0 0 0 0 0 0 1 1 1 0 0 1 0 1 1 0 0 1 1 1 1 1 1 0".split(" ")));
+            samples.add(new ClassificationModel().setId(10).setBiner("0 0 1 1 0 0 0 1 1 0 0 1 0 1 1 0 0 1 1 1 0 0 0 0".split(" ")));
+            samples.add(new ClassificationModel().setId(10).setBiner("0 0 0 0 0 0 0 1 1 0 0 1 0 1 1 0 0 1 1 0 1 1 0 0".split(" ")));
+            samples.add(new ClassificationModel().setId(10).setBiner("0 0 1 1 0 0 1 1 1 0 0 1 0 1 1 0 0 1 0 0 1 1 0 0".split(" ")));
+            samples.add(new ClassificationModel().setId(11).setBiner("1 1 1 1 1 1 1 1 1 0 0 0 0 0 1 0 0 1 1 1 1 1 1 0".split(" ")));
+            samples.add(new ClassificationModel().setId(11).setBiner("1 1 1 1 1 1 1 0 0 0 0 0 0 0 1 0 0 1 1 1 1 0 0 0".split(" ")));
+            samples.add(new ClassificationModel().setId(11).setBiner("0 1 1 1 1 1 1 1 0 0 0 0 0 0 1 0 0 1 1 1 1 1 1 0".split(" ")));
+            new NaiveBayes().classification(samples, "1 1 1 1 1 1 0 0 0 0 1 0 0 0 1 0 0 1 1 1 1 1 0 0".split(" "));
 
 //            int resultId = new KNearestNeighbor().classification(samples, biner, 13);
 //
