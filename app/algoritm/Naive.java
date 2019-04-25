@@ -91,6 +91,7 @@ public class Naive {
     private static double[] count_Probabilitas(double[][] probabilitas) {
         double[] sum_prob = new double[result.size()];
 
+        System.out.println("------------------ Naive Bayes (count_Probability) ----------------------");
         for (int yi = 0; yi < result.size(); yi++) {
             sum_prob[yi] = probabilitas[yi][0];
 
@@ -100,8 +101,9 @@ public class Naive {
 
             sum_prob[yi] *= Double.parseDouble(prob_Kelas[yi][2]);
 
-//            System.out.println(sum_prob[yi]);
+            System.out.println(sum_prob[yi]);
         }
+        System.out.println("-------------------------------------------------------------------------\n");
 
         return sum_prob;
     }
@@ -122,18 +124,18 @@ public class Naive {
                 }
 
                 prob_vek[klas][vek] = jml;
-                prob_vek[klas][vek] = (1 + prob_vek[klas][vek]) / (Double.parseDouble(prob_Kelas[klas][1])+2);
+                prob_vek[klas][vek] = (1 + prob_vek[klas][vek]) / (Double.parseDouble(prob_Kelas[klas][1]) + 2);
             }
         }
 
-        System.out.println("---------------- Naive Bayes (PROB ATTRIBUTE) --------------------");
-        for (double[] row : prob_vek) {
-            for (double val : row) {
-                System.out.print(val + "\t");
-            }
-            System.out.println();
-        }
-        System.out.println("------------------------------------------------------------------\n");
+//        System.out.println("---------------- Naive Bayes (PROB ATTRIBUTE) --------------------");
+//        for (double[] row : prob_vek) {
+//            for (double val : row) {
+//                System.out.print(val + "\t");
+//            }
+//            System.out.println();
+//        }
+//        System.out.println("------------------------------------------------------------------\n");
 
         return prob_vek;
     }
