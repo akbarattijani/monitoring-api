@@ -68,10 +68,10 @@ public class NaiveBayes {
         Map<Integer, BigDecimal> result = new LinkedHashMap<>();
 
         for (Map.Entry<Integer, ArrayList<BigDecimal>> entry : attribute.entrySet()) {
-            BigDecimal count = new BigDecimal(0.0);
+            BigDecimal count = entry.getValue().get(0);
 
-            for (BigDecimal value : entry.getValue()) {
-                count = count.multiply(value);
+            for (int i = 1; i < entry.getValue().size(); i++) {
+                count = count.multiply(entry.getValue().get(i));
             }
 
             result.put(entry.getKey(), count);
