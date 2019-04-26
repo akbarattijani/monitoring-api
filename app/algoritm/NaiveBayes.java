@@ -32,7 +32,7 @@ public class NaiveBayes {
         if (printTrace) {
             System.out.println("------------------ Naive Bayes (PROB CLASS) ----------------------");
             for (Map.Entry<Integer, BigDecimal> entry : classStore.entrySet()) {
-                System.out.println("ID : " + entry.getKey() + "\tProb : " + entry.getValue());
+                System.out.println("ID : " + entry.getKey() + "\tProb : " + entry.getValue().setScale(5, RoundingMode.HALF_UP));
             }
             System.out.println("------------------------------------------------------------------\n");
 
