@@ -49,13 +49,13 @@ public class NaiveBayes {
 
             System.out.println("---------------- Naive Bayes (PROB ATTRIBUTE) --------------------");
             for (Map.Entry<Integer, BigDecimal> entry : attributeProb.entrySet()) {
-                System.out.println("ID : " + entry.getKey() + "\tProb : " + entry.getValue());
+                System.out.println("ID : " + entry.getKey() + "\tProb : " + entry.getValue().setScale(5, RoundingMode.HALF_UP));
             }
             System.out.println("------------------------------------------------------------------\n");
 
             System.out.println("----------------- Naive Bayes (PROBABILITY) ----------------------");
             for (Map.Entry<Integer, BigDecimal> entry : probability.entrySet()) {
-                System.out.println("ID : " + entry.getKey() + "\tProb : " + entry.getValue());
+                System.out.println("ID : " + entry.getKey() + "\tProb : " + entry.getValue().setScale(5, RoundingMode.HALF_UP));
             }
             System.out.println("------------------------------------------------------------------\n");
         }
