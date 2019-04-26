@@ -54,7 +54,7 @@ public class Classification {
             String biner = body.path("biner").asText();
 
             List<ClassificationModel> knn = new KNearestNeighbor().classification(samples, biner, 15);
-            int resultId = new NaiveBayes().classification(knn, biner.split(" "), false);
+            int resultId = new NaiveBayes().classification(knn, biner.split(" "), true);
 
             System.out.println("Result : " + resultId);
 
