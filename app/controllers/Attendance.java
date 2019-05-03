@@ -221,4 +221,42 @@ public class Attendance {
             return status(401, e.getMessage());
         }
     }
+
+    @CheckDatabase(
+            database = Database.POSTGRESQL,
+            host = "ec2-23-23-173-30.compute-1.amazonaws.com",
+            databaseName = "d87s2lf0vv7l32",
+            userName = "ppxiknjbrpshfp",
+            password = "dadde9e960e7acc54bf9b09a35ef98f4ec01a149e1560b4a8c4f6909271cc76c",
+            port = "5432"
+    )
+    public static Result checkEndAttendance(int id) {
+        try {
+            String select = "SELECT * FROM t_absen WHERE id_user = ? AND start_date >= now()::date AND end_date IS NULL ORDER BY id LIMIT 1";
+
+            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
+            preparedStatement.setInt(1, id);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                // Closing database connection
+                preparedStatement.close();
+                rs.close();
+                Connection.disconnect();
+
+                return Body.echo(enums.Result.REQUEST_OK, Boolean.TRUE.toString());
+            } else {
+                // Closing database connection
+                preparedStatement.close();
+                rs.close();
+                Connection.disconnect();
+
+                return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Connection.disconnect();
+            return status(401, e.getMessage());
+        }
+    }
 }
