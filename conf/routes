@@ -24,6 +24,7 @@ POST    /api/v1/attendance/insert                                       controll
 PUT     /api/v1/attendance/update                                       controllers.Attendance.update()
 GET     /api/v1/attendance/check/:id                                    controllers.Attendance.check(id:Integer)
 GET     /api/v1/attendance/checkend/:id                                 controllers.Attendance.checkEndAttendance(id:Integer)
+POST    /api/v1/attendance/track                                        controllers.Attendance.track()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                                                   controllers.Assets.at(path="/public", file)
