@@ -5,12 +5,13 @@
 # Home page
 GET     /                                                               controllers.Application.index
 
-# API Monitoring
+# API (Application Program Interface) Monitoring
 ## User
 POST    /api/v1/user/register                                           controllers.User.register()
 GET     /api/v1/user/login/:nip/:password                               controllers.User.login(nip:String, password:String)
 GET     /api/v1/user/check/:nip                                         controllers.User.check(nip:String)
 PUT     /api/v1/user/updateStep                                         controllers.User.updateStep()
+PUT     /api/v1/user/updatePassword                                     controllers.User.updatePassword()
 
 ## Sample
 POST    /api/v1/sample/insert                                           controllers.Sample.insert()
@@ -25,6 +26,8 @@ PUT     /api/v1/attendance/update                                       controll
 GET     /api/v1/attendance/check/:id                                    controllers.Attendance.check(id:Integer)
 GET     /api/v1/attendance/checkend/:id                                 controllers.Attendance.checkEndAttendance(id:Integer)
 POST    /api/v1/attendance/track                                        controllers.Attendance.track()
+PUT     /api/v1/attendance/breakOut                                     controllers.Attendance.breakOut()
+PUT     /api/v1/attendance/breakIn                                      controllers.Attendance.breakIn()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                                                   controllers.Assets.at(path="/public", file)

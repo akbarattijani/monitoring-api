@@ -218,4 +218,36 @@ public class User {
             return status(401, e.getMessage());
         }
     }
+
+    @CheckDatabase(
+            database = Database.POSTGRESQL,
+            host = "ec2-23-23-173-30.compute-1.amazonaws.com",
+            databaseName = "d87s2lf0vv7l32",
+            userName = "ppxiknjbrpshfp",
+            password = "dadde9e960e7acc54bf9b09a35ef98f4ec01a149e1560b4a8c4f6909271cc76c",
+            port = "5432"
+    )
+    @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
+    public static Result updatePassword() {
+        try {
+            JsonNode body = request().body().asJson();
+            String sql = "UPDATE m_user set password = ? where id = ?";
+
+            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(sql);
+            preparedStatement.setInt(1, body.path("password").asInt());
+            preparedStatement.setInt(2, body.path("id").asInt());
+
+            int count = preparedStatement.executeUpdate();
+
+            // Closing database connection
+            preparedStatement.close();
+            Connection.disconnect();
+
+            return Body.echo(enums.Result.REQUEST_OK, "Inserting Success : " + count);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Connection.disconnect();
+            return status(401, e.getMessage());
+        }
+    }
 }
