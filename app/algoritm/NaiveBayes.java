@@ -91,7 +91,7 @@ public class NaiveBayes {
                 if (entry.getValue().get(ii).compareTo(BigDecimal.ZERO) != 0) {
                     assert count != null;
                     count = count.multiply(entry.getValue().get(ii));
-                    System.out.println("Count : " + count + "\tENtry : " + entry.getValue().get(ii));
+                    System.out.println("Count : " + count.toString().substring(0, count.toString().indexOf(".") + 5) + "\tENtry : " + entry.getValue().get(ii));
                 }
             }
 
