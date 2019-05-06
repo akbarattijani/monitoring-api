@@ -385,7 +385,7 @@ public class Attendance {
                     rs.close();
                     Connection.disconnect();
 
-                    return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
+                    return Body.echo(enums.Result.REQUEST_OK, "Gagal perbarui status istirahat. Ulangi beberapa saat lagi.");
                 }
             } else {
                 // Closing database connection
@@ -393,7 +393,7 @@ public class Attendance {
                 rs.close();
                 Connection.disconnect();
 
-                return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
+                return Body.echo(enums.Result.REQUEST_OK, "Anda belum melakukan absen atau sudah selesai istirahat");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -465,7 +465,7 @@ public class Attendance {
                     rs.close();
                     Connection.disconnect();
 
-                    return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
+                    return Body.echo(enums.Result.REQUEST_OK, "Gagal perbarui status selesai istirahat. Ulangi beberapa saat lagi.");
                 }
             } else {
                 // Closing database connection
@@ -473,7 +473,7 @@ public class Attendance {
                 rs.close();
                 Connection.disconnect();
 
-                return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
+                return Body.echo(enums.Result.REQUEST_OK, "Anda belum melakukan absen atau belum perbarui status istirahat");
             }
         } catch (Exception e) {
             e.printStackTrace();
