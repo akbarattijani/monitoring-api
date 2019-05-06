@@ -87,12 +87,12 @@ public class NaiveBayes {
                 }
             }
 
-            System.out.println("Count " + entry.getKey() + " : ");
             for (int ii = i; ii < entry.getValue().size(); ii++) {
                 if (entry.getValue().get(ii).compareTo(BigDecimal.ZERO) != 0) {
                     assert count != null;
-                    count = count.multiply(entry.getValue().get(ii)).add(new BigDecimal(1.0)).divide(new BigDecimal(1.0), 5, RoundingMode.HALF_UP);
-                    System.out.print(count+"-"+entry.getValue().get(ii) + "\t");
+                    count = count.multiply(entry.getValue().get(ii))
+                            .add(new BigDecimal(1.0)) //Menggunakan Laplace Correction untuk mencegah nilai probabilitas 0
+                            .divide(new BigDecimal(1.0), 5, RoundingMode.HALF_UP); //Konversi nilai probabilitas dengan 5 angka dibelakang koma
                 }
             }
 
