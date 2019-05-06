@@ -67,7 +67,7 @@ public class NaiveBayes {
         Map<Integer, BigDecimal> result = new LinkedHashMap<>();
 
         for (Map.Entry<Integer, BigDecimal> entry : probClass.entrySet()) {
-            BigDecimal count = probAttribute.get(entry.getKey()).multiply(entry.getValue());
+            BigDecimal count = probAttribute.get(entry.getKey()).multiply(entry.getValue()).divide(new BigDecimal(1.0), 5, RoundingMode.HALF_UP);
             result.put(entry.getKey(), count);
         }
 
@@ -87,11 +87,12 @@ public class NaiveBayes {
                 }
             }
 
+            System.out.println("Count " + entry.getKey() + " : ");
             for (int ii = i; ii < entry.getValue().size(); ii++) {
                 if (entry.getValue().get(ii).compareTo(BigDecimal.ZERO) != 0) {
                     assert count != null;
-                    count = count.multiply(entry.getValue().get(ii));
-                    System.out.println("Count : " + count.toString().substring(0, count.toString().indexOf(".") + 5) + "\tENtry : " + entry.getValue().get(ii));
+                    count = count.multiply(entry.getValue().get(ii)).divide(new BigDecimal(1.0), 5, RoundingMode.HALF_UP);
+                    System.out.print(count + "\t");
                 }
             }
 
