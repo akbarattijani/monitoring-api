@@ -92,7 +92,7 @@ public class NaiveBayes {
                 if (entry.getValue().get(ii).compareTo(BigDecimal.ZERO) != 0) {
                     assert count != null;
                     count = count.multiply(entry.getValue().get(ii)).divide(new BigDecimal(1.0), 5, RoundingMode.HALF_UP);
-                    System.out.print(count + "\t");
+                    System.out.print(count+"-"+entry.getValue().get(ii) + "\t");
                 }
             }
 
