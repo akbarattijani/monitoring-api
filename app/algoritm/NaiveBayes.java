@@ -36,16 +36,16 @@ public class NaiveBayes {
             }
             System.out.println("------------------------------------------------------------------\n");
 
-            System.out.println("--------------- Naive Bayes (STORE ATTRIBUTE) --------------------");
-            for (Map.Entry<Integer, ArrayList<BigDecimal>> entry : attributeStore.entrySet()) {
-                System.out.print("ID : " + entry.getKey() + "\tData : ");
-                for (BigDecimal val : entry.getValue()) {
-                    System.out.print(val + "\t");
-                }
-
-                System.out.println();
-            }
-            System.out.println("------------------------------------------------------------------\n");
+//            System.out.println("--------------- Naive Bayes (STORE ATTRIBUTE) --------------------");
+//            for (Map.Entry<Integer, ArrayList<BigDecimal>> entry : attributeStore.entrySet()) {
+//                System.out.print("ID : " + entry.getKey() + "\tData : ");
+//                for (BigDecimal val : entry.getValue()) {
+//                    System.out.print(val + "\t");
+//                }
+//
+//                System.out.println();
+//            }
+//            System.out.println("------------------------------------------------------------------\n");
 
             System.out.println("---------------- Naive Bayes (PROB ATTRIBUTE) --------------------");
             for (Map.Entry<Integer, BigDecimal> entry : attributeProb.entrySet()) {
@@ -91,6 +91,7 @@ public class NaiveBayes {
                 if (entry.getValue().get(ii).compareTo(BigDecimal.ZERO) != 0) {
                     assert count != null;
                     count = count.multiply(entry.getValue().get(ii));
+                    System.out.println("Count : " + count + "\tENtry : " + entry.getValue().get(ii));
                 }
             }
 
