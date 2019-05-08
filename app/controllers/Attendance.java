@@ -520,7 +520,7 @@ public class Attendance {
                 object.put("id_absen", rs.getInt("id_absen"));
                 object.put("longitude", rs.getDouble("longitude"));
                 object.put("latitude", rs.getDouble("latitude"));
-                object.put("date", rs.getTimestamp("date"));
+                object.put("date", rs.getTimestamp("date").toString());
 
                 array.add(object);
             }
