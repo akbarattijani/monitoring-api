@@ -5,6 +5,8 @@ import database.Connection.CheckDatabase;
 import database.Connection.Connection;
 import enums.Database;
 import httpactions.ApiAuth;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import play.mvc.BodyParser;
 import play.mvc.Result;
 import utils.Body;
@@ -480,6 +482,57 @@ public class Attendance {
                 Connection.disconnect();
 
                 return Body.echo(enums.Result.REQUEST_OK, "Anda belum melakukan absen atau belum perbarui status istirahat");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Connection.disconnect();
+            return status(401, e.getMessage());
+        }
+    }
+
+    @CheckDatabase(
+            database = Database.POSTGRESQL,
+            host = "ec2-23-23-173-30.compute-1.amazonaws.com",
+            databaseName = "d87s2lf0vv7l32",
+            userName = "ppxiknjbrpshfp",
+            password = "dadde9e960e7acc54bf9b09a35ef98f4ec01a149e1560b4a8c4f6909271cc76c",
+            port = "5432"
+    )
+    public static Result get(int id, String date) {
+        try {
+            final Date fixDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+            JSONArray array = new JSONArray();
+
+            String select = "SELECT a.id_user, b.* FROM t_absen a, t_absen_detail b WHERE a.id = b.id_absen AND a.id_user = ? AND a.start_date::date = ?";
+
+            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setDate(2, new java.sql.Date(fixDate.getTime()));
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            boolean isNotNull = false;
+            while (rs.next()) {
+                isNotNull = true;
+
+                JSONObject object = new JSONObject();
+                object.put("id", rs.getInt("id_user"));
+                object.put("id_absen", rs.getInt("id_absen"));
+                object.put("longitude", rs.getDouble("longitude"));
+                object.put("latitude", rs.getDouble("latitude"));
+                object.put("date", rs.getTimestamp("date"));
+
+                array.add(object);
+            }
+
+            preparedStatement.close();
+            rs.close();
+            Connection.disconnect();
+
+            if (isNotNull) {
+                return Body.echo(enums.Result.REQUEST_OK, array.toString());
+            } else {
+                return Body.echo(enums.Result.RESPONSE_NOTHING, "NOTHING");
             }
         } catch (Exception e) {
             e.printStackTrace();
