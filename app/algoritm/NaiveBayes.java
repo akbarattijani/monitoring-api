@@ -67,7 +67,10 @@ public class NaiveBayes {
         Map<Integer, BigDecimal> result = new LinkedHashMap<>();
 
         for (Map.Entry<Integer, BigDecimal> entry : probClass.entrySet()) {
-            BigDecimal count = probAttribute.get(entry.getKey()).multiply(entry.getValue()).divide(new BigDecimal(1.0), 5, RoundingMode.HALF_UP);
+            BigDecimal count = probAttribute.get(entry.getKey())
+                    .multiply(entry.getValue())
+                    .add(new BigDecimal(2.0))
+                    .divide(new BigDecimal(1.0), 5, RoundingMode.HALF_UP);
             result.put(entry.getKey(), count);
         }
 
@@ -90,13 +93,10 @@ public class NaiveBayes {
             for (int ii = i; ii < entry.getValue().size(); ii++) {
                 if (entry.getValue().get(ii).compareTo(BigDecimal.ZERO) != 0) {
                     assert count != null;
-                    BigDecimal countingResult = count
+                    count = count
                             .multiply(entry.getValue().get(ii))
+                            .add(new BigDecimal(1.0)) //Menggunakan Laplace Correction untuk mencegah nilai probabilitas 0
                             .divide(new BigDecimal(1.0), 5, RoundingMode.HALF_UP); //Konversi nilai probabilitas dengan 5 angka dibelakang koma
-
-                    if (countingResult.compareTo(BigDecimal.ZERO) != 0) {
-                        count = countingResult;
-                    }
                 }
             }
 
