@@ -90,10 +90,13 @@ public class NaiveBayes {
             for (int ii = i; ii < entry.getValue().size(); ii++) {
                 if (entry.getValue().get(ii).compareTo(BigDecimal.ZERO) != 0) {
                     assert count != null;
-                    count = count
+                    BigDecimal countingResult = count
                             .multiply(entry.getValue().get(ii))
-                            .add(new BigDecimal(1.0)) //Menggunakan Laplace Correction untuk mencegah nilai probabilitas 0
                             .divide(new BigDecimal(1.0), 5, RoundingMode.HALF_UP); //Konversi nilai probabilitas dengan 5 angka dibelakang koma
+
+                    if (countingResult.compareTo(BigDecimal.ZERO) != 0) {
+                        count = countingResult;
+                    }
                 }
             }
 
