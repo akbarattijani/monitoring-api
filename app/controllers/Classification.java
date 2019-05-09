@@ -1,6 +1,7 @@
 package controllers;
 
 import algoritm.KNearestNeighbor;
+import algoritm.NaiveBayes;
 import com.fasterxml.jackson.databind.JsonNode;
 import database.Connection.CheckDatabase;
 import database.Connection.Connection;
@@ -52,9 +53,9 @@ public class Classification {
             String nip = body.path("nip").asText();
             String biner = body.path("biner").asText();
 
-//            List<ClassificationModel> knn = new KNearestNeighbor().classification(samples, biner, 9);
-//            int resultId = new NaiveBayes().classification(knn, biner.split(" "), true);
-            int resultId = new KNearestNeighbor().classification(samples, biner.split(" "), 9);
+            List<ClassificationModel> knn = new KNearestNeighbor().classification(samples, biner, 9);
+            int resultId = new NaiveBayes().classification(knn, biner.split(" "), true);
+//            int resultId = new KNearestNeighbor().classification(samples, biner.split(" "), 9);
 
             System.out.println("Result : " + resultId);
 
