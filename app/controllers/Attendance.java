@@ -572,9 +572,24 @@ public class Attendance {
                 object.put("id", rs.getInt("id"));
                 object.put("id_user", rs.getInt("id_user"));
                 object.put("start_date", rs.getTimestamp("start_date").toString());
-                object.put("end_date", rs.getTimestamp("end_date").toString());
-                object.put("break_start_date", rs.getTimestamp("break_start_date").toString());
-                object.put("break_end_date", rs.getTimestamp("break_end_date").toString());
+
+                if (rs.getTimestamp("end_date") == null) {
+                    object.put("end_date", "Belum Tersedia");
+                } else {
+                    object.put("end_date", rs.getTimestamp("end_date").toString());
+                }
+
+                if (rs.getTimestamp("break_start_date") == null) {
+                    object.put("break_start_date", "Belum Tersedia");
+                } else {
+                    object.put("break_start_date", rs.getTimestamp("break_start_date").toString());
+                }
+
+                if (rs.getTimestamp("break_end_date") == null) {
+                    object.put("break_end_date", "Belum Tersedia");
+                } else {
+                    object.put("break_end_date", rs.getTimestamp("break_end_date").toString());
+                }
 
                 array.add(object);
             }
