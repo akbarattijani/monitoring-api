@@ -540,4 +540,58 @@ public class Attendance {
             return status(401, e.getMessage());
         }
     }
+
+    @CheckDatabase(
+            database = Database.POSTGRESQL,
+            host = "ec2-23-23-173-30.compute-1.amazonaws.com",
+            databaseName = "d87s2lf0vv7l32",
+            userName = "ppxiknjbrpshfp",
+            password = "dadde9e960e7acc54bf9b09a35ef98f4ec01a149e1560b4a8c4f6909271cc76c",
+            port = "5432"
+    )
+    public static Result history(int id, String startDate, String endDate) {
+        try {
+            final Date start = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
+            final Date end = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
+            JSONArray array = new JSONArray();
+
+            String select = "SELECT * FROM t_absen WHERE id_user = ? AND start_date::date BETWEEN ? AND ?";
+
+            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
+            preparedStatement.setInt(1, id);
+            preparedStatement.setDate(2, new java.sql.Date(start.getTime()));
+            preparedStatement.setDate(3, new java.sql.Date(end.getTime()));
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            boolean isNotNull = false;
+            while (rs.next()) {
+                isNotNull = true;
+
+                JSONObject object = new JSONObject();
+                object.put("id", rs.getInt("id"));
+                object.put("id_user", rs.getInt("id_user"));
+                object.put("start_date", rs.getTimestamp("start_date").toString());
+                object.put("end_date", rs.getTimestamp("end_date").toString());
+                object.put("break_start_date", rs.getTimestamp("break_start_date").toString());
+                object.put("break_end_date", rs.getTimestamp("break_end_date").toString());
+
+                array.add(object);
+            }
+
+            preparedStatement.close();
+            rs.close();
+            Connection.disconnect();
+
+            if (isNotNull) {
+                return Body.echo(enums.Result.REQUEST_OK, array.toString());
+            } else {
+                return Body.echo(enums.Result.RESPONSE_NOTHING, "NOTHING");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Connection.disconnect();
+            return status(401, e.getMessage());
+        }
+    }
 }

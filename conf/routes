@@ -29,6 +29,7 @@ POST    /api/v1/attendance/track                                        controll
 PUT     /api/v1/attendance/breakOut                                     controllers.Attendance.breakOut()
 PUT     /api/v1/attendance/breakIn                                      controllers.Attendance.breakIn()
 GET     /api/v1/attendance/get/:id/:date                                controllers.Attendance.get(id:Integer, date:String)
+GET     /api/v1/attendance/history/:id/:start/:end                      controllers.Attendance.history(id:Integer, start:String, end:String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                                                   controllers.Assets.at(path="/public", file)
