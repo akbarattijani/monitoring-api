@@ -59,13 +59,14 @@ public class Attendance {
 
                 ResultSet rs = prepaired.executeQuery();
                 if (rs.next()) {
-                    sql = "INSERT INTO t_absen_detail (id_absen, longitude, latitude, date) values (?,?,?,?)";
+                    sql = "INSERT INTO t_absen_detail (id_absen, longitude, latitude, date, custom) values (?,?,?,?,?)";
                     preparedStatement = Connection.getConnection().prepareStatement(sql);
 
                     preparedStatement.setInt(1, rs.getInt("id"));
                     preparedStatement.setDouble(2, longitude);
                     preparedStatement.setDouble(3, latitude);
                     preparedStatement.setTimestamp(4, new Timestamp(startDate.getTime()));
+                    preparedStatement.setInt(5, 1);
 
                     int countDetail = preparedStatement.executeUpdate();
                     if (countDetail > 0) {
@@ -138,13 +139,14 @@ public class Attendance {
 
                 int count = preparedStatement.executeUpdate();
                 if (count > 0) {
-                    sql = "INSERT INTO t_absen_detail (id_absen, longitude, latitude, date) values (?,?,?,?)";
+                    sql = "INSERT INTO t_absen_detail (id_absen, longitude, latitude, date, custom) values (?,?,?,?,?)";
                     preparedStatement = Connection.getConnection().prepareStatement(sql);
 
                     preparedStatement.setInt(1, rs.getInt("id"));
                     preparedStatement.setDouble(2, longitude);
                     preparedStatement.setDouble(3, latitude);
                     preparedStatement.setTimestamp(4, new Timestamp(endDate.getTime()));
+                    preparedStatement.setInt(5, 4);
 
                     int countDetail = preparedStatement.executeUpdate();
                     if (countDetail > 0) {
@@ -287,13 +289,14 @@ public class Attendance {
 
             ResultSet rs = prepaired.executeQuery();
             if (rs.next()) {
-                String sql = "INSERT INTO t_absen_detail (id_absen, longitude, latitude, date) values (?,?,?,?)";
+                String sql = "INSERT INTO t_absen_detail (id_absen, longitude, latitude, date, custom) values (?,?,?,?,?)";
                 PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(sql);
 
                 preparedStatement.setInt(1, rs.getInt("id"));
                 preparedStatement.setDouble(2, longitude);
                 preparedStatement.setDouble(3, latitude);
                 preparedStatement.setTimestamp(4, new Timestamp(date.getTime()));
+                preparedStatement.setInt(5, 0);
 
                 int countDetail = preparedStatement.executeUpdate();
                 if (countDetail > 0) {
@@ -359,13 +362,14 @@ public class Attendance {
 
                 int count = preparedStatement.executeUpdate();
                 if (count > 0) {
-                    sql = "INSERT INTO t_absen_detail (id_absen, longitude, latitude, date) values (?,?,?,?)";
+                    sql = "INSERT INTO t_absen_detail (id_absen, longitude, latitude, date, custom) values (?,?,?,?,?)";
                     preparedStatement = Connection.getConnection().prepareStatement(sql);
 
                     preparedStatement.setInt(1, rs.getInt("id"));
                     preparedStatement.setDouble(2, longitude);
                     preparedStatement.setDouble(3, latitude);
                     preparedStatement.setTimestamp(4, new Timestamp(breakDate.getTime()));
+                    preparedStatement.setInt(5, 2);
 
                     int countDetail = preparedStatement.executeUpdate();
                     if (countDetail > 0) {
@@ -440,13 +444,14 @@ public class Attendance {
 
                 int count = preparedStatement.executeUpdate();
                 if (count > 0) {
-                    sql = "INSERT INTO t_absen_detail (id_absen, longitude, latitude, date) values (?,?,?,?)";
+                    sql = "INSERT INTO t_absen_detail (id_absen, longitude, latitude, date, custom) values (?,?,?,?,?)";
                     preparedStatement = Connection.getConnection().prepareStatement(sql);
 
                     preparedStatement.setInt(1, rs.getInt("id"));
                     preparedStatement.setDouble(2, longitude);
                     preparedStatement.setDouble(3, latitude);
                     preparedStatement.setTimestamp(4, new Timestamp(breakDate.getTime()));
+                    preparedStatement.setInt(5, 3);
 
                     int countDetail = preparedStatement.executeUpdate();
                     if (countDetail > 0) {
@@ -521,6 +526,7 @@ public class Attendance {
                 object.put("longitude", rs.getDouble("longitude"));
                 object.put("latitude", rs.getDouble("latitude"));
                 object.put("date", rs.getTimestamp("date").toString());
+                object.put("custom", rs.getInt("custom"));
 
                 array.add(object);
             }
