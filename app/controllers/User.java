@@ -101,14 +101,15 @@ public class User {
             password = "dadde9e960e7acc54bf9b09a35ef98f4ec01a149e1560b4a8c4f6909271cc76c",
             port = "5432"
     )
-    public static Result login(String nip, String password) {
+    public static Result login(String nip, String password, int supervisor) {
         try {
             JSONObject object = new JSONObject();
-            String select = "SELECT * FROM m_user WHERE nip = ? and password = ? limit 1";
+            String select = "SELECT * FROM m_user WHERE nip = ? AND password = ? AND supervisor = ? limit 1";
 
             PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
             preparedStatement.setString(1, nip);
             preparedStatement.setString(2, password);
+            preparedStatement.setInt(3, supervisor);
 
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
@@ -154,7 +155,7 @@ public class User {
     public static Result check(String nip) {
         try {
             JSONObject object = new JSONObject();
-            String select = "SELECT * FROM m_user WHERE nip = ? limit 1";
+            String select = "SELECT * FROM m_user WHERE nip = ? AND supervisor = 0 limit 1";
 
             PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
             preparedStatement.setString(1, nip);
