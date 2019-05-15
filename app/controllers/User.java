@@ -39,13 +39,14 @@ public class User {
             ObjectMapper mapper = new ObjectMapper();
             final UserModel body = mapper.treeToValue(request().body().asJson(), UserModel.class);
 
-            String sql = "INSERT INTO m_user (nip, name, password, step) values (?,?,?,?)";
+            String sql = "INSERT INTO m_user (nip, name, password, step, supervisor) values (?,?,?,?,?)";
             PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(sql);
 
             preparedStatement.setString(1, body.getNip());
             preparedStatement.setString(2, body.getName());
             preparedStatement.setString(3, body.getPassword());
             preparedStatement.setInt(4, 1);
+            preparedStatement.setInt(5, body.getSupervisor());
 
             int count = preparedStatement.executeUpdate();
 

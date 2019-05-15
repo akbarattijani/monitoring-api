@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "id",
         "nip",
         "name",
-        "password"
+        "password",
+        "supervisor"
 })
 public class UserModel {
     @JsonProperty("id")
@@ -27,6 +28,9 @@ public class UserModel {
 
     @JsonProperty("password")
     private String password;
+
+    @JsonProperty("supervisor")
+    private int supervisor = 0;
 
     @JsonProperty("id")
     public int getId() {
@@ -66,5 +70,15 @@ public class UserModel {
     @JsonProperty("password")
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @JsonProperty("supervisor")
+    public int getSupervisor() {
+        return supervisor;
+    }
+
+    @JsonProperty("supervisor")
+    public void setSupervisor(int supervisor) {
+        this.supervisor = supervisor;
     }
 }
