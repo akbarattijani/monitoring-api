@@ -6,6 +6,7 @@ import database.Connection.CheckDatabase;
 import database.Connection.Connection;
 import enums.Database;
 import httpactions.ApiAuth;
+import mapper.Mapper;
 import model.UserModel;
 import org.json.simple.JSONObject;
 import play.mvc.BodyParser;
@@ -110,6 +111,60 @@ public class User {
             preparedStatement.setString(1, nip);
             preparedStatement.setString(2, password);
             preparedStatement.setInt(3, supervisor);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("id");
+                String nipResult = rs.getString("nip");
+                String name = rs.getString("name");
+                int step = rs.getInt("step");
+
+                object.put("id", id);
+                object.put("nip", nipResult);
+                object.put("name", name);
+                object.put("step", step);
+
+                // Closing database connection
+                rs.close();
+                preparedStatement.close();
+                Connection.disconnect();
+
+                return Body.echo(enums.Result.REQUEST_OK, object.toString());
+            }
+
+            // Closing database connection
+            rs.close();
+            preparedStatement.close();
+            Connection.disconnect();
+
+            return Body.echo(enums.Result.RESPONSE_NOTHING, "User Not Found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Connection.disconnect();
+            return status(401, e.getMessage());
+        }
+    }
+
+    @CheckDatabase(
+            database = Database.POSTGRESQL,
+            host = "ec2-23-23-173-30.compute-1.amazonaws.com",
+            databaseName = "d87s2lf0vv7l32",
+            userName = "ppxiknjbrpshfp",
+            password = "dadde9e960e7acc54bf9b09a35ef98f4ec01a149e1560b4a8c4f6909271cc76c",
+            port = "5432"
+    )
+    @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
+    public static Result login() {
+        try {
+            model.User user = new Mapper().toModel(request().body().asJson(), model.User.class);
+
+            JSONObject object = new JSONObject();
+            String select = "SELECT * FROM m_user WHERE nip = ? AND password = ? AND supervisor = ? limit 1";
+
+            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
+            preparedStatement.setString(1, user.getNip());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setInt(3, user.getSupervisor());
 
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {

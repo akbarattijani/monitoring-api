@@ -9,6 +9,7 @@ GET     /                                                               controll
 ## User
 POST    /api/v1/user/register                                           controllers.User.register()
 GET     /api/v1/user/login/:nip/:password/:supervisor                   controllers.User.login(nip:String, password:String, supervisor:Integer)
+POST    /api/v1/user/login/                                             controllers.User.login()
 GET     /api/v1/user/check/:nip                                         controllers.User.check(nip:String)
 PUT     /api/v1/user/updateStep                                         controllers.User.updateStep()
 PUT     /api/v1/user/updatePassword                                     controllers.User.updatePassword()
