@@ -6,6 +6,7 @@ import mapper.annotation.JsonField;
 /**
  * @author AKBAR <akbar.attijani@gmail.com>
  */
+
 public class User {
     @Column(name = "nip")
     @JsonField(key = "nip")

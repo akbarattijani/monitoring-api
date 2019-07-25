@@ -14,6 +14,7 @@ import java.util.Map;
 /**
  * @author AKBAR <akbar.attijani@gmail.com>
  */
+
 public class Mapper {
     public <T> List<T> toModels(ResultSet resultSet, Class<?> c) {
         List<T> result = new ArrayList<>();

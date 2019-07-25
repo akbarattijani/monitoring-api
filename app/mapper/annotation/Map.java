@@ -8,7 +8,6 @@ import java.lang.annotation.Target;
 /**
  * @author AKBAR <akbar.attijani@gmail.com>
  */
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface Map {

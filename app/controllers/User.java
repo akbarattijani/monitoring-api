@@ -154,7 +154,7 @@ public class User {
             port = "5432"
     )
     @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
-    public static Result login() {
+    public static Result loginAdmin() {
         try {
             model.User user = new Mapper().toModel(request().body().asJson(), model.User.class);
 
