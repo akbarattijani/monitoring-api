@@ -9,7 +9,7 @@ GET     /                                                               controll
 ## User
 POST    /api/v1/user/register                                           controllers.User.register()
 GET     /api/v1/user/login/:nip/:password/:supervisor                   controllers.User.login(nip:String, password:String, supervisor:Integer)
-OPTIONS    /api/v1/user/loginAdmin                                         controllers.User.loginAdmin()
+OPTIONS /api/v1/user/loginAdmin                                         controllers.User.loginAdmin()
 GET     /api/v1/user/check/:nip                                         controllers.User.check(nip:String)
 PUT     /api/v1/user/updateStep                                         controllers.User.updateStep()
 PUT     /api/v1/user/updatePassword                                     controllers.User.updatePassword()
@@ -31,6 +31,10 @@ PUT     /api/v1/attendance/breakOut                                     controll
 PUT     /api/v1/attendance/breakIn                                      controllers.Attendance.breakIn()
 GET     /api/v1/attendance/get/:id/:date                                controllers.Attendance.get(id:Integer, date:String)
 GET     /api/v1/attendance/history/:id/:startDate/:endDate              controllers.Attendance.history(id:Integer, startDate:String, endDate:String)
+
+## PRODUK API
+GET     /api/product/                                                   controllers.Product.getProducts
+POST    /api/product/                                                   controllers.Product.insert()
 
 
 # Map static resources from the /public folder to the /assets URL path
