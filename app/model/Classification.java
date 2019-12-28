@@ -3,7 +3,7 @@ package model;
 /**
  * @author AKBAR <akbar.attijani@gmail.com>
  */
-public class ClassificationModel {
+public class Classification {
     private int id;
     private String[] biner;
 
@@ -11,7 +11,7 @@ public class ClassificationModel {
         return id;
     }
 
-    public ClassificationModel setId(int id) {
+    public Classification setId(int id) {
         this.id = id;
         return this;
     }
@@ -20,7 +20,7 @@ public class ClassificationModel {
         return biner;
     }
 
-    public ClassificationModel setBiner(String[] biner) {
+    public Classification setBiner(String[] biner) {
         this.biner = biner;
         return this;
     }

@@ -3,11 +3,10 @@ package controllers;
 import algoritm.KNearestNeighbor;
 import algoritm.NaiveBayes;
 import com.fasterxml.jackson.databind.JsonNode;
-import database.Connection.CheckDatabase;
+import database.Connection.Connect;
 import database.Connection.Connection;
 import enums.Database;
 import httpactions.ApiAuth;
-import model.ClassificationModel;
 import play.mvc.BodyParser;
 import play.mvc.Result;
 import utils.Body;
@@ -28,7 +27,7 @@ import static play.mvc.Results.status;
 @ApiAuth
 public class Classification {
 
-    @CheckDatabase(
+    @Connect(
             database = Database.POSTGRESQL,
             host = "ec2-23-23-173-30.compute-1.amazonaws.com",
             databaseName = "d87s2lf0vv7l32",
@@ -39,7 +38,7 @@ public class Classification {
     @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
     public static Result search() {
         try {
-            List<ClassificationModel> samples = new ArrayList<>();
+            List<model.Classification> samples = new ArrayList<>();
             String select = "SELECT * FROM m_sample";
             JsonNode body = request().body().asJson();
 
@@ -47,13 +46,13 @@ public class Classification {
             ResultSet rs = statement.executeQuery(select);
 
             while (rs.next()) {
-                samples.add(new ClassificationModel().setId(rs.getInt("id_user")).setBiner(rs.getString("biner").split(" ")));
+                samples.add(new model.Classification().setId(rs.getInt("id_user")).setBiner(rs.getString("biner").split(" ")));
             }
 
             String nip = body.path("nip").asText();
             String biner = body.path("biner").asText();
 
-            List<ClassificationModel> knn = new KNearestNeighbor().classification(samples, biner, 9);
+            List<model.Classification> knn = new KNearestNeighbor().classification(samples, biner, 9);
             int resultId = new NaiveBayes().classification(knn, biner.split(" "), true);
 //            int resultId = new KNearestNeighbor().classification(samples, biner.split(" "), 9);
 

@@ -13,12 +13,12 @@ import static enums.Result.RESULT_DATABASE_NOT_CONNECTED;
 /**
  * @author AKBAR <akbar.attijani@gmail.com>
  */
-public class DatabaseAction extends Action<CheckDatabase> {
+public class DatabaseAction extends Action<Connect> {
 
     @Override
     public F.Promise<Result> call(Http.Context context) {
         try {
-            CheckDatabase check = configuration;
+            Connect check = configuration;
             String host = check.host();
             String port = check.port();
             String databaseName = check.databaseName();

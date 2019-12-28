@@ -1,6 +1,6 @@
 package algoritm;
 
-import model.ClassificationModel;
+import model.Classification;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -12,7 +12,7 @@ import java.util.Map;
  * @author AKBAR <akbar.attijani@gmail.com>
  */
 public class KNearestNeighbor {
-    public List<ClassificationModel> classification(List<ClassificationModel> samples, String data, int K) {
+    public List<Classification> classification(List<Classification> samples, String data, int K) {
         try {
             /*  index 0 : nilai euclidean distance
                 index 1 : index dari samples
@@ -22,7 +22,7 @@ public class KNearestNeighbor {
             String[] testing = data.split(" ");
 
             for (int i = 0; i < samples.size(); i++) {
-                ClassificationModel sample = samples.get(i);
+                Classification sample = samples.get(i);
                 ED[i][1] = i;
                 ED[i][2] = sample.getId();
 
@@ -41,7 +41,7 @@ public class KNearestNeighbor {
         }
     }
 
-    public int classification(List<ClassificationModel> samples, String[] data, int K) {
+    public int classification(List<Classification> samples, String[] data, int K) {
         try {
             /*  index 0 : nilai euclidean distance
                 index 1 : index dari samples
@@ -49,7 +49,7 @@ public class KNearestNeighbor {
              */
             double[][] ED = new double[samples.size()][3];
             for (int i = 0; i < samples.size(); i++) {
-                ClassificationModel sample = samples.get(i);
+                Classification sample = samples.get(i);
                 ED[i][1] = i;
                 ED[i][2] = sample.getId();
 
@@ -89,18 +89,18 @@ public class KNearestNeighbor {
         System.out.println("---------------------------------------------------------------------\n");
     }
 
-    private List<ClassificationModel> splitSample(double[][] ED, List<ClassificationModel> samples, int K, boolean print) {
-        List<ClassificationModel> result = new ArrayList<>();
+    private List<Classification> splitSample(double[][] ED, List<Classification> samples, int K, boolean print) {
+        List<Classification> result = new ArrayList<>();
 
         for (int i = 0; i < K; i++) {
             int id = (int) ED[i][2];
             String[] biner = samples.get((int) ED[i][1]).getBiner();
-            result.add(new ClassificationModel().setId(id).setBiner(biner));
+            result.add(new Classification().setId(id).setBiner(biner));
         }
 
         if (print) {
             System.out.println("------------------- KNN (SPLIT WITH K) -----------------------");
-            for (ClassificationModel model : result) {
+            for (Classification model : result) {
                 System.out.println("ID : " + model.getId());
             }
             System.out.println("--------------------------------------------------------------\n");
@@ -109,12 +109,12 @@ public class KNearestNeighbor {
         return result;
     }
 
-    private int majority(List<ClassificationModel> datas) {
+    private int majority(List<Classification> datas) {
         int result = -1;
         int count = 0;
         Map<Integer, Integer> counting = new LinkedHashMap<>();
 
-        for (ClassificationModel model : datas) {
+        for (Classification model : datas) {
             if (!counting.containsKey(model.getId())) {
                 counting.put(model.getId(), 1);
             } else {

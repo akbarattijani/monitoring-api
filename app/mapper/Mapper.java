@@ -85,12 +85,14 @@ public class Mapper {
                         }
                     }
                 }
+            } else {
+                return null;
             }
 
             return ((T) clas);
         } catch (Exception e) {
             e.printStackTrace();
-            return ((T) c.newInstance());
+            return null;
         }
     }
 
@@ -167,7 +169,7 @@ public class Mapper {
             return ((T) clas);
         } catch (Exception e) {
             e.printStackTrace();
-            return ((T) c.newInstance());
+            return null;
         }
     }
 
@@ -202,7 +204,7 @@ public class Mapper {
             return (((T) clas));
         } catch (Exception e) {
             e.printStackTrace();
-            return ((T) c.newInstance());
+            return null;
         }
     }
 

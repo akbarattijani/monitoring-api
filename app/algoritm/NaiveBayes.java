@@ -1,6 +1,6 @@
 package algoritm;
 
-import model.ClassificationModel;
+import model.Classification;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -14,7 +14,7 @@ import java.util.Map;
  * @author AKBAR <akbar.attijani@gmail.com>
  */
 public class NaiveBayes {
-    public int classification(List<ClassificationModel> samples, String[] data, boolean printTrace) {
+    public int classification(List<Classification> samples, String[] data, boolean printTrace) {
         Map<Integer, BigDecimal> classStore = probCi(samples);
         Map<Integer, ArrayList<BigDecimal>> attributeStore = probXCi(samples, data);
         Map<Integer, BigDecimal> attributeProb = multiplyProb(attributeStore);
@@ -106,11 +106,11 @@ public class NaiveBayes {
         return result;
     }
 
-    private Map<Integer, ArrayList<BigDecimal>> probXCi(List<ClassificationModel> samples, String[] data) {
+    private Map<Integer, ArrayList<BigDecimal>> probXCi(List<Classification> samples, String[] data) {
         Map<Integer, ArrayList<BigDecimal>> result = new LinkedHashMap<>();
         Map<Integer, Integer> probClass = new LinkedHashMap<>();
 
-        for (ClassificationModel model : samples) {
+        for (Classification model : samples) {
             if (!probClass.containsKey(model.getId())) {
                 probClass.put(model.getId(), 1);
                 result.put(model.getId(), new ArrayList<>());
@@ -125,7 +125,7 @@ public class NaiveBayes {
             for (int i = 0; i < data.length; i++) {
                 int count = 0;
 
-                for (ClassificationModel model : samples) {
+                for (Classification model : samples) {
                     if (entry.getKey() == model.getId() && data[i].equals(model.getBiner()[i])) {
                         count++;
                     }
@@ -142,10 +142,10 @@ public class NaiveBayes {
         return result;
     }
 
-    private Map<Integer, BigDecimal> probCi(List<ClassificationModel> samples) {
+    private Map<Integer, BigDecimal> probCi(List<Classification> samples) {
         Map<Integer, BigDecimal> result = new LinkedHashMap<>();
 
-        for (ClassificationModel model : samples) {
+        for (Classification model : samples) {
             if (!result.containsKey(model.getId())) {
                 result.put(model.getId(), new BigDecimal(1));
             } else {

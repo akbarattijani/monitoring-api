@@ -1,20 +1,16 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import database.Connection.CheckDatabase;
+import database.Connection.Connect;
 import database.Connection.Connection;
+import database.dao.impl.UserImpl;
 import enums.Database;
 import httpactions.ApiAuth;
 import mapper.Mapper;
-import model.UserModel;
 import org.json.simple.JSONObject;
 import play.mvc.BodyParser;
 import play.mvc.Result;
 import utils.Body;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 import static play.mvc.Controller.request;
 import static play.mvc.Results.status;
@@ -26,7 +22,7 @@ import static play.mvc.Results.status;
 @ApiAuth
 public class User {
 
-    @CheckDatabase(
+    @Connect(
             database = Database.POSTGRESQL,
             host = "ec2-23-23-173-30.compute-1.amazonaws.com",
             databaseName = "d87s2lf0vv7l32",
@@ -37,33 +33,21 @@ public class User {
     @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
     public static Result register() {
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            final UserModel body = mapper.treeToValue(request().body().asJson(), UserModel.class);
+            model.User body = new Mapper().toModel(request().body().asJson(), model.User.class);
+            body.setStep(1);
 
-            String sql = "INSERT INTO m_user (nip, name, password, step, supervisor) values (?,?,?,?,?)";
-            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(sql);
-
-            preparedStatement.setString(1, body.getNip());
-            preparedStatement.setString(2, body.getName());
-            preparedStatement.setString(3, body.getPassword());
-            preparedStatement.setInt(4, 1);
-            preparedStatement.setInt(5, body.getSupervisor());
-
-            int count = preparedStatement.executeUpdate();
+            UserImpl dao = new UserImpl();
+            int count = dao.save(body);
 
             if (count > 0) {
                 JSONObject object = new JSONObject();
-                String select = "SELECT * FROM m_user WHERE nip = ? limit 1";
+                model.User user = dao.getUserByNip(body.getNip());
 
-                PreparedStatement prepaired = Connection.getConnection().prepareStatement(select);
-                prepaired.setString(1, body.getNip());
-
-                ResultSet rs = prepaired.executeQuery();
-                if (rs.next()) {
-                    int id = rs.getInt("id");
-                    String nipResult = rs.getString("nip");
-                    String name = rs.getString("name");
-                    int step = rs.getInt("step");
+                if (user != null) {
+                    int id = user.getId();
+                    String nipResult = user.getNip();
+                    String name = user.getName();
+                    int step = user.getStep();
 
                     object.put("status", 1);
                     object.put("id", id);
@@ -74,16 +58,13 @@ public class User {
                     object.put("status", 0);
                 }
 
-                // Closing database connection
-                rs.close();
-                preparedStatement.close();
+                // Closing database connection;
                 Connection.disconnect();
 
                 return Body.echo(enums.Result.REQUEST_OK, object.toString());
             }
 
             // Closing database connection
-            preparedStatement.close();
             Connection.disconnect();
 
             return Body.echo(enums.Result.RESPONSE_NOTHING, "Inserting Failed...");
@@ -94,7 +75,7 @@ public class User {
         }
     }
 
-    @CheckDatabase(
+    @Connect(
             database = Database.POSTGRESQL,
             host = "ec2-23-23-173-30.compute-1.amazonaws.com",
             databaseName = "d87s2lf0vv7l32",
@@ -105,19 +86,14 @@ public class User {
     public static Result login(String nip, String password, int supervisor) {
         try {
             JSONObject object = new JSONObject();
-            String select = "SELECT * FROM m_user WHERE nip = ? AND password = ? AND supervisor = ? limit 1";
+            UserImpl dao = new UserImpl();
+            model.User user = dao.getUser(nip, password, supervisor);
 
-            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
-            preparedStatement.setString(1, nip);
-            preparedStatement.setString(2, password);
-            preparedStatement.setInt(3, supervisor);
-
-            ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                int id = rs.getInt("id");
-                String nipResult = rs.getString("nip");
-                String name = rs.getString("name");
-                int step = rs.getInt("step");
+            if (user != null) {
+                int id = user.getId();
+                String nipResult = user.getNip();
+                String name = user.getName();
+                int step = user.getStep();
 
                 object.put("id", id);
                 object.put("nip", nipResult);
@@ -125,16 +101,12 @@ public class User {
                 object.put("step", step);
 
                 // Closing database connection
-                rs.close();
-                preparedStatement.close();
                 Connection.disconnect();
 
                 return Body.echo(enums.Result.REQUEST_OK, object.toString());
             }
 
             // Closing database connection
-            rs.close();
-            preparedStatement.close();
             Connection.disconnect();
 
             return Body.echo(enums.Result.RESPONSE_NOTHING, "User Not Found");
@@ -145,61 +117,7 @@ public class User {
         }
     }
 
-    @CheckDatabase(
-            database = Database.POSTGRESQL,
-            host = "ec2-23-23-173-30.compute-1.amazonaws.com",
-            databaseName = "d87s2lf0vv7l32",
-            userName = "ppxiknjbrpshfp",
-            password = "dadde9e960e7acc54bf9b09a35ef98f4ec01a149e1560b4a8c4f6909271cc76c",
-            port = "5432"
-    )
-    @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
-    public static Result loginAdmin() {
-        try {
-            model.User user = new Mapper().toModel(request().body().asJson(), model.User.class);
-
-            JSONObject object = new JSONObject();
-            String select = "SELECT * FROM m_user WHERE nip = ? AND password = ? AND supervisor = ? limit 1";
-
-            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
-            preparedStatement.setString(1, user.getNip());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setInt(3, user.getSupervisor());
-
-            ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                int id = rs.getInt("id");
-                String nipResult = rs.getString("nip");
-                String name = rs.getString("name");
-                int step = rs.getInt("step");
-
-                object.put("id", id);
-                object.put("nip", nipResult);
-                object.put("name", name);
-                object.put("step", step);
-
-                // Closing database connection
-                rs.close();
-                preparedStatement.close();
-                Connection.disconnect();
-
-                return Body.echo(enums.Result.REQUEST_OK, object.toString());
-            }
-
-            // Closing database connection
-            rs.close();
-            preparedStatement.close();
-            Connection.disconnect();
-
-            return Body.echo(enums.Result.RESPONSE_NOTHING, "User Not Found");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Connection.disconnect();
-            return status(401, e.getMessage());
-        }
-    }
-
-    @CheckDatabase(
+    @Connect(
             database = Database.POSTGRESQL,
             host = "ec2-23-23-173-30.compute-1.amazonaws.com",
             databaseName = "d87s2lf0vv7l32",
@@ -210,17 +128,14 @@ public class User {
     public static Result check(String nip) {
         try {
             JSONObject object = new JSONObject();
-            String select = "SELECT * FROM m_user WHERE nip = ? AND supervisor = 0 limit 1";
+            UserImpl dao = new UserImpl();
+            model.User user = dao.check(nip);
 
-            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
-            preparedStatement.setString(1, nip);
-
-            ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                int id = rs.getInt("id");
-                String nipResult = rs.getString("nip");
-                String name = rs.getString("name");
-                int step = rs.getInt("step");
+            if (user != null) {
+                int id = user.getId();
+                String nipResult = user.getNip();
+                String name = user.getName();
+                int step = user.getStep();
 
                 object.put("status", 1);
                 object.put("id", id);
@@ -232,8 +147,6 @@ public class User {
             }
 
             // Closing database connection
-            rs.close();
-            preparedStatement.close();
             Connection.disconnect();
 
             return Body.echo(enums.Result.REQUEST_OK, object.toString());
@@ -244,7 +157,7 @@ public class User {
         }
     }
 
-    @CheckDatabase(
+    @Connect(
             database = Database.POSTGRESQL,
             host = "ec2-23-23-173-30.compute-1.amazonaws.com",
             databaseName = "d87s2lf0vv7l32",
@@ -256,19 +169,22 @@ public class User {
     public static Result updateStep() {
         try {
             JsonNode body = request().body().asJson();
-            String sql = "UPDATE m_user set step = ? where id = ?";
+            UserImpl dao = new UserImpl();
+            model.User user = dao.getUserByNip(String.valueOf(body.path("id").asInt()));
 
-            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(sql);
-            preparedStatement.setInt(1, body.path("step").asInt());
-            preparedStatement.setInt(2, body.path("id").asInt());
+            if (user != null) {
+                user.setStep(body.path("step").asInt());
+                int count = dao.save(user);
 
-            int count = preparedStatement.executeUpdate();
+                // Closing database connection
+                Connection.disconnect();
 
-            // Closing database connection
-            preparedStatement.close();
-            Connection.disconnect();
-
-            return Body.echo(enums.Result.REQUEST_OK, "Inserting Success : " + count);
+                return Body.echo(enums.Result.REQUEST_OK, "Update Step Success : " + count);
+            } else {
+                // Closing database connection
+                Connection.disconnect();
+                return Body.echo(enums.Result.RESPONSE_NOTHING, "User ID " +  body.path("id").asInt() + " Not Found");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             Connection.disconnect();
@@ -276,7 +192,7 @@ public class User {
         }
     }
 
-    @CheckDatabase(
+    @Connect(
             database = Database.POSTGRESQL,
             host = "ec2-23-23-173-30.compute-1.amazonaws.com",
             databaseName = "d87s2lf0vv7l32",
@@ -288,19 +204,22 @@ public class User {
     public static Result updatePassword() {
         try {
             JsonNode body = request().body().asJson();
-            String sql = "UPDATE m_user set password = ? where id = ?";
+            UserImpl dao = new UserImpl();
+            model.User user = dao.getUserByNip(String.valueOf(body.path("id").asInt()));
 
-            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(sql);
-            preparedStatement.setInt(1, body.path("password").asInt());
-            preparedStatement.setInt(2, body.path("id").asInt());
+            if (user != null) {
+                user.setPassword(body.path("password").asText());
+                int count = dao.save(user);
 
-            int count = preparedStatement.executeUpdate();
+                // Closing database connection
+                Connection.disconnect();
 
-            // Closing database connection
-            preparedStatement.close();
-            Connection.disconnect();
-
-            return Body.echo(enums.Result.REQUEST_OK, "Inserting Success : " + count);
+                return Body.echo(enums.Result.REQUEST_OK, "Update Password Success : " + count);
+            } else {
+                // Closing database connection
+                Connection.disconnect();
+                return Body.echo(enums.Result.RESPONSE_NOTHING, "User ID " +  body.path("id").asInt() + " Not Found");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             Connection.disconnect();

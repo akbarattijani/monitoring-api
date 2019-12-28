@@ -1,7 +1,7 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import database.Connection.CheckDatabase;
+import database.Connection.Connect;
 import database.Connection.Connection;
 import enums.Database;
 import httpactions.ApiAuth;
@@ -22,7 +22,7 @@ import static play.mvc.Results.status;
 @ApiAuth
 public class Sample {
 
-    @CheckDatabase(
+    @Connect(
             database = Database.POSTGRESQL,
             host = "ec2-23-23-173-30.compute-1.amazonaws.com",
             databaseName = "d87s2lf0vv7l32",
@@ -57,7 +57,7 @@ public class Sample {
         }
     }
 
-    @CheckDatabase(
+    @Connect(
             database = Database.POSTGRESQL,
             host = "ec2-23-23-173-30.compute-1.amazonaws.com",
             databaseName = "d87s2lf0vv7l32",

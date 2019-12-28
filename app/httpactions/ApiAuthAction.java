@@ -1,6 +1,6 @@
 package httpactions;
 
-import database.Connection.CheckDatabase;
+import database.Connection.Connect;
 import enums.Database;
 import play.libs.F;
 import play.mvc.Action;
@@ -42,7 +42,7 @@ public class ApiAuthAction extends Action<ApiAuth> {
         }
     }
 
-    @CheckDatabase(
+    @Connect(
             database = Database.POSTGRESQL,
             host = "ec2-23-23-173-30.compute-1.amazonaws.com",
             databaseName = "d87s2lf0vv7l32",
