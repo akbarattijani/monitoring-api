@@ -49,6 +49,6 @@ public class AttendanceImpl extends DaoImpl<Attendance, AttendanceImpl> {
     }
 
     public List<Attendance> getAttendances(int id, String startDate, String endDate) {
-        return queryForObject("SELECT * FROM t_absen WHERE id_user = ? AND start_date::date BETWEEN ? AND ?", id, startDate, endDate);
+        return queryForObject("SELECT * FROM t_absen WHERE id_user = ? AND start_date::date BETWEEN ?::date AND ?::date", id, startDate, endDate);
     }
 }
