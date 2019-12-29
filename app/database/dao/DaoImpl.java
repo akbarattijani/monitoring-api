@@ -80,6 +80,14 @@ public abstract class DaoImpl<T, M> implements DaoInterface<T> {
                     f.setAccessible(true);
 
                     // Get Method
+                    if (fieldName.contains("_")) {
+                        String[] fn = fieldName.split("_");
+                        fieldName = "";
+                        for (String fix : fn) {
+                            fieldName += StringUtils.capitalize(fix);
+                        }
+                    }
+                    
                     Method method = persistentClass.getDeclaredMethod("get" + StringUtils.capitalize(fieldName));
                     Object value = method.invoke(object);
                     System.out.println("Method : " + method + " -> " + value);
