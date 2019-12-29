@@ -140,7 +140,7 @@ public abstract class DaoImpl<T, M> implements DaoInterface<T> {
                         index++;
 
                         if (map.getValue() == null) {
-                            update += map.getKey() + " = ''";
+                            update += map.getKey() + " = " + null;
                         } else {
                             if (map.getValue() instanceof Integer || map.getValue() instanceof Double || map.getValue() instanceof Long) {
                                 update += map.getKey() + " = " + map.getValue();
@@ -189,7 +189,7 @@ public abstract class DaoImpl<T, M> implements DaoInterface<T> {
                     insert += map.getKey();
 
                     if (map.getValue() == null) {
-                        values += "''";
+                        values += null;
                     } else {
                         if (map.getValue() instanceof Integer || map.getValue() instanceof Double || map.getValue() instanceof Long) {
                             values += map.getValue();
