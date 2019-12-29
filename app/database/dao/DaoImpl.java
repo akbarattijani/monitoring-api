@@ -139,10 +139,14 @@ public abstract class DaoImpl<T, M> implements DaoInterface<T> {
                     if (!map.getKey().equals(primaryKey)) {
                         index++;
 
-                        if (map.getValue() instanceof Integer || map.getValue() instanceof Double || map.getValue() instanceof Long) {
-                            update += map.getKey() + " = " + map.getValue();
+                        if (map.getValue() == null) {
+                            update += map.getKey() + " = ''";
                         } else {
-                            update += map.getKey() + " = '" + map.getValue() + "'";
+                            if (map.getValue() instanceof Integer || map.getValue() instanceof Double || map.getValue() instanceof Long) {
+                                update += map.getKey() + " = " + map.getValue();
+                            } else {
+                                update += map.getKey() + " = '" + map.getValue() + "'";
+                            }
                         }
 
                         if (index < column.size() - 1) {
