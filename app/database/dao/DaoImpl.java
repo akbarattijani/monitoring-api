@@ -272,11 +272,11 @@ public abstract class DaoImpl<T, M> implements DaoInterface<T> {
             PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(query);
             int param = 1;
             for (Object value : parameters) {
-                if (value instanceof Integer) {
+                if (value.getClass() == int.class || value instanceof Integer) {
                     preparedStatement.setInt(param, Integer.parseInt(value.toString()));
-                } else if (value instanceof Double) {
+                } else if (value.getClass() == double.class || value instanceof Double) {
                     preparedStatement.setDouble(param, Double.parseDouble(value.toString()));
-                } else if (value instanceof Long) {
+                } else if (value.getClass() == long.class || value instanceof Long) {
                     preparedStatement.setLong(param, Long.parseLong(value.toString()));
                 } else {
                     preparedStatement.setString(param, value.toString());

@@ -3,8 +3,12 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import database.Connection.Connect;
 import database.Connection.Connection;
+import database.dao.impl.AttendanceDetailImpl;
+import database.dao.impl.AttendanceImpl;
 import enums.Database;
 import httpactions.ApiAuth;
+import mapper.Mapper;
+import model.AttendanceDetail;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import play.mvc.BodyParser;
@@ -13,9 +17,9 @@ import utils.Body;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static play.mvc.Controller.request;
 import static play.mvc.Results.status;
@@ -37,58 +41,30 @@ public class Attendance {
     @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
     public static Result insert() {
         try {
-            final JsonNode body = request().body().asJson();
-            final int id = body.path("id").asInt();
-            final Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(body.path("start_date").asText());
-            final double longitude = body.path("longitude").asDouble();
-            final double latitude = body.path("latitude").asDouble();
-
-            String sql = "INSERT INTO t_absen (id_user, start_date) values (?,?)";
-            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(sql);
-
-            preparedStatement.setInt(1, id);
-            preparedStatement.setTimestamp(2, new Timestamp(startDate.getTime()));
-
-            int count = preparedStatement.executeUpdate();
+            model.Attendance attendance = new Mapper().toModel(request().body().asJson(), model.Attendance.class);
+            AttendanceImpl dao = new AttendanceImpl();
+            int count = dao.save(attendance);
 
             if (count > 0) {
-                String select = "SELECT * FROM t_absen WHERE id_user = ? ORDER BY id DESC LIMIT 1";
+                model.Attendance a = dao.getByIdUser(attendance.getIdUser());
 
-                PreparedStatement prepaired = Connection.getConnection().prepareStatement(select);
-                prepaired.setInt(1, id);
+                if (a != null) {
+                    AttendanceDetailImpl daoDetail = new AttendanceDetailImpl();
+                    AttendanceDetail attendanceDetail = new Mapper().toModel(request().body().asJson(), model.AttendanceDetail.class);
+                    attendanceDetail.setIdAbsen(a.getId());
+                    attendanceDetail.setDate(a.getStartDate());
+                    attendanceDetail.setCustom(1);
 
-                ResultSet rs = prepaired.executeQuery();
-                if (rs.next()) {
-                    sql = "INSERT INTO t_absen_detail (id_absen, longitude, latitude, date, custom) values (?,?,?,?,?)";
-                    preparedStatement = Connection.getConnection().prepareStatement(sql);
-
-                    preparedStatement.setInt(1, rs.getInt("id"));
-                    preparedStatement.setDouble(2, longitude);
-                    preparedStatement.setDouble(3, latitude);
-                    preparedStatement.setTimestamp(4, new Timestamp(startDate.getTime()));
-                    preparedStatement.setInt(5, 1);
-
-                    int countDetail = preparedStatement.executeUpdate();
+                    int countDetail = daoDetail.save(attendanceDetail);
                     if (countDetail > 0) {
                         // Closing database connection
-                        preparedStatement.close();
-                        prepaired.close();
-                        rs.close();
                         Connection.disconnect();
-
                         return Body.echo(enums.Result.REQUEST_OK, Boolean.TRUE.toString());
                     } else {
-                        sql = "DELETE FROM t_absen WHERE id = ?";
-                        preparedStatement = Connection.getConnection().prepareStatement(sql);
-                        preparedStatement.setInt(1, rs.getInt("id"));
-                        preparedStatement.executeUpdate();
+                        dao.delete("id = ?", new Object[] {a.getId()});
 
                         // Closing database connection
-                        preparedStatement.close();
-                        prepaired.close();
-                        rs.close();
                         Connection.disconnect();
-
                         return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
                     }
                 } else {
@@ -96,9 +72,7 @@ public class Attendance {
                 }
             } else {
                 // Closing database connection
-                preparedStatement.close();
                 Connection.disconnect();
-
                 return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
             }
         } catch (Exception e) {
@@ -120,67 +94,37 @@ public class Attendance {
     public static Result update() {
         try {
             final JsonNode body = request().body().asJson();
-            final int id = body.path("id").asInt();
-            final Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(body.path("end_date").asText());
-            final double longitude = body.path("longitude").asDouble();
-            final double latitude = body.path("latitude").asDouble();
+            final int id = body.path("id_user").asInt();
 
-            String select = "SELECT * FROM t_absen WHERE id_user = ? AND start_date >= now()::date ORDER BY id LIMIT 1";
-            PreparedStatement prepaired = Connection.getConnection().prepareStatement(select);
-            prepaired.setInt(1, id);
+            AttendanceImpl dao = new AttendanceImpl();
+            model.Attendance attendance = dao.getTodayByIdUser(id);
 
-            ResultSet rs = prepaired.executeQuery();
-            if (rs.next()) {
-                String sql = "UPDATE t_absen SET end_date = ? WHERE id = ?";
-                PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(sql);
+            if (attendance != null) {
+                attendance.setEndDate(body.path("end_date").asText());
 
-                preparedStatement.setTimestamp(1, new Timestamp(endDate.getTime()));
-                preparedStatement.setInt(2, rs.getInt("id"));
-
-                int count = preparedStatement.executeUpdate();
+                int count = dao.save(attendance);
                 if (count > 0) {
-                    sql = "INSERT INTO t_absen_detail (id_absen, longitude, latitude, date, custom) values (?,?,?,?,?)";
-                    preparedStatement = Connection.getConnection().prepareStatement(sql);
+                    AttendanceDetail attendanceDetail = new AttendanceDetail();
+                    attendanceDetail.setIdAbsen(attendance.getId());
+                    attendanceDetail.setLongitude(body.path("longitude").asDouble());
+                    attendanceDetail.setLatitude(body.path("latitude").asDouble());
+                    attendanceDetail.setDate(attendance.getEndDate());
+                    attendanceDetail.setCustom(4);
 
-                    preparedStatement.setInt(1, rs.getInt("id"));
-                    preparedStatement.setDouble(2, longitude);
-                    preparedStatement.setDouble(3, latitude);
-                    preparedStatement.setTimestamp(4, new Timestamp(endDate.getTime()));
-                    preparedStatement.setInt(5, 4);
-
-                    int countDetail = preparedStatement.executeUpdate();
+                    int countDetail = new AttendanceDetailImpl().save(attendanceDetail);
                     if (countDetail > 0) {
-                        // Closing database connection
-                        preparedStatement.close();
-                        prepaired.close();
-                        rs.close();
                         Connection.disconnect();
-
                         return Body.echo(enums.Result.REQUEST_OK, Boolean.TRUE.toString());
                     } else {
-                        // Closing database connection
-                        preparedStatement.close();
-                        prepaired.close();
-                        rs.close();
                         Connection.disconnect();
-
                         return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
                     }
                 } else {
-                    // Closing database connection
-                    preparedStatement.close();
-                    prepaired.close();
-                    rs.close();
                     Connection.disconnect();
-
                     return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
                 }
             } else {
-                // Closing database connection
-                prepaired.close();
-                rs.close();
                 Connection.disconnect();
-
                 return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
             }
         } catch (Exception e) {
@@ -200,25 +144,14 @@ public class Attendance {
     )
     public static Result check(int id) {
         try {
-            String select = "SELECT * FROM t_absen WHERE id_user = ? AND start_date >= now()::date ORDER BY id LIMIT 1";
-
-            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
-            preparedStatement.setInt(1, id);
-
-            ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
+            model.Attendance attendance = new AttendanceImpl().getTodayByIdUser(id);
+            if (attendance != null) {
                 // Closing database connection
-                preparedStatement.close();
-                rs.close();
                 Connection.disconnect();
-
                 return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
             } else {
                 // Closing database connection
-                preparedStatement.close();
-                rs.close();
                 Connection.disconnect();
-
                 return Body.echo(enums.Result.REQUEST_OK, Boolean.TRUE.toString());
             }
         } catch (Exception e) {
@@ -238,25 +171,14 @@ public class Attendance {
     )
     public static Result checkEndAttendance(int id) {
         try {
-            String select = "SELECT * FROM t_absen WHERE id_user = ? AND start_date >= now()::date AND end_date IS NULL ORDER BY id LIMIT 1";
-
-            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
-            preparedStatement.setInt(1, id);
-
-            ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
+            model.Attendance attendance = new AttendanceImpl().getEndTodayByIdUser(id);
+            if (attendance != null) {
                 // Closing database connection
-                preparedStatement.close();
-                rs.close();
                 Connection.disconnect();
-
                 return Body.echo(enums.Result.REQUEST_OK, Boolean.TRUE.toString());
             } else {
                 // Closing database connection
-                preparedStatement.close();
-                rs.close();
                 Connection.disconnect();
-
                 return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
             }
         } catch (Exception e) {
@@ -278,50 +200,27 @@ public class Attendance {
     public static Result track() {
         try {
             final JsonNode body = request().body().asJson();
-            final int id = body.path("id").asInt();
-            final double longitude = body.path("longitude").asDouble();
-            final double latitude = body.path("latitude").asDouble();
-            final Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(body.path("date").asText());
+            model.Attendance attendance = new AttendanceImpl().getTodayByIdUser(body.path("id_user").asInt());
 
-            String select = "SELECT * FROM t_absen WHERE id_user = ? AND start_date >= now()::date ORDER BY id LIMIT 1";
-            PreparedStatement prepaired = Connection.getConnection().prepareStatement(select);
-            prepaired.setInt(1, id);
+            if (attendance != null) {
+                AttendanceDetail attendanceDetail = new AttendanceDetail();
+                attendanceDetail.setIdAbsen(attendance.getId());
+                attendanceDetail.setLongitude(body.path("longitude").asDouble());
+                attendanceDetail.setLatitude(body.path("latitude").asDouble());
+                attendanceDetail.setDate(body.path("date").asText());
+                attendanceDetail.setCustom(0);
 
-            ResultSet rs = prepaired.executeQuery();
-            if (rs.next()) {
-                String sql = "INSERT INTO t_absen_detail (id_absen, longitude, latitude, date, custom) values (?,?,?,?,?)";
-                PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(sql);
-
-                preparedStatement.setInt(1, rs.getInt("id"));
-                preparedStatement.setDouble(2, longitude);
-                preparedStatement.setDouble(3, latitude);
-                preparedStatement.setTimestamp(4, new Timestamp(date.getTime()));
-                preparedStatement.setInt(5, 0);
-
-                int countDetail = preparedStatement.executeUpdate();
+                int countDetail = new AttendanceDetailImpl().save(attendanceDetail);
                 if (countDetail > 0) {
-                    // Closing database connection
-                    preparedStatement.close();
-                    prepaired.close();
-                    rs.close();
                     Connection.disconnect();
-
                     return Body.echo(enums.Result.REQUEST_OK, Boolean.TRUE.toString());
                 } else {
-                    // Closing database connection
-                    preparedStatement.close();
-                    prepaired.close();
-                    rs.close();
                     Connection.disconnect();
-
                     return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
                 }
             } else {
                 // Closing database connection
-                prepaired.close();
-                rs.close();
                 Connection.disconnect();
-
                 return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
             }
         } catch (Exception e) {
@@ -343,67 +242,37 @@ public class Attendance {
     public static Result breakOut() {
         try {
             final JsonNode body = request().body().asJson();
-            final int id = body.path("id").asInt();
-            final Date breakDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(body.path("break_date").asText());
-            final double longitude = body.path("longitude").asDouble();
-            final double latitude = body.path("latitude").asDouble();
+            AttendanceImpl dao = new AttendanceImpl();
+            model.Attendance attendance = dao.getBreakOutTodayByIdUser(body.path("id_user").asInt());
 
-            String select = "SELECT * FROM t_absen WHERE id_user = ? AND start_date >= now()::date AND end_date IS NULL AND break_end_date IS NULL ORDER BY id LIMIT 1";
-            PreparedStatement prepaired = Connection.getConnection().prepareStatement(select);
-            prepaired.setInt(1, id);
+            if (attendance != null) {
+                attendance.setBreakStartDate(body.path("break_start_date").asText());
 
-            ResultSet rs = prepaired.executeQuery();
-            if (rs.next()) {
-                String sql = "UPDATE t_absen SET break_start_date = ? WHERE id = ?";
-                PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(sql);
-
-                preparedStatement.setTimestamp(1, new Timestamp(breakDate.getTime()));
-                preparedStatement.setInt(2, rs.getInt("id"));
-
-                int count = preparedStatement.executeUpdate();
+                int count = dao.save(attendance);
                 if (count > 0) {
-                    sql = "INSERT INTO t_absen_detail (id_absen, longitude, latitude, date, custom) values (?,?,?,?,?)";
-                    preparedStatement = Connection.getConnection().prepareStatement(sql);
+                    AttendanceDetail attendanceDetail = new AttendanceDetail();
+                    attendanceDetail.setIdAbsen(attendance.getId());
+                    attendanceDetail.setLongitude(body.path("longitude").asDouble());
+                    attendanceDetail.setLatitude(body.path("latitude").asDouble());
+                    attendanceDetail.setDate(attendance.getBreakStartDate());
+                    attendanceDetail.setCustom(2);
 
-                    preparedStatement.setInt(1, rs.getInt("id"));
-                    preparedStatement.setDouble(2, longitude);
-                    preparedStatement.setDouble(3, latitude);
-                    preparedStatement.setTimestamp(4, new Timestamp(breakDate.getTime()));
-                    preparedStatement.setInt(5, 2);
-
-                    int countDetail = preparedStatement.executeUpdate();
+                    int countDetail = new AttendanceDetailImpl().save(attendanceDetail);
                     if (countDetail > 0) {
-                        // Closing database connection
-                        preparedStatement.close();
-                        prepaired.close();
-                        rs.close();
                         Connection.disconnect();
-
                         return Body.echo(enums.Result.REQUEST_OK, Boolean.TRUE.toString());
                     } else {
-                        // Closing database connection
-                        preparedStatement.close();
-                        prepaired.close();
-                        rs.close();
                         Connection.disconnect();
-
                         return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
                     }
                 } else {
                     // Closing database connection
-                    preparedStatement.close();
-                    prepaired.close();
-                    rs.close();
                     Connection.disconnect();
-
                     return Body.echo(enums.Result.REQUEST_OK, "Gagal perbarui status istirahat. Ulangi beberapa saat lagi.");
                 }
             } else {
                 // Closing database connection
-                prepaired.close();
-                rs.close();
                 Connection.disconnect();
-
                 return Body.echo(enums.Result.REQUEST_OK, "Anda belum melakukan absen atau sudah selesai istirahat");
             }
         } catch (Exception e) {
@@ -425,67 +294,37 @@ public class Attendance {
     public static Result breakIn() {
         try {
             final JsonNode body = request().body().asJson();
-            final int id = body.path("id").asInt();
-            final Date breakDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(body.path("break_date").asText());
-            final double longitude = body.path("longitude").asDouble();
-            final double latitude = body.path("latitude").asDouble();
+            AttendanceImpl dao = new AttendanceImpl();
+            model.Attendance attendance = dao.getBreakInTodayByIdUser(body.path("id_user").asInt());
 
-            String select = "SELECT * FROM t_absen WHERE id_user = ? AND start_date >= now()::date AND end_date IS NULL AND break_start_date IS NOT NULL ORDER BY id LIMIT 1";
-            PreparedStatement prepaired = Connection.getConnection().prepareStatement(select);
-            prepaired.setInt(1, id);
+            if (attendance != null) {
+                attendance.setBreakEndDate( body.path("break_end_date").asText());
 
-            ResultSet rs = prepaired.executeQuery();
-            if (rs.next()) {
-                String sql = "UPDATE t_absen SET break_end_date = ? WHERE id = ?";
-                PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(sql);
-
-                preparedStatement.setTimestamp(1, new Timestamp(breakDate.getTime()));
-                preparedStatement.setInt(2, rs.getInt("id"));
-
-                int count = preparedStatement.executeUpdate();
+                int count = dao.save(attendance);
                 if (count > 0) {
-                    sql = "INSERT INTO t_absen_detail (id_absen, longitude, latitude, date, custom) values (?,?,?,?,?)";
-                    preparedStatement = Connection.getConnection().prepareStatement(sql);
+                    AttendanceDetail attendanceDetail = new AttendanceDetail();
+                    attendanceDetail.setIdAbsen(attendance.getId());
+                    attendanceDetail.setLongitude(body.path("longitude").asDouble());
+                    attendanceDetail.setLatitude(body.path("latitude").asDouble());
+                    attendanceDetail.setDate(attendance.getBreakEndDate());
+                    attendanceDetail.setCustom(3);
 
-                    preparedStatement.setInt(1, rs.getInt("id"));
-                    preparedStatement.setDouble(2, longitude);
-                    preparedStatement.setDouble(3, latitude);
-                    preparedStatement.setTimestamp(4, new Timestamp(breakDate.getTime()));
-                    preparedStatement.setInt(5, 3);
-
-                    int countDetail = preparedStatement.executeUpdate();
+                    int countDetail = new AttendanceDetailImpl().save(attendanceDetail);
                     if (countDetail > 0) {
-                        // Closing database connection
-                        preparedStatement.close();
-                        prepaired.close();
-                        rs.close();
                         Connection.disconnect();
-
                         return Body.echo(enums.Result.REQUEST_OK, Boolean.TRUE.toString());
                     } else {
-                        // Closing database connection
-                        preparedStatement.close();
-                        prepaired.close();
-                        rs.close();
                         Connection.disconnect();
-
                         return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
                     }
                 } else {
                     // Closing database connection
-                    preparedStatement.close();
-                    prepaired.close();
-                    rs.close();
                     Connection.disconnect();
-
                     return Body.echo(enums.Result.REQUEST_OK, "Gagal perbarui status selesai istirahat. Ulangi beberapa saat lagi.");
                 }
             } else {
                 // Closing database connection
-                prepaired.close();
-                rs.close();
                 Connection.disconnect();
-
                 return Body.echo(enums.Result.REQUEST_OK, "Anda belum melakukan absen atau belum perbarui status istirahat");
             }
         } catch (Exception e) {
@@ -557,54 +396,41 @@ public class Attendance {
     )
     public static Result history(int id, String startDate, String endDate) {
         try {
-            final Date start = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
-            final Date end = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
             JSONArray array = new JSONArray();
+            List<model.Attendance> attendanceList = new AttendanceImpl().getAttendances(id, startDate, endDate);
 
-            String select = "SELECT * FROM t_absen WHERE id_user = ? AND start_date::date BETWEEN ? AND ?";
-
-            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
-            preparedStatement.setInt(1, id);
-            preparedStatement.setDate(2, new java.sql.Date(start.getTime()));
-            preparedStatement.setDate(3, new java.sql.Date(end.getTime()));
-
-            ResultSet rs = preparedStatement.executeQuery();
-
-            boolean isNotNull = false;
-            while (rs.next()) {
-                isNotNull = true;
-
+            for (model.Attendance attendance : attendanceList) {
                 JSONObject object = new JSONObject();
-                object.put("id", rs.getInt("id"));
-                object.put("id_user", rs.getInt("id_user"));
-                object.put("start_date", rs.getTimestamp("start_date").toString());
+                object.put("id", attendance.getId());
+                object.put("id_user", attendance.getIdUser());
+                object.put("start_date", attendance.getStartDate());
 
-                if (rs.getTimestamp("end_date") == null) {
+                String end = attendance.getEndDate();
+                if (end == null || end.trim().equals("")) {
                     object.put("end_date", "Belum Tersedia");
                 } else {
-                    object.put("end_date", rs.getTimestamp("end_date").toString());
+                    object.put("end_date", end);
                 }
 
-                if (rs.getTimestamp("break_start_date") == null) {
+                String breakOut = attendance.getBreakStartDate();
+                if (breakOut == null || breakOut.trim().equals("")) {
                     object.put("break_start_date", "Belum Tersedia");
                 } else {
-                    object.put("break_start_date", rs.getTimestamp("break_start_date").toString());
+                    object.put("break_start_date", breakOut);
                 }
 
-                if (rs.getTimestamp("break_end_date") == null) {
+                String breakIn = attendance.getBreakEndDate();
+                if (breakIn == null || breakIn.trim().equals("")) {
                     object.put("break_end_date", "Belum Tersedia");
                 } else {
-                    object.put("break_end_date", rs.getTimestamp("break_end_date").toString());
+                    object.put("break_end_date", breakIn);
                 }
 
                 array.add(object);
             }
 
-            preparedStatement.close();
-            rs.close();
             Connection.disconnect();
-
-            if (isNotNull) {
+            if (attendanceList.size() > 0) {
                 return Body.echo(enums.Result.REQUEST_OK, array.toString());
             } else {
                 return Body.echo(enums.Result.RESPONSE_NOTHING, "NOTHING");

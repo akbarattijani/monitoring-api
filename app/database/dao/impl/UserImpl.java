@@ -28,6 +28,10 @@ public class UserImpl extends DaoImpl<User, UserImpl> {
         return super.select(object, arguments, parameters);
     }
 
+    public User getById(int id) {
+        return queryForObject(Query.SELECT, "SELECT * FROM m_user where id = ? LIMIT 1", id);
+    }
+
     @Override
     public int delete(String arguments, Object[] parameters) {
         return super.delete(arguments, parameters);

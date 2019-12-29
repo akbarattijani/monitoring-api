@@ -115,16 +115,20 @@ public class Mapper {
 
                         // set data object
                         Class<?> dataType = f.getType();
-                        if (dataType == String.class) {
-                            f.set(clas, jsonObject.path(fieldName).asText());
-                        } else if (dataType == Integer.class || dataType == int.class) {
-                            f.setInt(clas, jsonObject.path(fieldName).asInt());
-                        } else if (dataType == Double.class || dataType == double.class) {
-                            f.setDouble(clas, jsonObject.path(fieldName).asDouble());
-                        } else if (dataType == Long.class || dataType == long.class) {
-                            f.setLong(clas, jsonObject.path(fieldName).asLong());
+                        if (jsonObject.has(fieldName)) {
+                            if (dataType == String.class) {
+                                f.set(clas, jsonObject.path(fieldName).asText());
+                            } else if (dataType == Integer.class || dataType == int.class) {
+                                f.setInt(clas, jsonObject.path(fieldName).asInt());
+                            } else if (dataType == Double.class || dataType == double.class) {
+                                f.setDouble(clas, jsonObject.path(fieldName).asDouble());
+                            } else if (dataType == Long.class || dataType == long.class) {
+                                f.setLong(clas, jsonObject.path(fieldName).asLong());
+                            } else {
+                                throw new Exception("Data Type not valid. Apply only String, Integer, Double, or Long");
+                            }
                         } else {
-                            throw new Exception("Data Type not valid. Apply only String, Integer, Double, or Long");
+                            System.out.println(fieldName + " Not Find On JsonNode => " + jsonObject.toString());
                         }
                     }
                 }
@@ -152,16 +156,20 @@ public class Mapper {
 
                     // set data object
                     Class<?> dataType = f.getType();
-                    if (dataType == String.class) {
-                        f.set(clas, jsonNode.path(fieldName).asText());
-                    } else if (dataType == Integer.class || dataType == int.class) {
-                        f.setInt(clas, jsonNode.path(fieldName).asInt());
-                    } else if (dataType == Double.class || dataType == double.class) {
-                        f.setDouble(clas, jsonNode.path(fieldName).asDouble());
-                    } else if (dataType == Long.class || dataType == long.class) {
-                        f.setLong(clas, jsonNode.path(fieldName).asLong());
+                    if (jsonNode.has(fieldName)) {
+                        if (dataType == String.class) {
+                            f.set(clas, jsonNode.path(fieldName).asText());
+                        } else if (dataType == Integer.class || dataType == int.class) {
+                            f.setInt(clas, jsonNode.path(fieldName).asInt());
+                        } else if (dataType == Double.class || dataType == double.class) {
+                            f.setDouble(clas, jsonNode.path(fieldName).asDouble());
+                        } else if (dataType == Long.class || dataType == long.class) {
+                            f.setLong(clas, jsonNode.path(fieldName).asLong());
+                        } else {
+                            throw new Exception("Data Type not valid. Apply only String, Integer, Double, or Long");
+                        }
                     } else {
-                        throw new Exception("Data Type not valid. Apply only String, Integer, Double, or Long");
+                        System.out.println(fieldName + " Not Find On JsonNode => " + jsonNode.toString());
                     }
                 }
             }

@@ -5,15 +5,14 @@ import algoritm.NaiveBayes;
 import com.fasterxml.jackson.databind.JsonNode;
 import database.Connection.Connect;
 import database.Connection.Connection;
+import database.dao.impl.SampleImpl;
+import database.dao.impl.UserImpl;
 import enums.Database;
 import httpactions.ApiAuth;
 import play.mvc.BodyParser;
 import play.mvc.Result;
 import utils.Body;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,15 +37,12 @@ public class Classification {
     @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
     public static Result search() {
         try {
-            List<model.Classification> samples = new ArrayList<>();
-            String select = "SELECT * FROM m_sample";
             JsonNode body = request().body().asJson();
+            List<model.Classification> samples = new ArrayList<>();
+            List<model.Sample> sampleList = new SampleImpl().getAll();
 
-            Statement statement = Connection.getConnection().createStatement();
-            ResultSet rs = statement.executeQuery(select);
-
-            while (rs.next()) {
-                samples.add(new model.Classification().setId(rs.getInt("id_user")).setBiner(rs.getString("biner").split(" ")));
+            for (model.Sample sample : sampleList) {
+                samples.add(new model.Classification().setId(sample.getIdUser()).setBiner(sample.getBiner().split(" ")));
             }
 
             String nip = body.path("nip").asText();
@@ -57,33 +53,19 @@ public class Classification {
 //            int resultId = new KNearestNeighbor().classification(samples, biner.split(" "), 9);
 
             System.out.println("Result : " + resultId);
+            model.User user = new UserImpl().getById(resultId);
 
-            select = "SELECT * FROM m_user where id = ? LIMIT 1";
-            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(select);
-            preparedStatement.setInt(1, resultId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                String nipCompare = resultSet.getString("nip");
+            if (user != null) {
+                String nipCompare = user.getNip();
                 if (nipCompare.equals(nip)) {
                     // Closing database connection
-                    rs.close();
-                    resultSet.close();
-                    statement.close();
-                    preparedStatement.close();
                     Connection.disconnect();
 
                     return Body.echo(enums.Result.REQUEST_OK, Boolean.TRUE.toString());
                 }
             }
 
-            // Closing database connection
-            rs.close();
-            resultSet.close();
-            statement.close();
-            preparedStatement.close();
             Connection.disconnect();
-
             return Body.echo(enums.Result.REQUEST_OK, Boolean.FALSE.toString());
         } catch (Exception e) {
             e.printStackTrace();

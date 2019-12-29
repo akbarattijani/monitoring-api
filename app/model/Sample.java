@@ -9,7 +9,7 @@ import mapper.annotation.JsonField;
  */
 
 public class Sample {
-    @Column(name = "id", primaryKey = true)
+    @Column(name = "id", primaryKey = true, autoIncrement = true)
     @JsonField(key = "id")
     private int id;
 

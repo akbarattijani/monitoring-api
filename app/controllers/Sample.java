@@ -1,16 +1,16 @@
 package controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import database.Connection.Connect;
 import database.Connection.Connection;
+import database.dao.impl.SampleImpl;
 import enums.Database;
 import httpactions.ApiAuth;
+import mapper.Mapper;
 import play.mvc.BodyParser;
 import play.mvc.Result;
 import utils.Body;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.util.List;
 
 import static play.mvc.Controller.request;
 import static play.mvc.Results.status;
@@ -33,24 +33,15 @@ public class Sample {
     @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
     public static Result insert() {
         try {
-            final JsonNode body = request().body().asJson();
-            final int idUser = body.path("id").asInt();
-            final String biner = body.path("biner").asText();
-
-            String sql = "INSERT INTO m_sample (id_user, biner) values (?,?)";
-            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(sql);
-
-            preparedStatement.setInt(1, idUser);
-            preparedStatement.setString(2, biner);
-
-            int count = preparedStatement.executeUpdate();
+            model.Sample sample = new Mapper().toModel(request().body().asJson(), model.Sample.class);
+            SampleImpl dao = new SampleImpl();
+            int count = dao.save(sample);
 
             // Closing database connection
-            preparedStatement.close();
             Connection.disconnect();
 
             return Body.echo(enums.Result.REQUEST_OK, "Inserting Success : " + count);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Connection.disconnect();
             return status(401, e.getMessage());
@@ -68,33 +59,16 @@ public class Sample {
     @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
     public static Result insertAll() {
         try {
-            final JsonNode body = request().body().asJson();
+            List<model.Sample> samples = new Mapper().toModels(request().body().asJson(), model.Sample.class);
+            SampleImpl dao = new SampleImpl();
 
             int count = 0;
-            int numberParam = 1;
-            String sql = "INSERT INTO m_sample (id_user, biner) values ";
-
-            for (int i = 0; i < body.size(); i++) {
-                if (i > 0) {
-                    sql += ",(?, ?)";
-                } else {
-                    sql += "(?, ?)";
-                }
+            for (model.Sample sample : samples) {
+                int c = dao.save(sample);
+                count += c;
             }
-
-            PreparedStatement preparedStatement = Connection.getConnection().prepareStatement(sql);
-            for (int i = 0; i < body.size(); i++) {
-                JsonNode detail = body.get(i);
-                preparedStatement.setInt(numberParam, detail.path("id").asInt());
-                preparedStatement.setString(numberParam + 1, detail.path("biner").asText());
-
-                numberParam++;
-            }
-
-            count = preparedStatement.executeUpdate();
 
             // Closing database connection
-            preparedStatement.close();
             Connection.disconnect();
 
             return Body.echo(enums.Result.REQUEST_OK, "Inserting Success : " + count);
