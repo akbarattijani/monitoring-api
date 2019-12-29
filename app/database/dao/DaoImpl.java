@@ -187,10 +187,15 @@ public abstract class DaoImpl<T, M> implements DaoInterface<T> {
                     }
 
                     insert += map.getKey();
-                    if (map.getValue() instanceof Integer || map.getValue() instanceof Double || map.getValue() instanceof Long) {
-                        values += map.getValue();
+
+                    if (map.getValue() == null) {
+                        values += "''";
                     } else {
-                        values += "'" + map.getValue() + "'";
+                        if (map.getValue() instanceof Integer || map.getValue() instanceof Double || map.getValue() instanceof Long) {
+                            values += map.getValue();
+                        } else {
+                            values += "'" + map.getValue() + "'";
+                        }
                     }
 
                     if (index < column.size()) {
