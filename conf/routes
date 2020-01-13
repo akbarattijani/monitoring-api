@@ -12,7 +12,7 @@ GET     /api/v1/user/login/:nip/:password/:supervisor                   controll
 GET     /api/v1/user/check/:nip                                         controllers.User.check(nip:String)
 PUT     /api/v1/user/updateStep                                         controllers.User.updateStep()
 PUT     /api/v1/user/updatePassword                                     controllers.User.updatePassword()
-GET     /api/v1/getAll                                                  controllers.User.getAllUser()
+GET     /api/v1/user/getAll                                             controllers.User.getAllUser()
 
 ## Sample
 POST    /api/v1/sample/insert                                           controllers.Sample.insert()
