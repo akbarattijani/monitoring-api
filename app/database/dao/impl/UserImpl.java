@@ -48,4 +48,8 @@ public class UserImpl extends DaoImpl<User, UserImpl> {
     public User check(String nip) {
         return queryForObject(Query.SELECT,"SELECT * FROM m_user WHERE nip = ? AND supervisor = 0 limit 1", nip);
     }
+
+    public List<User> getAll() {
+        return queryForObject("SELECT * FROM m_user where supervisor = 0");
+    }
 }
