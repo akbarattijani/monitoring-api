@@ -441,4 +441,60 @@ public class Attendance {
             return status(401, e.getMessage());
         }
     }
+
+    @Connect(
+            database = Database.POSTGRESQL,
+            host = "ec2-23-23-173-30.compute-1.amazonaws.com",
+            databaseName = "d87s2lf0vv7l32",
+            userName = "ppxiknjbrpshfp",
+            password = "dadde9e960e7acc54bf9b09a35ef98f4ec01a149e1560b4a8c4f6909271cc76c",
+            port = "5432"
+    )
+    public static Result getAttendances(int id) {
+        try {
+            JSONArray array = new JSONArray();
+            List<model.Attendance> attendanceList = new AttendanceImpl().getAll(id);
+
+            for (model.Attendance attendance : attendanceList) {
+                JSONObject object = new JSONObject();
+                object.put("id", attendance.getId());
+                object.put("id_user", attendance.getIdUser());
+                object.put("start_date", attendance.getStartDate());
+
+                String end = attendance.getEndDate();
+                if (end == null || end.trim().equals("")) {
+                    object.put("end_date", "Belum Tersedia");
+                } else {
+                    object.put("end_date", end);
+                }
+
+                String breakOut = attendance.getBreakStartDate();
+                if (breakOut == null || breakOut.trim().equals("")) {
+                    object.put("break_start_date", "Belum Tersedia");
+                } else {
+                    object.put("break_start_date", breakOut);
+                }
+
+                String breakIn = attendance.getBreakEndDate();
+                if (breakIn == null || breakIn.trim().equals("")) {
+                    object.put("break_end_date", "Belum Tersedia");
+                } else {
+                    object.put("break_end_date", breakIn);
+                }
+
+                array.add(object);
+            }
+
+            Connection.disconnect();
+            if (attendanceList.size() > 0) {
+                return Body.echo(enums.Result.REQUEST_OK, array.toString());
+            } else {
+                return Body.echo(enums.Result.RESPONSE_NOTHING, "NOTHING");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Connection.disconnect();
+            return status(401, e.getMessage());
+        }
+    }
 }
