@@ -38,7 +38,7 @@ public class UserImpl extends DaoImpl<User, UserImpl> {
     }
 
     public User getUserByNip(String nip) {
-        return queryForObject(Query.SELECT,"SELECT * FROM m_user WHERE nip = ? limit 1", nip);
+        return queryForObject(Query.SELECT,"SELECT * FROM m_user WHERE id = ? limit 1", nip);
     }
 
     public User getUser(String nip, String password, int supervisor) {
