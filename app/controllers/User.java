@@ -44,7 +44,7 @@ public class User {
 
             if (count > 0) {
                 JSONObject object = new JSONObject();
-                model.User user = dao.getUserByNip(body.getNip());
+                model.User user = dao.getUserByNip(body.getId());
 
                 if (user != null) {
                     int id = user.getId();
@@ -173,7 +173,7 @@ public class User {
         try {
             JsonNode body = request().body().asJson();
             UserImpl dao = new UserImpl();
-            model.User user = dao.getUserByNip(String.valueOf(body.path("id").asInt()));
+            model.User user = dao.getUserByNip(body.path("id").asInt());
 
             if (user != null) {
                 user.setStep(body.path("step").asInt());
@@ -208,7 +208,7 @@ public class User {
         try {
             JsonNode body = request().body().asJson();
             UserImpl dao = new UserImpl();
-            model.User user = dao.getUserByNip(String.valueOf(body.path("id").asInt()));
+            model.User user = dao.getUserByNip(body.path("id").asInt());
 
             if (user != null) {
                 user.setPassword(body.path("password").asText());
