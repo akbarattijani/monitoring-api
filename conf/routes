@@ -31,7 +31,8 @@ PUT     /api/v1/attendance/breakOut                                     controll
 PUT     /api/v1/attendance/breakIn                                      controllers.Attendance.breakIn()
 GET     /api/v1/attendance/get/:id/:date                                controllers.Attendance.get(id:Integer, date:String)
 GET     /api/v1/attendance/history/:id/:startDate/:endDate              controllers.Attendance.history(id:Integer, startDate:String, endDate:String)
-GET     /api/v1/attemdance/getAll/:id                                   controllers.Attendance.getAttendances(id:Integer)
+GET     /api/v1/attendance/getAll/:id                                   controllers.Attendance.getAttendances(id:Integer)
+GET     /api/v1/attendance/getDetail/:id                                controllers.Attendance.getAttendanceDetail(id:Integer)
 
 ## PRODUK API
 GET     /api/product/                                                   controllers.Product.getProducts

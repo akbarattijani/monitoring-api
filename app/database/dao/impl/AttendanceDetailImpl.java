@@ -4,6 +4,8 @@ import database.dao.Dao;
 import database.dao.DaoImpl;
 import model.AttendanceDetail;
 
+import java.util.List;
+
 /**
  * @author AKBAR <akbar.attijani@gmail.com>
  */
@@ -18,6 +20,10 @@ public class AttendanceDetailImpl extends DaoImpl<AttendanceDetail, AttendanceDe
     @Override
     public int save(AttendanceDetail object) {
         return super.save(object);
+    }
+
+    public List<AttendanceDetail> getDetailByIdAbsen(int id) {
+        return queryForObject("SELECT * FROM t_absen_detail WHERE id_absen = ?", id);
     }
 }
 

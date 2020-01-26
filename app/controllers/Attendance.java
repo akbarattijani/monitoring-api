@@ -497,4 +497,42 @@ public class Attendance {
             return status(401, e.getMessage());
         }
     }
+
+    @Connect(
+            database = Database.POSTGRESQL,
+            host = "ec2-23-23-173-30.compute-1.amazonaws.com",
+            databaseName = "d87s2lf0vv7l32",
+            userName = "ppxiknjbrpshfp",
+            password = "dadde9e960e7acc54bf9b09a35ef98f4ec01a149e1560b4a8c4f6909271cc76c",
+            port = "5432"
+    )
+    public static Result getAttendanceDetail(int id) {
+        try {
+            JSONArray array = new JSONArray();
+            List<AttendanceDetail> attendanceList = new AttendanceDetailImpl().getDetailByIdAbsen(id);
+
+            for (AttendanceDetail attendance : attendanceList) {
+                JSONObject object = new JSONObject();
+                object.put("id", attendance.getId());
+                object.put("id_absen", attendance.getIdAbsen());
+                object.put("longitude", attendance.getLongitude());
+                object.put("latitude", attendance.getLatitude());
+                object.put("custom", attendance.getCustom());
+                object.put("date", attendance.getDate());
+
+                array.add(object);
+            }
+
+            Connection.disconnect();
+            if (attendanceList.size() > 0) {
+                return Body.echo(enums.Result.REQUEST_OK, array.toString());
+            } else {
+                return Body.echo(enums.Result.RESPONSE_NOTHING, "NOTHING");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Connection.disconnect();
+            return status(401, e.getMessage());
+        }
+    }
 }
