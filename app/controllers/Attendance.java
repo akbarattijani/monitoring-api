@@ -41,6 +41,7 @@ public class Attendance {
     @BodyParser.Of(value = BodyParser.Json.class , maxLength = 1024 * 1024 * 1024)
     public static Result insert() {
         try {
+            System.out.print("thisa");
             model.Attendance attendance = new Mapper().toModel(request().body().asJson(), model.Attendance.class);
             AttendanceImpl dao = new AttendanceImpl();
             int count = dao.save(attendance);
