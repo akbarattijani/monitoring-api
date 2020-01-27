@@ -105,6 +105,7 @@ public class User {
 
                 // Closing database connection
                 Connection.disconnect();
+                System.out.println("Anda berhasil login");
 
                 return Body.echo(enums.Result.REQUEST_OK, object.toString());
             }
