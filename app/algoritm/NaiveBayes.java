@@ -20,7 +20,7 @@ public class NaiveBayes {
         Map<Integer, BigDecimal> attributeProb = multiplyProb(attributeStore);
         Map<Integer, BigDecimal> probability = probXCiMultiplyCi(classStore, attributeProb);
 
-        BigDecimal compare = new BigDecimal(999999999);
+        BigDecimal compare = new BigDecimal(-1);
         int result = -1;
         for (Map.Entry<Integer, BigDecimal> entry : probability.entrySet()) {
             if (compare.compareTo(entry.getValue()) < 0) {
