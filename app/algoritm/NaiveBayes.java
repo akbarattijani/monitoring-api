@@ -23,7 +23,7 @@ public class NaiveBayes {
         BigDecimal compare = new BigDecimal(999999999);
         int result = -1;
         for (Map.Entry<Integer, BigDecimal> entry : probability.entrySet()) {
-            if (compare.compareTo(entry.getValue()) > 0) {
+            if (compare.compareTo(entry.getValue()) < 0) {
                 compare = entry.getValue();
                 result = entry.getKey();
             }
@@ -71,6 +71,7 @@ public class NaiveBayes {
                     .multiply(entry.getValue())
                     .add(new BigDecimal(2.0))
                     .divide(new BigDecimal(1.0), 5, RoundingMode.HALF_UP);
+            count = new BigDecimal(100).subtract(count);
             result.put(entry.getKey(), count);
         }
 
