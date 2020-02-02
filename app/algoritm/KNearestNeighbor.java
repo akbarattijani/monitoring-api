@@ -95,13 +95,13 @@ public class KNearestNeighbor {
         for (int i = 0; i < K; i++) {
             int id = (int) ED[i][2];
             String[] biner = samples.get((int) ED[i][1]).getBiner();
-            result.add(new Classification().setId(id).setBiner(biner));
+            result.add(new Classification().setId(id).setBiner(biner).setDistance(ED[i][0]));
         }
 
         if (print) {
             System.out.println("------------------- KNN (SPLIT WITH K) -----------------------");
             for (Classification model : result) {
-                System.out.println("ID : " + model.getId());
+                System.out.println("ID : " + model.getId() + "\tDistance : " + model.getDistance());
             }
             System.out.println("--------------------------------------------------------------\n");
         }

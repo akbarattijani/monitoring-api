@@ -6,6 +6,7 @@ package model;
 public class Classification {
     private int id;
     private String[] biner;
+    private double distance;
 
     public int getId() {
         return id;
@@ -22,6 +23,15 @@ public class Classification {
 
     public Classification setBiner(String[] biner) {
         this.biner = biner;
+        return this;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public Classification setDistance(double distance) {
+        this.distance = distance;
         return this;
     }
 }
