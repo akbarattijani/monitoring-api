@@ -16,6 +16,7 @@ GET     /api/v1/user/getAll                                             controll
 
 ## Customer
 POST    /api/v1/customer/register                                       controllers.Customer.register()
+GET     /api/v1/customer/login/:userName/:password                      controllers.Customer.login(userName:String, password:String)
 
 ## Sample
 POST    /api/v1/sample/insert                                           controllers.Sample.insert()
