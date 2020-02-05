@@ -1,25 +1,34 @@
 package exception;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.json.simple.JSONObject;
+
+import java.io.Serializable;
 
 /**
  * @author AKBAR <akbar.attijani@gmail.com>
  */
 
-public class TranslateException extends RuntimeException {
+@SuppressWarnings("serial")
+@JsonIgnoreProperties({"cause", "localizedMessage", "stackTrace", "isoLanguage"})
+public class TranslateException extends RuntimeException implements Serializable {
     private String errorCode;
     private String message;
     private String argument;
 
     public TranslateException(String errCode) {
         super();
-        getBundle(errCode);
+        String[] bundle = getBundle(errCode);
+        this.errorCode = bundle[0];
+        this.message = bundle[1];
     }
 
     public TranslateException(String errCode, String argument) {
         super();
         this.argument = argument;
-        getBundle(errCode);
+        String[] bundle = getBundle(errCode);
+        this.errorCode = bundle[0];
+        this.message = bundle[1];
     }
 
     @Override
@@ -27,7 +36,9 @@ public class TranslateException extends RuntimeException {
         JSONObject object = new JSONObject();
         object.put("code", errorCode);
         object.put("message", message);
-        object.put("argument", argument);
+        if (argument != null) {
+            object.put("argument", argument);
+        }
 
         return object.toString();
     }
