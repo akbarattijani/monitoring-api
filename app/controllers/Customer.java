@@ -64,7 +64,7 @@ public class Customer {
                 Connection.disconnect();
                 String[] bundle = new Bundle().getMessage("RC-00");
                 JSONObject object = new JSONObject();
-                object.put("errCode", bundle[0]);
+                object.put("responseCode", bundle[0]);
                 object.put("message", bundle[1]);
                 
                 return Body.echo(enums.Result.REQUEST_OK, object.toString());
