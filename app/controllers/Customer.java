@@ -8,6 +8,7 @@ import exception.Bundle;
 import exception.TranslateException;
 import httpactions.ApiAuth;
 import mapper.Mapper;
+import org.json.simple.JSONObject;
 import play.mvc.BodyParser;
 import play.mvc.Result;
 import utils.Body;
@@ -61,7 +62,12 @@ public class Customer {
             if (count > 0) {
                 // Closing database connection;
                 Connection.disconnect();
-                return Body.echo(enums.Result.REQUEST_OK, new Bundle().getBundle("RC-00"));
+                String[] bundle = new Bundle().getMessage("RC-00");
+                JSONObject object = new JSONObject();
+                object.put("errCode", bundle[0]);
+                object.put("message", bundle[1]);
+                
+                return Body.echo(enums.Result.REQUEST_OK, object.toString());
             }
 
             // Closing database connection

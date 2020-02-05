@@ -26,4 +26,19 @@ public class Bundle {
 
         return "RC-UNKNOWN : Unknown Error Code";
     }
+
+    public String[] getMessage(String errCode) {
+        String[] result = new String[0];
+        for (String value : bundles) {
+            if (value.contains(errCode)) {
+                result = value.split(":");
+                result[0] = result[0].trim();
+                result[1] = result[1].trim();
+
+                break;
+            }
+        }
+
+        return result;
+    }
 }
