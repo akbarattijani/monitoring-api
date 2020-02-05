@@ -14,6 +14,9 @@ PUT     /api/v1/user/updateStep                                         controll
 PUT     /api/v1/user/updatePassword                                     controllers.User.updatePassword()
 GET     /api/v1/user/getAll                                             controllers.User.getAllUser()
 
+## Customer
+POST    /api/v1/customer/register                                       controllers.Customer.register()
+
 ## Sample
 POST    /api/v1/sample/insert                                           controllers.Sample.insert()
 POST    /api/v1/sample/insertAll                                        controllers.Sample.insertAll()
