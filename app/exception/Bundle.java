@@ -10,7 +10,8 @@ public class Bundle {
             "RC-02 : First Name kosong",
             "RC-03 : Last Name kosong",
             "RC-04 : User name kosong",
-            "RC-05 : Password kosong"
+            "RC-05 : Password kosong",
+            "RC-22 : Akun Tidak Ditemukan"
     };
 
     public String[] getBundles(){

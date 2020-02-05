@@ -2,6 +2,7 @@ package database.dao.impl;
 
 import database.dao.Dao;
 import database.dao.DaoImpl;
+import database.dao.Query;
 import model.Customer;
 
 /**
@@ -18,5 +19,9 @@ public class CustomerImpl extends DaoImpl<Customer, CustomerImpl> {
     @Override
     public int save(Customer object) {
         return super.save(object);
+    }
+
+    public Customer login(String userName, String password) {
+        return queryForObject(Query.SELECT, "SELECT * FROM m_customer WHERE user_name = ? AND password = ?", userName, password);
     }
 }

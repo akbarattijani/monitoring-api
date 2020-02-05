@@ -66,7 +66,7 @@ public class Customer {
                 JSONObject object = new JSONObject();
                 object.put("responseCode", bundle[0]);
                 object.put("message", bundle[1]);
-                
+
                 return Body.echo(enums.Result.REQUEST_OK, object.toString());
             }
 
@@ -74,6 +74,45 @@ public class Customer {
             Connection.disconnect();
 
             throw new TranslateException("RC-01");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Connection.disconnect();
+            return status(401, e.getMessage());
+        }
+    }
+
+    @Connect(
+            database = Database.POSTGRESQL,
+            host = "ec2-23-23-173-30.compute-1.amazonaws.com",
+            databaseName = "d87s2lf0vv7l32",
+            userName = "ppxiknjbrpshfp",
+            password = "dadde9e960e7acc54bf9b09a35ef98f4ec01a149e1560b4a8c4f6909271cc76c",
+            port = "5432"
+    )
+    public static Result login(String userName, String password) {
+        try {
+            model.Customer customer = new CustomerImpl().login(userName, password);
+            if (customer != null) {
+                JSONObject object = new JSONObject();
+                object.put("id", customer.getId());
+                object.put("firstName", customer.getFirstName());
+                object.put("lastName", customer.getLastName());
+                object.put("userName", customer.getUserName());
+                object.put("email", customer.getEmail());
+                object.put("address", customer.getAddress());
+                object.put("city", customer.getCity());
+                object.put("province", customer.getProvince());
+                object.put("created", customer.getCreated());
+                object.put("createdBy", customer.getCreatedBy());
+
+                // Closing database connection
+                Connection.disconnect();
+
+                return Body.echo(enums.Result.REQUEST_OK, object.toString());
+            } else {
+                Connection.disconnect();
+                throw new TranslateException("RC-22");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             Connection.disconnect();
