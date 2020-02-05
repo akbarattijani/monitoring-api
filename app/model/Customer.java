@@ -49,7 +49,7 @@ public class Customer {
     private String created;
 
     @JsonField(key = "createdby")
-    @Column(name = "createdby")
+    @Column(name = "created_by")
     private int createdBy;
 
     public int getId() {
