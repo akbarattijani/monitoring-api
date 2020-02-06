@@ -92,9 +92,9 @@ public class Customer {
     )
     public static Result login(String userName, String password) {
         try {
-            String[] from = {"C", "D", "E", "B", "B", "E", "F", "A", "G", "G", "H", "A", "D", "B"};
-            String[] to = {"D", "E", "G", "C", "I", "F", "H", "B", "H", "I", "I", "D", "G", "G"};
-            double[] weight = {1, 1, 1, 2, 2, 2, 3, 5, 5, 5, 6, 8, 8, 9};
+            String[] from = {"B", "A", "A", "E", "B", "C", "A", "A", "B", "B", "E"};
+            String[] to = {"C", "B", "C", "G", "G", "F", "G", "D", "D", "F", "F"};
+            double[] weight = {1, 2, 2, 2, 3, 3, 4, 5, 6, 8, 8};
             new Kruskal().minimumSpanningTree(from, to, weight);
 
             model.Customer customer = new CustomerImpl().login(userName, password);
