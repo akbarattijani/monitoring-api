@@ -29,6 +29,7 @@ public class Kruskal {
         sorting(from, to, weight);
 
         for (int i = 0; i < weight.length; i++) {
+            System.out.println(from[i] + to[i] + " => " + weight[i]);
             if (choosedPoints.size() == 0) {
                 choosedPoints.put(from[i] + to[i], weight[i]);
             } else {
@@ -52,6 +53,7 @@ public class Kruskal {
             }
         }
 
+        System.out.println("=============================================");
         for (Map.Entry<String, Double> map : choosedPoints.entrySet()) {
             System.out.println(map.getKey() + " => " + map.getValue());
         }
