@@ -72,14 +72,23 @@ public class MinimumSpanningTree {
             getAllRoute(firstPoint, f, choosedPoints);
             getAllRoute(lastPoint, t, choosedPoints);
 
-            stop:
-            for (String valFirst : firstPoint) {
-                for (String valLast : lastPoint) {
-                    if (valFirst.equals(valLast)) {
-                        choosedPoints.put(f + t, map.getValue());
-                        break stop;
-                    }
+            boolean firstIsPass = false;
+            boolean lastIsPass = false;
+
+            for (String value : firstPoint) {
+                if (value.contains(t)) {
+                    firstIsPass = true;
                 }
+            }
+
+            for (String value : lastPoint) {
+                if (value.contains(f)) {
+                    lastIsPass = true;
+                }
+            }
+
+            if (!firstIsPass && !lastIsPass) {
+                choosedPoints.put(map.getKey(), map.getValue());
             }
         }
 
