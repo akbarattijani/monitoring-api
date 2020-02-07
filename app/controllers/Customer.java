@@ -1,6 +1,6 @@
 package controllers;
 
-import algoritm.Kruskal;
+import algoritm.MinimumSpanningTree;
 import database.Connection.Connect;
 import database.Connection.Connection;
 import database.dao.impl.CustomerImpl;
@@ -95,7 +95,7 @@ public class Customer {
             String[] from = {"e1", "e2", "e1", "e5", "e2", "e6", "e2", "e6", "e4", "e3", "e2"};
             String[] to = {"e4", "e1", "e5", "e3", "e4", "e5", "e5", "e1", "e6", "e6", "e6"};
             double[] weight = {5, 7, 2, 1, 3, 4, 5, 3, 7, 8, 3};
-            new Kruskal().minimumSpanningTree(from, to, weight);
+            new MinimumSpanningTree().kruskal(from, to, weight);
 
             model.Customer customer = new CustomerImpl().login(userName, password);
             if (customer != null) {
