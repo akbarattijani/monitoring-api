@@ -1,7 +1,7 @@
 package algoritm;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -14,8 +14,8 @@ public class MinimumSpanningTree {
 
     public int kruskal(String[] from, String[] to, double[] weight) {
         int result = 0;
-        Map<String, Double> choosedPoints = new HashMap<>();
-        Map<String, Double> missedPoints = new HashMap<>();
+        Map<String, Double> choosedPoints = new LinkedHashMap<>();
+        Map<String, Double> missedPoints = new LinkedHashMap<>();
         ArrayList<String> points = new ArrayList<>();
         for (String value : from) {
             if (!points.contains(value)) {
@@ -69,20 +69,17 @@ public class MinimumSpanningTree {
             ArrayList<String> lastPoint = new ArrayList<>();
 
             // get all point
-            System.out.println("========================================");
             getAllRoute(firstPoint, f, choosedPoints);
             getAllRoute(lastPoint, t, choosedPoints);
 
-            System.out.println("*****FIRST");
-            for (String val : firstPoint) {
-                System.out.println("point : " + val);
+            for (String valFirst : firstPoint) {
+                for (String valLast : lastPoint) {
+                    if (valFirst.equals(valLast)) {
+                        choosedPoints.put(f + t, map.getValue());
+                        missedPoints.remove(map.getKey());
+                    }
+                }
             }
-
-            System.out.println("******LAST");
-            for (String val : lastPoint) {
-                System.out.println("point : " + val);
-            }
-            System.out.println("=========================================");
         }
 
 
