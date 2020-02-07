@@ -72,11 +72,13 @@ public class MinimumSpanningTree {
             getAllRoute(firstPoint, f, choosedPoints);
             getAllRoute(lastPoint, t, choosedPoints);
 
+            stop:
             for (String valFirst : firstPoint) {
                 for (String valLast : lastPoint) {
                     if (valFirst.equals(valLast)) {
                         choosedPoints.put(f + t, map.getValue());
                         missedPoints.remove(map.getKey());
+                        break stop;
                     }
                 }
             }
