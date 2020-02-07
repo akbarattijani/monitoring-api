@@ -77,7 +77,6 @@ public class MinimumSpanningTree {
                 for (String valLast : lastPoint) {
                     if (valFirst.equals(valLast)) {
                         choosedPoints.put(f + t, map.getValue());
-                        missedPoints.remove(map.getKey());
                         break stop;
                     }
                 }
