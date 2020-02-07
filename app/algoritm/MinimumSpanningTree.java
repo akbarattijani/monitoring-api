@@ -64,7 +64,6 @@ public class MinimumSpanningTree {
         for (Map.Entry<String, Double> map : missedPoints.entrySet()) {
             String f = map.getKey().split("\\|")[0]; // e1
             String t = map.getKey().split("\\|")[1]; // e2
-            System.out.println("Missed point : " + map.getKey() + "\tFrom : " + f + "\tTo : " + t);
             ArrayList<String> firstPoint = new ArrayList<>();
             ArrayList<String> lastPoint = new ArrayList<>();
 
@@ -87,8 +86,19 @@ public class MinimumSpanningTree {
                 }
             }
 
+            System.out.println("============== " + map.getKey() + "=================");
+            System.out.println("FIRST");
+            for (String val : firstPoint) {
+                System.out.println("point : " + val);
+            }
+
+            System.out.println("LAST");
+            for (String val : lastPoint) {
+                System.out.println("point : " + val);
+            }
+
             if (!firstIsPass && !lastIsPass) {
-                choosedPoints.put(map.getKey(), map.getValue());
+                choosedPoints.put(f + t, map.getValue());
             }
         }
 
