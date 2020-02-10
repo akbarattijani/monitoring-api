@@ -21,9 +21,13 @@ public class KMeans {
             {"1574201006",	"WILLY OCRIYANSYAH",	"S1 Ilmu Hukum",	"Lulus",			"Pindahan",				"L",	"Tidak diisi"},
             {"1570201002",	"MUHAMAD HANIF AL JANNAH",	"S1 Ilmu Komunikasi",	"AKTIF",	"Peserta didik baru",	"L",	"Tidak diisi"},
             {"1570201003",	"ABI RIDWAN MAULANA",		"S1 Ilmu Komunikasi",	"AKTIF",	"Peserta didik baru",	"L",	"Islam"},
-            {"1570201004",	"INSYIAH RAHMAWATI",		"S1 Ilmu Komunikasi",	"Lulus",	"Peserta didik baru",	"P",	"Tidak diisi"}
+            {"1570201004",	"INSYIAH RAHMAWATI",		"S1 Ilmu Komunikasi",	"Lulus",	"Peserta didik baru",	"P",	"Tidak diisi"},
+            {"1586208001",	"AHMAD HAERUDIN",	"S1 Pendidikan Agama Islam",	"AKTIF",	"Peserta didik baru",	"L",	"Islam"},
+            {"1586208002",	"KHAIRUL AKBAR DIRGANTARA",	"S1 Pendidikan Agama Islam",	"Lulus",	"Peserta didik baru",	"L",	"Islam"},
+            {"1586208003",	"RIYAN MAULANA",	"S1 Pendidikan Agama Islam",	"Lulus",	"Peserta didik baru",	"L",	"Islam"},
+            {"1586208004",	"SITI MUJIJAH",	"S1 Pendidikan Agama Islam",	"Lulus",	"Peserta didik baru",	"P",	"Islam"}
 
-    };
+};
 
     public void test() {
         Map<String, Double> attribute0 = new LinkedHashMap<>();
