@@ -16,18 +16,6 @@ public class MinimumSpanningTree {
         int result = 0;
         Map<String, Double> choosedPoints = new LinkedHashMap<>();
         Map<String, Double> missedPoints = new LinkedHashMap<>();
-        ArrayList<String> points = new ArrayList<>();
-        for (String value : from) {
-            if (!points.contains(value)) {
-                points.add(value);
-            }
-        }
-
-        for (String value : to) {
-            if (!points.contains(value)) {
-                points.add(value);
-            }
-        }
 
         // Sorting from smallest
         sorting(SMALLEST, from, to, weight);
@@ -86,27 +74,25 @@ public class MinimumSpanningTree {
                 }
             }
 
-            System.out.println("============== " + map.getKey() + "=================");
-            System.out.println("FIRST");
-            for (String val : firstPoint) {
-                System.out.println("point : " + val);
-            }
-
-            System.out.println("LAST");
-            for (String val : lastPoint) {
-                System.out.println("point : " + val);
-            }
-
             if (!firstIsPass && !lastIsPass) {
                 choosedPoints.put(f + t, map.getValue());
             }
         }
 
-
         System.out.println("=============================================");
         for (Map.Entry<String, Double> map : choosedPoints.entrySet()) {
             System.out.println(map.getKey() + " => " + map.getValue());
         }
+
+        for (Map.Entry<String, Double> map : choosedPoints.entrySet()) {
+            result += map.getValue();
+        }
+
+        return result;
+    }
+
+    public int solin(String[] from, String[] to, double[] weight) {
+        int result = 0;
 
         return result;
     }

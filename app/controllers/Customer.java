@@ -1,6 +1,6 @@
 package controllers;
 
-import algoritm.MinimumSpanningTree;
+import algoritm.KMeans;
 import database.Connection.Connect;
 import database.Connection.Connection;
 import database.dao.impl.CustomerImpl;
@@ -92,88 +92,15 @@ public class Customer {
     )
     public static Result login(String userName, String password) {
         try {
-            String[] from = {"A",
-                    "A",
-                    "A",
-                    "B",
-                    "B",
-                    "C",
-                    "D",
-                    "D",
-                    "E",
-                    "E",
-                    "E",
-                    "F",
-                    "F",
-                    "G",
-                    "G",
-                    "H",
-                    "H",
-                    "H",
-                    "I",
-                    "I",
-                    "J",
-                    "J",
-                    "K",
-                    "K",
-                    "K",
-                    "L",
-                    "L"};
-            String[] to = {"B",
-                    "D",
-                    "F",
-                    "C",
-                    "D",
-                    "I",
-                    "I",
-                    "H",
-                    "F",
-                    "G",
-                    "H",
-                    "G",
-                    "N",
-                    "H",
-                    "N",
-                    "I",
-                    "K",
-                    "N",
-                    "J",
-                    "K",
-                    "M",
-                    "K",
-                    "M",
-                    "L",
-                    "N",
-                    "N",
-                    "M"};
-            double[] weight = {2,
-                    5,
-                    3,
-                    2,
-                    3,
-                    3,
-                    2,
-                    1,
-                    2,
-                    4,
-                    5,
-                    7,
-                    10,
-                    1,
-                    4,
-                    1,
-                    1,
-                    6,
-                    1,
-                    1,
-                    9,
-                    1,
-                    7,
-                    6,
-                    7,
-                    6,
-                    5};
-            new MinimumSpanningTree().kruskal(from, to, weight);
+//            String[] from = {"A", "A", "A", "B", "B", "C", "D", "D", "E", "E", "E", "F", "F", "G", "G", "H", "H", "H", "I", "I", "J", "J",
+//                             "K", "K", "K", "L", "L"};
+//            String[] to = {"B", "D", "F", "C", "D", "I", "I", "H", "F", "G", "H", "G", "N", "H", "N", "I", "K", "N", "J", "K", "M", "K",
+//                             "M", "L", "N", "N", "M"};
+//            double[] weight = {2, 5, 3, 2, 3, 3, 2, 1, 2, 4, 5, 7, 10, 1, 4, 1, 1, 6, 1, 1, 9, 1, 7, 6, 7, 6, 5};
+//
+//            new MinimumSpanningTree().kruskal(from, to, weight);
+
+            new KMeans().test();
 
             model.Customer customer = new CustomerImpl().login(userName, password);
             if (customer != null) {
