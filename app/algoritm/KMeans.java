@@ -182,6 +182,14 @@ public class KMeans {
             }
         }
 
+        for (String[] row : distanceData) {
+            for (String val : row) {
+                System.out.print(val + "\t");
+            }
+
+            System.out.println();
+        }
+
         for (int i = 0; i < distanceData.length; i++) {
             double lowerDistance = Double.parseDouble(distanceData[i][0]);
             int indexCluster = 0;
