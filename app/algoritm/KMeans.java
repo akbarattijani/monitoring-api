@@ -119,18 +119,17 @@ public class KMeans {
         }
         System.out.println("=====================================================================");
 
-        String[] updateCluster = new String[cluster.length];
         for (int i = 0; i < cluster.length; i++) {
+            String updateCluster = "";
             for (int j = 0; j < data.length; j++) {
                 int value = (int) data[j][data[j].length - 1];
                 if (value == i) {
-                    updateCluster[i] = updateCluster[i] + String.valueOf(j);
-                    System.out.println("update : " + updateCluster[i]);
+                    updateCluster += String.valueOf(j);
                 }
             }
 
             double count = 0;
-            String[] indexs = updateCluster[i].split("");
+            String[] indexs = updateCluster.split("");
             System.out.println("indexs : " + indexs);
             for (int index = 0; index < indexs.length; index++) {
                 double[] rowData = data[Integer.parseInt(indexs[index])];
@@ -161,6 +160,7 @@ public class KMeans {
 
         createDistance(data, distanceDataLast, clusterMap);
 
+        System.out.println("======================= LOOP 1 =====================================");
         for (String[] row : distanceDataLast) {
             for (String value : row) {
                 System.out.print(value + "\t");
@@ -168,6 +168,7 @@ public class KMeans {
 
             System.out.println();
         }
+        System.out.println("=====================================================================");
 
         return result;
     }
