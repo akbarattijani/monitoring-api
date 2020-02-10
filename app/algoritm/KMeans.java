@@ -118,8 +118,9 @@ public class KMeans {
         System.out.println("====================== RESULT ===================================");
         for (int i = 0; i < dataset.length; i++) {
             for (String value : dataset[i]) {
-                System.out.print(value + "\t" + cluster[Integer.parseInt(result[i][result[i].length - 1])]);
+                System.out.print(value + "\t");
             }
+            System.out.print(cluster[Integer.parseInt(result[i][result[i].length - 1])]);
             System.out.println();
         }
         System.out.println("=================================================================");
