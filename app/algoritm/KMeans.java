@@ -260,8 +260,6 @@ public class KMeans {
                 }
             }
 
-            System.out.println("lower : " + lowerDistance + "\tindex : " + indexCluster);
-
             distanceData[i][distanceData[i].length - 1] = String.valueOf(indexCluster);
             dataset[i][dataset[i].length - 1] = indexCluster;
         }
