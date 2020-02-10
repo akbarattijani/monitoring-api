@@ -65,7 +65,7 @@ public class KMeans {
             }
         }
 
-        double[][] dataSample = new double[dataset.length][5];
+        double[][] dataSample = new double[dataset.length][6];
         for (int i = 0; i < dataset.length; i++) {
             dataSample[i][0] = attribute0.get(dataset[i][2]);
             dataSample[i][1] = attribute1.get(dataset[i][3]);
