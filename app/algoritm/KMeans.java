@@ -190,6 +190,7 @@ public class KMeans {
             System.out.println();
         }
 
+        System.out.println("===========================================");
         for (int i = 0; i < distanceData.length; i++) {
             double lowerDistance = Double.parseDouble(distanceData[i][0]);
             int indexCluster = 0;
@@ -201,6 +202,8 @@ public class KMeans {
                     indexCluster = j;
                 }
             }
+
+            System.out.println("lower : " + lowerDistance + "\tindex : " + indexCluster);
 
             distanceData[i][distanceData[i].length - 1] = String.valueOf(indexCluster);
             dataset[i][dataset.length - 1] = indexCluster;
