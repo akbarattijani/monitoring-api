@@ -130,6 +130,7 @@ public class KMeans {
 
             double count = 0;
             String[] indexs = updateCluster[i].split("");
+            System.out.println("indexs : " + indexs);
             for (int index = 0; index < indexs.length; index++) {
                 double[] rowData = data[Integer.parseInt(indexs[index])];
 
