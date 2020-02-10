@@ -143,42 +143,58 @@ public class KMeans {
         }
         System.out.println("=====================================================================");
 
-        for (int i = 0; i < distanceDataFirst.length; i++) {
+        for (int i = 0; i < distanceDataFirst.length - 1; i++) {
             if (!distanceDataFirst[i][distanceDataFirst[i].length - 1].equals(distanceDataLast[i][distanceDataLast[i].length - 1])) {
-                updateClusterCenter(cluster, data, clusterMap);
-                System.out.println("================ CLUSTER CENTER 3 ==================================");
-                for (double[] c : clusterMap) {
-                    for (double v : c) {
-                        System.out.print(v + "\t");
+                int loop = 3;
+                while (!isPass) {
+                    updateClusterCenter(cluster, data, clusterMap);
+                    System.out.println("================ CLUSTER CENTER " + loop + " ==================================");
+                    for (double[] c : clusterMap) {
+                        for (double v : c) {
+                            System.out.print(v + "\t");
+                        }
+
+                        System.out.println();
+                    }
+                    System.out.println("=====================================================================");
+
+                    distanceDataFirst = distanceDataLast;
+
+                    createDistance(data, distanceDataLast, clusterMap);
+
+                    System.out.println("======================= COUNTER DATA ================================");
+                    for (String[] row : distanceDataFirst) {
+                        for (String value : row) {
+                            System.out.print(value + "\t");
+                        }
+
+                        System.out.println();
+                    }
+                    System.out.println("=====================================================================");
+
+                    System.out.println("======================= LOOP " + loop + " =====================================");
+                    for (String[] row : distanceDataLast) {
+                        for (String value : row) {
+                            System.out.print(value + "\t");
+                        }
+
+                        System.out.println();
+                    }
+                    System.out.println("=====================================================================");
+
+                    int countSame = 0;
+                    for (int ii = 0; ii < distanceDataFirst.length - 1; ii++) {
+                        if (distanceDataFirst[ii][distanceDataFirst[ii].length - 1].equals(distanceDataLast[ii][distanceDataLast[ii].length - 1])) {
+                            countSame++;
+                        }
                     }
 
-                    System.out.println();
-                }
-                System.out.println("====================================================================");
-
-                distanceDataFirst = distanceDataLast;
-
-                createDistance(data, distanceDataLast, clusterMap);
-
-                System.out.println("======================= LOOP 1 =====================================");
-                for (String[] row : distanceDataFirst) {
-                    for (String value : row) {
-                        System.out.print(value + "\t");
+                    if (countSame == distanceDataLast.length) {
+                        isPass = true;
+                    } else {
+                        loop++;
                     }
-
-                    System.out.println();
                 }
-                System.out.println("=====================================================================");
-
-                System.out.println("======================= LOOP 3 =====================================");
-                for (String[] row : distanceDataLast) {
-                    for (String value : row) {
-                        System.out.print(value + "\t");
-                    }
-
-                    System.out.println();
-                }
-                System.out.println("=====================================================================");
             }
         }
 
@@ -197,7 +213,6 @@ public class KMeans {
 
             double count = 0;
             String[] indexs = updateCluster.split("");
-            System.out.println("indexs : " + indexs);
             for (int index = 0; index < indexs.length; index++) {
                 double[] rowData = data[Integer.parseInt(indexs[index])];
 
