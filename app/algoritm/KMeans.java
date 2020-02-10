@@ -183,7 +183,7 @@ public class KMeans {
                     System.out.println("=====================================================================");
 
                     int countSame = 0;
-                    for (int ii = 0; ii < distanceDataFirst.length - 1; ii++) {
+                    for (int ii = 0; ii < distanceDataFirst.length; ii++) {
                         if (distanceDataFirst[ii][distanceDataFirst[ii].length - 1].equals(distanceDataLast[ii][distanceDataLast[ii].length - 1])) {
                             countSame++;
                         }
