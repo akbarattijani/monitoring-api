@@ -211,22 +211,23 @@ public class KMeans {
                 }
             }
 
-            double count = 0;
             String[] indexs = updateCluster.split("");
-            for (int index = 0; index < indexs.length; index++) {
-                double[] rowData = data[Integer.parseInt(indexs[index])];
+            if (!updateCluster.equals("")) {
+                for (int index = 0; index < indexs.length; index++) {
+                    double[] rowData = data[Integer.parseInt(indexs[index])];
 
-                if (index == 0) {
-                    clusterMap[i] = rowData;
-                } else {
-                    for (int r = 0; r < rowData.length; r++) {
-                        clusterMap[i][r] += rowData[r];
+                    if (index == 0) {
+                        clusterMap[i] = rowData;
+                    } else {
+                        for (int r = 0; r < rowData.length; r++) {
+                            clusterMap[i][r] += rowData[r];
+                        }
                     }
                 }
-            }
 
-            for (int d = 0; d < clusterMap[i].length; d++) {
-                clusterMap[i][d] = clusterMap[i][d] / indexs.length;
+                for (int d = 0; d < clusterMap[i].length; d++) {
+                    clusterMap[i][d] = clusterMap[i][d] / indexs.length;
+                }
             }
         }
     }
