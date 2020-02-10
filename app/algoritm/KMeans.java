@@ -109,6 +109,16 @@ public class KMeans {
         boolean isPass = false;
         createDistance(data, distanceDataFirst, clusterMap);
 
+        System.out.println("======================= LOOP 1 =====================================");
+        for (String[] row : distanceDataFirst) {
+            for (String value : row) {
+                System.out.print(value + "\t");
+            }
+
+            System.out.println();
+        }
+        System.out.println("=====================================================================");
+
         String[] updateCluster = new String[cluster.length];
         for (int i = 0; i < cluster.length; i++) {
             for (int j = 0; j < data.length; j++) {
@@ -149,14 +159,6 @@ public class KMeans {
 
         createDistance(data, distanceDataLast, clusterMap);
 
-        for (String[] row : distanceDataFirst) {
-            for (String value : row) {
-                System.out.print(value + "\t");
-            }
-
-            System.out.println();
-        }
-        System.out.println("=========================================================================================");
         for (String[] row : distanceDataLast) {
             for (String value : row) {
                 System.out.print(value + "\t");
@@ -182,15 +184,6 @@ public class KMeans {
             }
         }
 
-        for (String[] row : distanceData) {
-            for (String val : row) {
-                System.out.print(val + "\t");
-            }
-
-            System.out.println();
-        }
-
-        System.out.println("===========================================");
         for (int i = 0; i < distanceData.length; i++) {
             double lowerDistance = Double.parseDouble(distanceData[i][0]);
             int indexCluster = 0;
@@ -208,6 +201,5 @@ public class KMeans {
             distanceData[i][distanceData[i].length - 1] = String.valueOf(indexCluster);
             dataset[i][dataset[i].length - 1] = indexCluster;
         }
-        System.out.println("==============================================");
     }
 }
