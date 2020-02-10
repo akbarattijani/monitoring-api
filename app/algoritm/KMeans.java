@@ -25,8 +25,16 @@ public class KMeans {
             {"1586208001",	"AHMAD HAERUDIN",	"S1 Pendidikan Agama Islam",	"AKTIF",	"Peserta didik baru",	"L",	"Islam"},
             {"1586208002",	"KHAIRUL AKBAR DIRGANTARA",	"S1 Pendidikan Agama Islam",	"Lulus",	"Peserta didik baru",	"L",	"Islam"},
             {"1586208003",	"RIYAN MAULANA",	"S1 Pendidikan Agama Islam",	"Lulus",	"Peserta didik baru",	"L",	"Islam"},
-            {"1586208004",	"SITI MUJIJAH",	"S1 Pendidikan Agama Islam",	"Lulus",	"Peserta didik baru",	"P",	"Islam"}
-
+            {"1586208004",	"SITI MUJIJAH",	"S1 Pendidikan Agama Islam",	"Lulus",	"Peserta didik baru",	"P",	"Islam"},
+            {"1555201001",	"SANDIKA RESTU FAUZI",	"S1 Teknik Informatika",	"AKTIF",		"Peserta didik baru",	"L",	"Tidak diisi"},
+            {"1555201002",	"ARIO SOBAR",			"S1 Teknik Informatika",	"AKTIF",		"Peserta didik baru",	"L",	"Tidak diisi"},
+            {"1555201003",	"SAPUTRA HADI WIJAYA",	"S1 Teknik Informatika",	"Dikeluarkan",	"Peserta didik baru",	"L",	"Tidak diisi"},
+            {"1555201004",	"KISTI NURMAINI HASAN",	"S1 Teknik Informatika",	"Dikeluarkan",	"Peserta didik baru",	"P",	"Tidak diisi"},
+            {"1521201004",	"ROBBY DRIANTAMA",		"S1 Teknik Mesin",			"Dikeluarkan",	"Peserta didik baru",	"L",	"Tidak diisi"},
+            {"1521201005",	"LUKISTER MANURUNG",	"S1 Teknik Mesin",			"AKTIF",		"Peserta didik baru",	"L",	"Tidak diisi"},
+            {"1521201006",	"RIDWAN SAPUTRA",		"S1 Teknik Mesin",			"AKTIF",		"Peserta didik baru",	"L",	"Tidak diisi"},
+            {"1521201007",	"DIAN PRAMUDYA",		"S1 Teknik Mesin",			"AKTIF",		"Peserta didik baru",	"L",	"Tidak diisi"},
+            {"1521201008",	"BAYU INDRAWAN",		"S1 Teknik Mesin",			"AKTIF",		"Peserta didik baru",	"L",	"Tidak diisi"}
 };
 
     public void test() {
