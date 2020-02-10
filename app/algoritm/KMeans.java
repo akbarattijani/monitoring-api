@@ -119,6 +119,73 @@ public class KMeans {
         }
         System.out.println("=====================================================================");
 
+        updateClusterCenter(cluster, data, clusterMap);
+
+        System.out.println("================ CLUSTER CENTER 2 ==================================");
+        for (double[] c : clusterMap) {
+            for (double v : c) {
+                System.out.print(v + "\t");
+            }
+
+            System.out.println();
+        }
+        System.out.println("====================================================================");
+
+        createDistance(data, distanceDataLast, clusterMap);
+
+        System.out.println("======================= LOOP 2 =====================================");
+        for (String[] row : distanceDataLast) {
+            for (String value : row) {
+                System.out.print(value + "\t");
+            }
+
+            System.out.println();
+        }
+        System.out.println("=====================================================================");
+
+        for (int i = 0; i < distanceDataFirst.length; i++) {
+            if (!distanceDataFirst[i][distanceDataFirst[i].length - 1].equals(distanceDataLast[i][distanceDataLast[i].length - 1])) {
+                updateClusterCenter(cluster, data, clusterMap);
+                System.out.println("================ CLUSTER CENTER 3 ==================================");
+                for (double[] c : clusterMap) {
+                    for (double v : c) {
+                        System.out.print(v + "\t");
+                    }
+
+                    System.out.println();
+                }
+                System.out.println("====================================================================");
+
+                distanceDataFirst = distanceDataLast;
+
+                createDistance(data, distanceDataLast, clusterMap);
+
+                System.out.println("======================= LOOP 1 =====================================");
+                for (String[] row : distanceDataFirst) {
+                    for (String value : row) {
+                        System.out.print(value + "\t");
+                    }
+
+                    System.out.println();
+                }
+                System.out.println("=====================================================================");
+
+                System.out.println("======================= LOOP 3 =====================================");
+                for (String[] row : distanceDataLast) {
+                    for (String value : row) {
+                        System.out.print(value + "\t");
+                    }
+
+                    System.out.println();
+                }
+                System.out.println("=====================================================================");
+            }
+        }
+
+        return result;
+    }
+
+    private void updateClusterCenter(String[] cluster, double[][] data, double[][] clusterMap) {
         for (int i = 0; i < cluster.length; i++) {
             String updateCluster = "";
             for (int j = 0; j < data.length; j++) {
@@ -147,30 +214,6 @@ public class KMeans {
                 clusterMap[i][d] = clusterMap[i][d] / indexs.length;
             }
         }
-
-        System.out.println("================ CLUSTER CENTER 2 ==================================");
-        for (double[] c : clusterMap) {
-            for (double v : c) {
-                System.out.print(v + "\t");
-            }
-
-            System.out.println();
-        }
-        System.out.println("====================================================================");
-
-        createDistance(data, distanceDataLast, clusterMap);
-
-        System.out.println("======================= LOOP 1 =====================================");
-        for (String[] row : distanceDataLast) {
-            for (String value : row) {
-                System.out.print(value + "\t");
-            }
-
-            System.out.println();
-        }
-        System.out.println("=====================================================================");
-
-        return result;
     }
 
     private void createDistance(double[][] dataset, String[][] distanceData, double[][] clusterMap) {
