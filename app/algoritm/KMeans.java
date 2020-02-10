@@ -189,8 +189,10 @@ public class KMeans {
                         }
                     }
 
+                    System.out.println("Count : " + countSame + "\tDistance Length : " + distanceDataLast.length);
                     if (countSame == distanceDataLast.length) {
                         isPass = true;
+                        break;
                     } else {
                         loop++;
                     }
