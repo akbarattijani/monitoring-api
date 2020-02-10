@@ -124,8 +124,8 @@ public class KMeans {
             for (int j = 0; j < data.length; j++) {
                 int value = (int) data[j][data[j].length - 1];
                 if (value == i) {
-                    System.out.println("j : " + j);
-                    updateCluster[i] += String.valueOf(j);
+                    updateCluster[i] = updateCluster[i] + String.valueOf(j);
+                    System.out.println("update : " + updateCluster[i]);
                 }
             }
 
