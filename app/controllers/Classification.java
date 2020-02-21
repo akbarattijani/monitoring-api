@@ -99,7 +99,7 @@ public class Classification {
                 String result = new NaiveBayes().dataMining(knn, object.path("data").asText().split(" "), true);
 
                 JSONObject obj = new JSONObject();
-                obj.put("nim", object.path("nim").asText());
+                obj.put("index", object.path("index").asText());
                 obj.put("category", result);
                 array.add(obj);
             }
