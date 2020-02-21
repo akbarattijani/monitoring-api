@@ -100,6 +100,7 @@ public class Classification {
 
                 JSONObject obj = new JSONObject();
                 obj.put("nim", object.path("nim").asText());
+                obj.put("category", result);
                 array.add(obj);
             }
 
