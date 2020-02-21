@@ -24,6 +24,7 @@ POST    /api/v1/sample/insertAll                                        controll
 
 ## Classification
 POST    /api/v1/classification/search                                   controllers.Classification.search()
+POST    /api/v1/classification/dataMining                               controllers.Classification.dataMining()
 
 ## Attendance
 POST    /api/v1/attendance/insert                                       controllers.Attendance.insert()

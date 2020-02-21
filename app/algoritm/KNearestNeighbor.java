@@ -1,6 +1,7 @@
 package algoritm;
 
 import model.Classification;
+import model.Dataset;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -35,6 +36,36 @@ public class KNearestNeighbor {
 
             sortingED(ED);
             return splitSample(ED, samples, K, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Dataset> preProccessing(List<Dataset> samples, String data, int K) {
+        try {
+            /*  index 0 : nilai euclidean distance
+                index 1 : index dari samples
+                index 2 : id dari kelas
+             */
+            double[][] ED = new double[samples.size()][3];
+            String[] testing = data.split(" ");
+
+            for (int i = 0; i < samples.size(); i++) {
+                Dataset sample = samples.get(i);
+                String[] attributes = sample.getAttributes().split(" ");
+                ED[i][1] = i;
+                ED[i][2] = sample.getId();
+
+                for (int count = 0; count < testing.length; count++) {
+                    ED[i][0] += (Integer.parseInt(attributes[count]) - Integer.parseInt(testing[count])) * (Integer.parseInt(attributes[count]) - Integer.parseInt(testing[count]));
+                }
+
+                ED[i][0] = Math.sqrt(ED[i][0]);
+            }
+
+            sortingED(ED);
+            return splitDataset(ED, samples, K, true);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -102,6 +133,27 @@ public class KNearestNeighbor {
             System.out.println("------------------- KNN (SPLIT WITH K) -----------------------");
             for (Classification model : result) {
                 System.out.println("ID : " + model.getId() + "\tDistance : " + model.getDistance());
+            }
+            System.out.println("--------------------------------------------------------------\n");
+        }
+
+        return result;
+    }
+
+    private List<Dataset> splitDataset(double[][] ED, List<Dataset> samples, int K, boolean print) {
+        List<Dataset> result = new ArrayList<>();
+
+        for (int i = 0; i < K; i++) {
+            Dataset dataset = samples.get((int) ED[i][1]);
+            dataset.setDistance(ED[i][0]);
+
+            result.add(dataset);
+        }
+
+        if (print) {
+            System.out.println("------------------- KNN (SPLIT WITH K) -----------------------");
+            for (Dataset model : result) {
+                System.out.println("NIM : " + model.getNim() + "\tDistance : " + model.getDistance() + "\tCategory : " + model.getCategory());
             }
             System.out.println("--------------------------------------------------------------\n");
         }
